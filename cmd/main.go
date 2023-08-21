@@ -1,29 +1,28 @@
 package main
 
-import (
-	"fmt"
-
-	"github.com/gocolly/colly"
-)
+import "isaac-scrapper/internal/transformation"
 
 func main() {
 
-	collector := colly.NewCollector()
+	// collector := colly.NewCollector()
 
-	transformations := []string{}
+	// transformations := []string{}
 
-	collector.OnHTML("div.main-container>div.resizable-container>div.has-right-rail>main.page__main>div#content>div#mw-content-text>div.mw-parser-output>table.wikitable>tbody", func(e *colly.HTMLElement) {
+	// collector.OnHTML("div.main-container>div.resizable-container>div.has-right-rail>main.page__main>div#content>div#mw-content-text>div.mw-parser-output>table.wikitable>tbody", func(e *colly.HTMLElement) {
 
-		transformations = e.ChildAttrs("tr>td:nth-child(2)>a", "href")
+	// 	transformations = e.ChildAttrs("tr>td:nth-child(2)>a", "href")
 
-	})
+	// })
 
-	collector.Visit("https://bindingofisaacrebirth.fandom.com/wiki/Transformations")
+	// collector.Visit("https://bindingofisaacrebirth.fandom.com/wiki/Transformations")
+	// scrap := transformation.TransformationScraping()
+	// fmt.Println(len(scrap))
+	// for _, v := range scrap {
 
-	for _, v := range transformations {
+	// 	fmt.Println(v)
+	// 	fmt.Println()
+	// }
 
-		fmt.Println(v)
-		fmt.Println()
-	}
+	transformation.GetTransformationCsv()
 
 }
