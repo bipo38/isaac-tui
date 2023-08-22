@@ -4,6 +4,6 @@ import "isaac-scrapper/internal/transformation"
 
 func main() {
 
-	transformation.GetTransformationCsv()
+	transformation.GetTransformationCsv("transformation.csv", "isaac/")
 
 }
