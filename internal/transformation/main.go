@@ -2,9 +2,9 @@ package transformation
 
 import (
 	"encoding/csv"
+	"isaac-scrapper/internal/system"
 	"isaac-scrapper/internal/utils"
 	"log"
-	"os"
 	"reflect"
 
 	"github.com/gocolly/colly"
@@ -15,37 +15,15 @@ type transformation struct {
 	extension                    utils.Extension
 }
 
-func GetTransformationCsv() {
+func GetTransformationCsv(fName, path string) {
+
+	fullRoute := path + fName
 
 	headers := GetHeaders()
 	content := TransformationScraping()
-	file := "transformation.csv"
 
-	NewCsvFile(file, "isaac-data/transformations/", headers, content)
-
-}
-
-func NewCsvFile(name, path string, headers []string, content []transformation) {
-
-	var file *os.File
-
-	fPath := path
-	fName := name
-	fullRoute := fPath + fName
-
-	if err := os.MkdirAll(fPath, os.ModePerm); err != nil {
-		log.Fatal("Failed to create dirs")
-	}
-
-	if _, err := os.Stat(fullRoute); err != nil {
-
-		file, err = os.Create(fullRoute)
-		if err != nil {
-			log.Fatalf("Failed to create file: %q: %s\n ", fName, err)
-		}
-
-		defer file.Close()
-	}
+	system.CreateDirs(path)
+	file := system.CreateFile(fullRoute)
 
 	writer := csv.NewWriter(file)
 	writer.Write(headers)
@@ -63,15 +41,17 @@ func NewCsvFile(name, path string, headers []string, content []transformation) {
 		writer.Write(transformation)
 	}
 
+	defer file.Close()
+
 	defer writer.Flush()
 
 }
 
 func GetHeaders() []string {
 
-	var tran transformation
+	var transformation transformation
 
-	structype := reflect.TypeOf(tran)
+	structype := reflect.TypeOf(transformation)
 
 	var headers []string
 
@@ -108,7 +88,7 @@ func TransformationScraping() []transformation {
 	})
 
 	if err := collector.Visit(url); err != nil {
-		log.Fatalf("Failed scraping the url: %s", url)
+		log.Fatalf("Failed scraping the url %s: %s", url, err)
 	}
 
 	return transformations

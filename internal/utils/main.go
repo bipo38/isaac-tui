@@ -1,10 +1,5 @@
 package utils
 
-type Scrapper interface {
-	// getCsv()
-	// GetHeaders() []string
-}
-
 type Extension string
 
 const (
