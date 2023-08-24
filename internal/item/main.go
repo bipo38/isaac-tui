@@ -11,8 +11,8 @@ import (
 )
 
 type item struct {
-	name, id_game, quote, effect, unlock, image, quality, pool string
-	extension                                                  utils.Extension
+	name, id_game, quote, effect, unlock, image, quality, pool, item_quality string
+	extension                                                                utils.Extension
 }
 
 // var node = "div.main-container>div.resizable-container>div.has-right-rail>main.page__main>div#content>div#mw-content-text>div.mw-parser-output"
@@ -43,6 +43,7 @@ func GetItemsCsv(fName, path string) {
 			v.image,
 			v.quality,
 			v.pool,
+			v.item_quality,
 			string(v.extension),
 		}
 
@@ -93,14 +94,15 @@ func TrinektScraping() []item {
 			extension: utils.ParseExtension(el.ChildAttr("td:nth-child(1)>img", "title")),
 		}
 
-		subcollector := colly.NewCollector()
+		subcollector := collector.Clone()
 
-		subcollector.OnHTML("div.main-container>div.resizable-container>div.has-right-rail>main.page__main>div#content>div#mw-content-text>div.mw-parser-output>aside", func(h *colly.HTMLElement) {
-			unlock := h.ChildText("div[data-source=\"unlocked by\"]>div")
+		subcollector.OnHTML("div.main-container>div.resizable-container>div.has-right-rail>main.page__main>div#content>div#mw-content-text>div.mw-parser-output", func(h *colly.HTMLElement) {
+			unlock := h.ChildText("aside>div[data-source=\"unlocked by\"]>div")
 
-			pool := h.ChildText("div[data-source=\"alias\"]>div>div.item-pool-list")
+			pool := h.ChildText("aside>div[data-source=\"alias\"]>div>div.item-pool-list")
 
 			item.pool = pool
+			item.item_quality = h.ChildText("p:nth-child(4)>a")
 
 			if unlock != "" {
 				item.unlock = unlock
