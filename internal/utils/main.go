@@ -1,6 +1,6 @@
 package utils
 
-import "isaac-scrapper/internal/utils"
+import "reflect"
 
 type Extension string
 
@@ -30,14 +30,27 @@ func ParseExtension(extension string) Extension {
 }
 
 type Base struct {
-	Name      string          `base:"name"`
-	Id_game   string          `base:"id_game"`
-	Effect    string          `base:"effect"`
-	Unlock    string          `base:"unlock"`
-	Extension utils.Extension `base:"extension"`
-	Image     string          `base:"image"`
+	Name      string    `base:"name"`
+	Id_game   string    `base:"id_game"`
+	Effect    string    `base:"effect"`
+	Unlock    string    `base:"unlock"`
+	Extension Extension `base:"extension"`
+	Image     string    `base:"image"`
 }
 
 //Item ->
 //Transformation ->
 //Trinket -> quote,
+
+func GetHeader[C any](t C) []string {
+	structype := reflect.TypeOf(t)
+
+	var headers []string
+
+	for i := 0; i < structype.NumField(); i++ {
+
+		headers = append(headers, structype.Field(i).Name)
+	}
+
+	return headers
+}

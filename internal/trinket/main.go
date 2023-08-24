@@ -10,14 +10,14 @@ import (
 	"github.com/gocolly/colly"
 )
 
-type trinket struct {
+type Trinket struct {
 	name, id_game, quote, effect, unlock, image string
 	extension                                   utils.Extension
 }
 
 func GetTrinektsCsv(fName, path string) {
 
-	var t trinket
+	var t Trinket
 
 	fullRoute := path + fName
 
@@ -51,7 +51,7 @@ func GetTrinektsCsv(fName, path string) {
 
 }
 
-func (t trinket) GetHeaders() []string {
+func (t Trinket) GetHeaders() []string {
 
 	structype := reflect.TypeOf(t)
 
@@ -66,20 +66,20 @@ func (t trinket) GetHeaders() []string {
 
 }
 
-func TrinektScraping() []trinket {
+func TrinektScraping() []Trinket {
 
 	collector := colly.NewCollector()
 
 	node := "div.main-container>div.resizable-container>div.has-right-rail>main.page__main>div#content>div#mw-content-text>div.mw-parser-output>table.wikitable>tbody>tr.row-trinket"
 	url := "https://bindingofisaacrebirth.fandom.com/wiki/Trinkets"
 
-	var trinkets []trinket
+	var trinkets []Trinket
 
 	collector.OnHTML(node, func(el *colly.HTMLElement) {
 
 		link := "https://bindingofisaacrebirth.fandom.com/" + string(el.ChildAttr("td:nth-child(1)>a", "href"))
 
-		trinket := trinket{
+		trinket := Trinket{
 			name:      el.ChildAttr("td:nth-child(2)", "data-sort-value"),
 			id_game:   el.ChildText("td:nth-child(2)"),
 			quote:     el.ChildText("td:nth-child(4)"),

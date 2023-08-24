@@ -11,8 +11,8 @@ import (
 )
 
 type item struct {
-	name, id_game, quote, effect, unlock, image, quality, pool, item_quality string
-	extension                                                                utils.Extension
+	name, id_game, quote, effect, unlock, image, quality, pool, item_type string
+	extension                                                             utils.Extension
 }
 
 // var node = "div.main-container>div.resizable-container>div.has-right-rail>main.page__main>div#content>div#mw-content-text>div.mw-parser-output"
@@ -43,7 +43,7 @@ func GetItemsCsv(fName, path string) {
 			v.image,
 			v.quality,
 			v.pool,
-			v.item_quality,
+			v.item_type,
 			string(v.extension),
 		}
 
@@ -102,7 +102,7 @@ func TrinektScraping() []item {
 			pool := h.ChildText("aside>div[data-source=\"alias\"]>div>div.item-pool-list")
 
 			item.pool = pool
-			item.item_quality = h.ChildText("p:nth-child(4)>a")
+			item.item_type = h.ChildText("p>a[title=\"Items\"]")
 
 			if unlock != "" {
 				item.unlock = unlock
