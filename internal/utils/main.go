@@ -42,7 +42,7 @@ type Base struct {
 //Transformation ->
 //Trinket -> quote,
 
-func GetHeader[C any](t C) []string {
+func GetHeaders[C any](t C) []string {
 	structype := reflect.TypeOf(t)
 
 	var headers []string
@@ -54,3 +54,5 @@ func GetHeader[C any](t C) []string {
 
 	return headers
 }
+
+

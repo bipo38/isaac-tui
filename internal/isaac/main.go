@@ -2,68 +2,43 @@ package isaac
 
 import (
 	"fmt"
-
-	"github.com/gocolly/colly"
 )
 
 type Category string
+type Path string
 
 var print = fmt.Println
 
-const (
-	ITEMS           Category = "Items"
-	TRINEKTS                 = "Trinkets"
-	TRANSFORMATIONS          = "Transformations"
-	BOSSES                   = "All_Bosses_(Bosses)"
-)
-
-type Element string
+var globaLink = "https://bindingofisaacrebirth.fandom.com/wiki"
+var mainNode = "div.main-container>div.resizable-container>div.has-right-rail>main.page__main>div#content>div#mw-content-text>div.mw-parser-output"
+var TableNode = mainNode + ">table.wikitable>tbody>tr"
 
 const (
-	TABLE     Element = ">table.wikitable>tbody>tr"
-	BOSS_PAGE         = ">div.table-wide>div.table-wide-inner>table>tbody>tr>td>div>div"
-	PAGE              = ""
+	ITEMS           Category = "/Items"
+	TRINKETS                 = "/Trinkets"
+	TRANSFORMATIONS          = "/Transformations"
+	BOSSES                   = "/All_Bosses_(Bosses)"
+	CHARACTERS               = "/Characters"
+	CARDS                    = "/Cards_and_Runes"
+	PILLS                    = "/Pills"
 )
 
-func DoScraping(page Category, el Element) {
+type Section string
 
-	linkPage := "https://bindingofisaacrebirth.fandom.com/wiki/" + string(page)
+// const (
+// TABLE Section = ">table.wikitable>tbody>tr"
+// BOSS_PAGE         = ">div.table-wide>div.table-wide-inner>table"
+// PAGE = ""
+// )
 
-	node := "div.main-container>div.resizable-container>div.has-right-rail>main.page__main>div#content>div#mw-content-text>div.mw-parser-output" + string(el)
+func StartScraping(category Category) {
 
-	print(linkPage)
-	print(node)
-	// var elements []utils.Base
+	url := globaLink + string(category)
+	GetPaths(url)
+	// GetQuote(url)
+	// GetID(url, category)
+	// createTrinkets(GetPaths(url))
 
-	collector := colly.NewCollector()
+	// print(getBaseElement(url))
 
-	collector.OnHTML(node, func(h *colly.HTMLElement) {
-
-		url := h.ChildAttr("a", "href")
-
-		print(url)
-
-		// coll := colly.NewCollector()
-		// hola(&coll)
-		// element := utils.Base{
-		// 	Name:    h.ChildAttr("td:nth-child(1)", "data-sort-value"),
-		// 	Id_game: h.ChildText("td:nth-child(2)"),
-		// 	// quote:     h.ChildText("td:nth-child(4)"),
-		// 	Effect: h.ChildText("td:nth-child(5)"),
-		// 	// image:     "imagenes3",
-		// 	// quality:   h.ChildText("td:nth-child(6)"),
-		// 	Extension: utils.ParseExtension(h.ChildAttr("td:nth-child(1)>img", "title")),
-		// }
-
-		// elements = append(elements, element)
-
-	})
-
-	collector.Visit(linkPage)
-
-	// return elements
 }
-
-// func hola(**colly.Collector) {
-
-// }
