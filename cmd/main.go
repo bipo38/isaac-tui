@@ -1,12 +1,10 @@
 package main
 
-import (
-	"isaac-scrapper/internal/item"
-)
+import "isaac-scrapper/internal/isaac"
 
 func main() {
 
-	// transformation.GetTransformationCsv("transformation.csv", "isaac/transformations")
-	// trinket.GetTrinektsCsv("trinkets.csv", "isaac/trinkets/")
-	item.GetItemsCsv("items.csv", "isaac/items/")
+	isaac.CreateTransformationCsv()
+	isaac.CreateTrinketsCsv()
+
 }

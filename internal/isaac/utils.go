@@ -1,4 +1,6 @@
-package utils
+package isaac
+
+import "reflect"
 
 type Extension string
 
@@ -25,4 +27,17 @@ func ParseExtension(extension string) Extension {
 		return REBIRTH
 	}
 
+}
+
+func GetHeaders[C any](t C) []string {
+	structype := reflect.TypeOf(t)
+
+	var headers []string
+
+	for i := 0; i < structype.NumField(); i++ {
+
+		headers = append(headers, structype.Field(i).Name)
+	}
+
+	return headers
 }
