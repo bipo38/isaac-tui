@@ -1,44 +1,42 @@
 package isaac
 
-import (
-	"fmt"
-)
-
 type Category string
-type Path string
-
-var print = fmt.Println
-
-var globaLink = "https://bindingofisaacrebirth.fandom.com/wiki"
-var mainNode = "div.main-container>div.resizable-container>div.has-right-rail>main.page__main>div#content>div#mw-content-text>div.mw-parser-output"
-var TableNode = mainNode + ">table.wikitable>tbody>tr"
 
 const (
-	ITEMS           Category = "/Items"
-	TRINKETS                 = "/Trinkets"
-	TRANSFORMATIONS          = "/Transformations"
-	BOSSES                   = "/All_Bosses_(Bosses)"
-	CHARACTERS               = "/Characters"
-	CARDS                    = "/Cards_and_Runes"
-	PILLS                    = "/Pills"
+	ITEMS           Category = "/wiki/Items"
+	TRINKETS                 = "/wiki/Trinkets"
+	TRANSFORMATIONS          = "/wiki/Transformations"
+	BOSSES                   = "/wiki/All_Bosses_(Bosses)"
+	CHARACTERS               = "/wiki/Characters"
+	CARDS                    = "/wiki/Cards_and_Runes"
+	PILLS                    = "/wiki/Pills"
 )
 
-type Section string
+var globaLink = "https://bindingofisaacrebirth.fandom.com"
+var mainNode = "div.main-container>div.resizable-container>div.has-right-rail>main.page__main>div#content>div#mw-content-text>div.mw-parser-output"
+var TableNode = mainNode + ">table.wikitable>tbody>tr"
+var defaultRoute = "isaac/"
 
-// const (
-// TABLE Section = ">table.wikitable>tbody>tr"
-// BOSS_PAGE         = ">div.table-wide>div.table-wide-inner>table"
-// PAGE = ""
-// )
+// func GetPaths(category string) []string {
 
-func StartScraping(category Category) {
+// 	var paths []string
 
-	url := globaLink + string(category)
-	GetPaths(url)
-	// GetQuote(url)
-	// GetID(url, category)
-	// createTrinkets(GetPaths(url))
+// 	collector := colly.NewCollector()
 
-	// print(getBaseElement(url))
+// 	collector.OnHTML(TableNode, func(h *colly.HTMLElement) {
+// 		path := h.ChildAttr("a", "href")
 
-}
+// 		if path == "" {
+// 			return
+// 		}
+
+// 		print(path)
+
+// 		paths = append(paths, globaLink+path)
+
+// 	})
+
+// 	collector.Visit(globaLink + category)
+
+// 	return paths
+// }

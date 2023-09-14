@@ -1,4 +1,4 @@
-package utils
+package isaac
 
 import "reflect"
 
@@ -29,19 +29,6 @@ func ParseExtension(extension string) Extension {
 
 }
 
-type Base struct {
-	Name      string    `base:"name"`
-	Id_game   string    `base:"id_game"`
-	Effect    string    `base:"effect"`
-	Unlock    string    `base:"unlock"`
-	Extension Extension `base:"extension"`
-	Image     string    `base:"image"`
-}
-
-//Item ->
-//Transformation ->
-//Trinket -> quote,
-
 func GetHeaders[C any](t C) []string {
 	structype := reflect.TypeOf(t)
 
@@ -54,5 +41,3 @@ func GetHeaders[C any](t C) []string {
 
 	return headers
 }
-
-
