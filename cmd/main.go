@@ -1,13 +1,12 @@
 package main
 
-import (
-	"fmt"
-	"isaac-scrapper/internal/isaac2"
-)
+import "isaac-scrapper/internal/isaac2"
 
 func main() {
 
-	fmt.Println(isaac2.GetTrinkets())
+	isaac2.GetTrinkets()
+	// paths := GetPaths("https://bindingofisaacrebirth.fandom.com/wiki/Trinkets")
+	// println(paths)
 
 	// transformation.GetTransformationCsv("transformation.csv", "isaac/transformations")
 	// trinket.GetTrinektsCsv("trinkets.csv", "isaac/trinkets/")

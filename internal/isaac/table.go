@@ -6,14 +6,14 @@ type Base struct {
 	name, description, path string
 }
 
-func GetPaths(url string) []Path {
+func getPaths(url string) []Path {
 
 	var paths []Path
 
 	collector := colly.NewCollector()
 
 	collector.OnHTML(TableNode, func(h *colly.HTMLElement) {
-		path := h.ChildAttr("a", "title")
+		path := h.ChildAttr("a", "href")
 
 		if path == "" {
 			return

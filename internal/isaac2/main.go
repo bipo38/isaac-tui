@@ -1,48 +1,49 @@
 package isaac2
 
 import (
-	"sync"
-
 	"github.com/gocolly/colly"
 )
 
-type Base interface {
-	setName(h *colly.HTMLElement)
-}
+// type Base interface {
+// 	setName(h *colly.HTMLElement) string
+// }
 
 type Category string
 
 const (
-	ITEMS           Category = "/Items"
-	TRINKETS                 = "/Trinkets"
-	TRANSFORMATIONS          = "/Transformations"
-	BOSSES                   = "/All_Bosses_(Bosses)"
-	CHARACTERS               = "/Characters"
-	CARDS                    = "/Cards_and_Runes"
-	PILLS                    = "/Pills"
+	ITEMS           Category = "/wiki/Items"
+	TRINKETS                 = "/wiki/Trinkets"
+	TRANSFORMATIONS          = "/wiki/Transformations"
+	BOSSES                   = "/wiki/All_Bosses_(Bosses)"
+	CHARACTERS               = "/wiki/Characters"
+	CARDS                    = "/wiki/Cards_and_Runes"
+	PILLS                    = "/wiki/Pills"
 )
 
-var globaLink = "https://bindingofisaacrebirth.fandom.com/wiki"
+var globaLink = "https://bindingofisaacrebirth.fandom.com"
 var mainNode = "div.main-container>div.resizable-container>div.has-right-rail>main.page__main>div#content>div#mw-content-text>div.mw-parser-output"
 var TableNode = mainNode + ">table.wikitable>tbody>tr"
 
-var lock = &sync.Mutex{}
+// func GetPaths(category string) []string {
 
-type scrapper struct {
-	collector *colly.Collector
-}
+// 	var paths []string
 
-var scrapperInstance *scrapper
+// 	collector := colly.NewCollector()
 
-func getScrapperInstance() *scrapper {
-	if scrapperInstance == nil {
-		lock.Lock()
-		defer lock.Unlock()
+// 	collector.OnHTML(TableNode, func(h *colly.HTMLElement) {
+// 		path := h.ChildAttr("a", "href")
 
-		if scrapperInstance == nil {
-			scrapperInstance = &scrapper{}
-		}
-	}
+// 		if path == "" {
+// 			return
+// 		}
 
-	return scrapperInstance
-}
+// 		print(path)
+
+// 		paths = append(paths, globaLink+path)
+
+// 	})
+
+// 	collector.Visit(globaLink + category)
+
+// 	return paths
+// }

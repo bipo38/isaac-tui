@@ -7,46 +7,60 @@ import (
 	"github.com/gocolly/colly"
 )
 
+type Table struct {
+	name, quote, effect, id_game string
+}
+
 type Trinket struct {
-	name, id_game, quote, effect, unlock, image string
-	extension                                   utils.Extension
+	unlock    string
+	extension utils.Extension
+	Table
 }
 
 func GetTrinkets() []Trinket {
 
-	collector := getScrapperInstance().collector
+	collector := colly.NewCollector()
 
-	// var trinkets []Trinket
+	var trinkets []Trinket
 
 	collector.OnHTML(mainNode, func(h *colly.HTMLElement) {
 
-		// trinket := newTrinket()
+		table := Table{
+			name:    h.ChildText("table.wikitable>tbody>tr>td>a"),
+			id_game: h.ChildText("td:nth-child(2)"),
+			quote:   h.ChildText("td:nth-child(4)"),
+			effect:  h.ChildText("td:nth-child(5)"),
+		}
 
-		h.ForEach(mainNode, func(_ int, el *colly.HTMLElement) {
-			fmt.Println(el.ChildText("div[data-source=\"unlocked by\"]>div"))
-
-			h.Request.Visit("https://bindingofisaacrebirth.fandom.com/wiki/Butt_Penny")
-		})
-
-		// trinkets = append(trinkets, newTrinket(h))
+		trinkets = append(trinkets, newTrinket(table, h.ChildAttr("a", "href")))
+		fmt.Println(table)
 	})
 
-	collector.Visit(globaLink + "Trinkets")
+	collector.Visit(globaLink + string(TRINKETS))
 
 	return trinkets
 
 }
 
-func newTrinket(h *colly.HTMLElement) Trinket {
+func newTrinket(table Table, path string) Trinket {
 
-	trinket := Trinket{}
-	trinket.setName(h)
+	collector := colly.NewCollector()
+
+	trinket := Trinket{
+		Table: table,
+	}
+
+	collector.OnHTML(mainNode, func(h *colly.HTMLElement) {
+		
+	})
+
+	collector.Visit(globaLink + path)
 
 	return trinket
 }
 
-func (trinket *Trinket) setName(h *colly.HTMLElement) {
-	trinket.name = "hola"
+func (trinket *Trinket) setName(h *colly.HTMLElement) string {
+	return "H"
 }
 
 // func getPath(h *colly.HTMLElement) string {
