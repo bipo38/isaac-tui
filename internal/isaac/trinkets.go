@@ -80,8 +80,8 @@ func newTrinket(path string, el *colly.HTMLElement) Trinket {
 	collector := colly.NewCollector()
 
 	collector.OnHTML(mainNode, func(h *colly.HTMLElement) {
-		setTrinket(h, &trinket)
-		setExtension(h, &trinket)
+		setTrinketUnlock(h, &trinket)
+		setTrinketExtension(h, &trinket)
 
 	})
 
@@ -91,7 +91,7 @@ func newTrinket(path string, el *colly.HTMLElement) Trinket {
 
 }
 
-func setTrinket(h *colly.HTMLElement, trinket *Trinket) {
+func setTrinketUnlock(h *colly.HTMLElement, trinket *Trinket) {
 	unlock := h.ChildText("div[data-source=\"unlocked by\"]>div")
 
 	if unlock != "" {
@@ -102,7 +102,7 @@ func setTrinket(h *colly.HTMLElement, trinket *Trinket) {
 
 }
 
-func setExtension(h *colly.HTMLElement, trinket *Trinket) {
+func setTrinketExtension(h *colly.HTMLElement, trinket *Trinket) {
 	extension := h.ChildAttr("div#context-page.context-box>img", "title")
 
 	trinket.extension = ParseExtension(extension)

@@ -55,7 +55,7 @@ func getTransformations() []Transformation {
 
 	collector.OnHTML(TableNode, func(h *colly.HTMLElement) {
 
-		transformation := newTransformation(h.ChildAttr("a", "href"), h)
+		transformation := newTransformation(h)
 
 		transformations = append(transformations, transformation)
 	})
@@ -66,7 +66,7 @@ func getTransformations() []Transformation {
 
 }
 
-func newTransformation(path string, el *colly.HTMLElement) Transformation {
+func newTransformation(el *colly.HTMLElement) Transformation {
 	transformation := Transformation{
 		name:      el.ChildAttr("td:nth-child(2)", "data-sort-value"),
 		id_game:   el.ChildAttr("td:nth-child(1)", "data-sort-value"),
