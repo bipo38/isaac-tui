@@ -1,0 +1,120 @@
+name,id_game,quote,effect,unlock,image,kind,extension
+0 - The Fool,5.300.1,Where journey begins,Teleports Isaac back to the starting room of the floor that he is currently on.,unlocked,image,card,rebirth
+I - The Magician,5.300.2,May you never miss your goal,Grants homing tears for the current room. Grants homing tears and +3 Range for the current room.,unlocked,image,card,rebirth
+II - The High Priestess,5.300.3,Mother is watching you,"Mom's dismembered leg is called down to deal 300 damage to anything it stomps. It will always stomp on the enemy with the most health. If used in an empty room or during the fight with Mom, it will stomp Isaac instead.",unlocked,image,card,rebirth
+III - The Empress,5.300.4,May your rage bring power,"Triggers the Whore of Babylon effect (+1.5 Damage, +0.3 Speed) for the current room, regardless of Isaac's health total.",unlocked,image,card,rebirth
+IV - The Emperor,5.300.5,Challenge me!,Teleports Isaac into the Boss Room of a floor.,unlocked,image,card,rebirth
+V - The Hierophant,5.300.6,Two prayers for the lost,Drops 2 full  Soul Hearts on the ground.,unlocked,image,card,rebirth
+VI - The Lovers,5.300.7,May you prosper and be in good health,Drops 2 full  Red Hearts on the ground.,unlocked,image,card,rebirth
+VII - The Chariot,5.300.8,May nothing stand before you,"Gives invulnerability and +0.28 speed for six seconds, removing the ability to shoot tears and replacing it with the ability to deal contact damage to enemies (same effect as My Little Unicorn).",unlocked,image,card,rebirth
+VIII - Justice,5.300.9,May your future become balanced,"Drops a random type of Heart,  Key,  Bomb, and Coin pickup on the ground.",unlocked,image,card,rebirth
+IX - The Hermit,5.300.10,May you see what life has to offer,Teleports Isaac to the Shop.,unlocked,image,card,rebirth
+X - Wheel of Fortune,5.300.11,Spin the wheel of destiny,Creates a Slot Machine or Fortune Telling Machine near Isaac.,unlocked,image,card,rebirth
+XI - Strength,5.300.12,May your power bring rage,Grants the effects of Magic Mushroom (minus the health restoration) for one room. The added Red Heart container is not removed if doing so would kill Isaac.,unlocked,image,card,rebirth
+XII - The Hanged Man,5.300.13,May you find enlightenment,"Removes Isaac's body, allowing him to fly around for the duration of the room (same effect as Transcendence).",unlocked,image,card,rebirth
+XIII - Death,5.300.14,Lay waste to all that oppose you,Deals 40 damage to all enemies in the room (same effect as The Necronomicon).,unlocked,image,card,rebirth
+XIV - Temperance,5.300.15,May you be pure in heart,Creates a Blood Donation Machine near Isaac.  Spawns a Devil Beggar instead in Greed mode.,unlocked,image,card,rebirth
+XV - The Devil,5.300.16,Revel in the power of darkness,Grants Isaac a temporary +2 increase to Damage for the current room (same effect as The Book of Belial).,unlocked,image,card,rebirth
+XVI - The Tower,5.300.17,Destruction brings creation,Drops 6  Troll Bombs randomly around the room (same effect as the Anarchist Cookbook).,unlocked,image,card,rebirth
+XVII - The Stars,5.300.18,May you find what you desire,"Teleports Isaac to the Treasure Room. Randomly chooses a Treasure Room if there is an active Curse of the Labyrinth.  If there is a Planetarium, teleports Isaac there instead.",unlocked,image,card,rebirth
+XVIII - The Moon,5.300.19,May you find all you have lost,"Teleports Isaac to the Secret Room. This card will open one random wall once inside the Secret Room, so Isaac can leave even if he doesn't have any  Bombs available.",unlocked,image,card,rebirth
+XIX - The Sun,5.300.20,May the light heal and enlighten you,"Restores Isaac to full health, deals 100 damage to all enemies in the room, and reveals the map for the current floor, except for the Super Secret Room  and Ultra Secret Room.  Removes Curse of  Darkness for the current floor.",unlocked,image,card,rebirth
+XX - Judgement,5.300.21,Judge lest ye be judged,"Spawns a Beggar or, more rarely, a Devil Beggar,  Battery Bum,  Rotten Beggar,  Key Master,  or  Bomb Bum near Isaac.",unlocked,image,card,rebirth
+XXI - The World,5.300.22,Open your eyes and see,"Reveals the entire floor, except for the Super Secret Room  and Ultra Secret Room.",unlocked,image,card,rebirth
+0 - The Fool?,5.300.56,Defeat Ultra Greedier as  Tainted Lost,Let go and move on,unlocked,image,card,rebirth
+I - The Magician?,5.300.57,Defeat Ultra Greedier as  Tainted Judas,May no harm come to you,Defeat Ultra Greedier as  Tainted Judas,image,card,rebirth
+II - The High Priestess?,5.300.58,Defeat Ultra Greedier as  Tainted Lilith,Run,Defeat Ultra Greedier as  Tainted Lilith,image,card,rebirth
+III - The Empress?,5.300.59,Defeat Ultra Greedier as  Tainted Eve,May your love bring protection,Defeat Ultra Greedier as  Tainted Eve,image,card,rebirth
+IV - The Emperor?,5.300.60,Defeat Ultra Greedier as  Tainted ???,May you find a worthy opponent,Defeat Ultra Greedier as  Tainted ???,image,card,rebirth
+V - The Hierophant?,5.300.61,Defeat Ultra Greedier as  Tainted Bethany,Two prayers for the forgotten,Defeat Ultra Greedier as  Tainted Bethany,image,card,rebirth
+VI - The Lovers?,5.300.62,Defeat Ultra Greedier as  Tainted Magdalene,May your heart shatter to pieces,Defeat Ultra Greedier as  Tainted Magdalene,image,card,rebirth
+VII - The Chariot?,5.300.63,Complete Hot Potato (challenge #42),May nothing walk past you,Complete Hot Potato (challenge #42),image,card,rebirth
+VIII - Justice?,5.300.64,Complete Cantripped (challenge #43),May your sins come back to torment you,Complete Cantripped (challenge #43),image,card,rebirth
+IX - The Hermit?,5.300.65,Complete Red Redemption (challenge #44),May you see the value of all things in life,Complete Red Redemption (challenge #44),image,card,rebirth
+X - Wheel of Fortune?,5.300.66,Defeat Ultra Greedier as  Tainted Cain,Throw the dice of fate,Defeat Ultra Greedier as  Tainted Cain,image,card,rebirth
+XI - Strength?,5.300.67,Defeat Ultra Greedier as  Tainted Samson,May you break their resolve,Defeat Ultra Greedier as  Tainted Samson,image,card,rebirth
+XII - The Hanged Man?,5.300.68,Defeat Ultra Greedier as  Tainted Keeper,May your greed know no bounds,Defeat Ultra Greedier as  Tainted Keeper,image,card,rebirth
+XIII - Death?,5.300.69,Defeat Ultra Greedier as  Tainted Forgotten,May life spring forth from the fallen,Defeat Ultra Greedier as  Tainted Forgotten,image,card,rebirth
+XIV - Temperance?,5.300.70,Complete DELETE THIS (challenge #45),May your hunger be satiated,Complete DELETE THIS (challenge #45),image,card,rebirth
+XV - The Devil?,5.300.71,Defeat Ultra Greedier as  Tainted Azazel,Bask in the light of your mercy,Defeat Ultra Greedier as  Tainted Azazel,image,card,rebirth
+XVI - The Tower?,5.300.72,Defeat Ultra Greedier as  Tainted Apollyon,Creation brings destruction,Defeat Ultra Greedier as  Tainted Apollyon,image,card,rebirth
+XVII - The Stars?,5.300.73,Defeat Ultra Greedier as  Tainted Isaac,May your loss bring fortune,Defeat Ultra Greedier as  Tainted Isaac,image,card,rebirth
+XVIII - The Moon?,5.300.74,Defeat Ultra Greedier as  Tainted Jacob,May you remember lost memories,Defeat Ultra Greedier as  Tainted Jacob,image,card,rebirth
+XIX - The Sun?,5.300.75,Defeat Ultra Greedier as  Tainted Jacob,May the darkness swallow all around you,Defeat Ultra Greedier as  Tainted Jacob,image,card,rebirth
+XX - Judgement?,5.300.76,Defeat Ultra Greedier as  Tainted Lazarus,May you redeem those found wanting,Defeat Ultra Greedier as  Tainted Lazarus,image,card,rebirth
+XXI - The World?,5.300.77,Defeat Ultra Greedier as  Tainted Eden,Step into the abyss,Defeat Ultra Greedier as  Tainted Eden,image,card,rebirth
+2 of Clubs,5.300.23,Always available,Item multiplier,Always available,image,card,rebirth
+2 of Diamonds,5.300.24,Always available,Item multiplier,Always available,image,card,rebirth
+2 of Spades,5.300.25,Always available,Item multiplier,Always available,image,card,rebirth
+2 of Hearts,5.300.26,Always available,Item multiplier,Always available,image,card,rebirth
+Ace of Clubs,5.300.27,Get a 3-win streak,Convert all,Get a 3-win streak,image,card,afterbirthplus
+Ace of Diamonds,5.300.28,Defeat The Lamb in under 20 minutes,Convert all,Defeat The Lamb in under 20 minutes,image,card,afterbirthplus
+Ace of Spades,5.300.29,"Defeat The Lamb without taking Hearts, Coins, or Bombs through the entire run",Convert all,"Defeat The Lamb without taking Hearts, Coins, or Bombs through the entire run",image,card,afterbirthplus
+Ace of Hearts,5.300.30,"Complete a Chapter (floors I and II) after Basement, start-to-finish, with only half a Heart total (can use  The Lost)",Convert all,"Complete a Chapter (floors I and II) after Basement, start-to-finish, with only half a Heart total (can use  The Lost)",image,card,afterbirthplus
+Joker,5.300.31,Always available,???,Always available,image,card,rebirth
+Suicide King,5.300.46,Complete Suicide King (challenge #7),A true ending?,Complete Suicide King (challenge #7),image,card,rebirth
+Queen of Hearts,5.300.79,Defeat Mega Satan as  Tainted Magdalene,<3,Defeat Mega Satan as  Tainted Magdalene,image,card,repentance
+Chaos Card,5.300.42,Complete Demo Man (challenge #9),???,Complete Demo Man (challenge #9),image,card,rebirth
+Huge Growth,5.300.52,"Increase in size 5 times in a single run via Magic Mushroom, ""One makes you larger"" pills,  XI - Strength, etc.",Become immense!,"Increase in size 5 times in a single run via Magic Mushroom, ""One makes you larger"" pills,  XI - Strength, etc.",image,card,afterbirthplus
+Ancient Recall,5.300.53,Use Cards and Runes 20 times,Draw 3 cards,Use Cards and Runes 20 times,image,card,afterbirthplus
+Era Walk,5.300.54,Add both the Broken Watch and the Stop Watch to your collection,Savor the moment,Add both the Broken Watch and the Stop Watch to your collection,image,card,afterbirthplus
+Credit Card,5.300.43,Complete Cursed! (challenge #10),Charge it!,Complete Cursed! (challenge #10),image,card,rebirth
+Rules Card,5.300.44,Complete Glass Cannon (challenge #11),???,Complete Glass Cannon (challenge #11),image,card,rebirth
+? Card,5.300.48,Always available,Double active,Always available,image,card,afterbirth
+A Card Against Humanity,5.300.45,Complete When Life Gives You Lemons (challenge #12),Something stinks...,Complete When Life Gives You Lemons (challenge #12),image,card,rebirth
+Get out of Jail Free Card,5.300.47,Complete SPEED! (challenge #22),Open Sesame,Complete SPEED! (challenge #22),image,card,rebirth
+Holy Card,5.300.51,Defeat Delirium as  The Lost,You feel protected,Defeat Delirium as  The Lost,image,card,rebirth
+Wild Card,5.300.80,Defeat Mega Satan as  Tainted Eden,Again,Defeat Mega Satan as  Tainted Eden,image,card,rebirth
+Rune of Hagalaz,5.300.32,Complete Pitch Black (challenge #1),Destruction,Complete Pitch Black (challenge #1),image,card,rebirth
+Rune of Jera,5.300.33,Complete High Brow (challenge #2),Abundance,Complete High Brow (challenge #2),image,card,rebirth
+Rune of Ehwaz,5.300.34,Complete Head Trauma (challenge #3),Passage,Complete Head Trauma (challenge #3),image,card,rebirth
+Rune of Dagaz,5.300.35,Complete Darkness Falls (challenge #4),Purity,Complete Darkness Falls (challenge #4),image,card,rebirth
+Rune of Ansuz,5.300.36,Complete The Tank (challenge #5),Vision,Complete The Tank (challenge #5),image,card,rebirth
+Rune of Perthro,5.300.37,Complete Solar System (challenge #6),Change,Complete Solar System (challenge #6),image,card,rebirth
+Rune of Berkano,5.300.38,Complete Purist (challenge #20),Companionship,Complete Purist (challenge #20),image,card,rebirth
+Rune of Algiz,5.300.39,Complete Cat Got Your Tongue (challenge #8),Resistance,Complete Cat Got Your Tongue (challenge #8),image,card,rebirth
+Blank Rune,5.300.40,Complete Onan's Streak (challenge #29) Complete The Guardian (challenge #30),???,Complete Onan's Streak (challenge #29) Complete The Guardian (challenge #30),image,card,afterbirth
+Black Rune,5.300.41,Defeat Ultra Greedier as  Apollyon,Void,Defeat Ultra Greedier as  Apollyon,image,card,afterbirthplus
+Rune Shard,5.300.55,Always available,It still glows faintly,Always available,image,card,repentance
+Soul of Isaac,5.300.81,Defeat Hush and Boss Rush as  Tainted Isaac,Reroll... or not,Defeat Hush and Boss Rush as  Tainted Isaac,image,card,rebirth
+Soul of Magdalene,5.300.82,Defeat Hush and Boss Rush as  Tainted Magdalene,Give me your love!,Defeat Hush and Boss Rush as  Tainted Magdalene,image,card,rebirth
+Soul of Cain,5.300.83,Defeat Hush and Boss Rush as  Tainted Cain,Opens the unopenable,Defeat Hush and Boss Rush as  Tainted Cain,image,card,rebirth
+Soul of Judas,5.300.84,Defeat Hush and Boss Rush as  Tainted Judas,Right behind you,Defeat Hush and Boss Rush as  Tainted Judas,image,card,rebirth
+Soul of ???,5.300.85,Defeat Hush and Boss Rush as  Tainted ???,Chemical warfare,Defeat Hush and Boss Rush as  Tainted ???,image,card,rebirth
+Soul of Eve,5.300.86,Defeat Hush and Boss Rush as  Tainted Eve,Your very own murder,Defeat Hush and Boss Rush as  Tainted Eve,image,card,rebirth
+Soul of Samson,5.300.87,Defeat Hush and Boss Rush as  Tainted Samson,Slay a thousand,Defeat Hush and Boss Rush as  Tainted Samson,image,card,rebirth
+Soul of Azazel,5.300.88,Defeat Hush and Boss Rush as  Tainted Azazel,Demon rage!,Defeat Hush and Boss Rush as  Tainted Azazel,image,card,rebirth
+Soul of Lazarus,5.300.89,Defeat Hush and Boss Rush as  Tainted Lazarus,Life after death,Defeat Hush and Boss Rush as  Tainted Lazarus,image,card,rebirth
+Soul of Eden,5.300.90,Defeat Hush and Boss Rush as  Tainted Eden,Embrace chaos,Defeat Hush and Boss Rush as  Tainted Eden,image,card,rebirth
+Soul of the Lost,5.300.91,Defeat Hush and Boss Rush as  Tainted Lost,Leave your body behind,Defeat Hush and Boss Rush as  Tainted Lost,image,card,rebirth
+Soul of Lilith,5.300.92,Defeat Hush and Boss Rush as  Tainted Lilith,Motherhood,Defeat Hush and Boss Rush as  Tainted Lilith,image,card,rebirth
+Soul of the Keeper,5.300.93,Defeat Hush and Boss Rush as  Tainted Keeper,$$$,Defeat Hush and Boss Rush as  Tainted Keeper,image,card,rebirth
+Soul of Apollyon,5.300.94,Defeat Hush and Boss Rush as  Tainted Apollyon,Bringer of calamity,Defeat Hush and Boss Rush as  Tainted Apollyon,image,card,rebirth
+Soul of the Forgotten,5.300.95,Defeat Hush and Boss Rush as  Tainted Forgotten,Skeletal protector,Defeat Hush and Boss Rush as  Tainted Forgotten,image,card,rebirth
+Soul of Bethany,5.300.96,Defeat Hush and Boss Rush as  Tainted Bethany,Friends from beyond,Defeat Hush and Boss Rush as  Tainted Bethany,image,card,rebirth
+Soul of Jacob and Esau,5.300.97,Defeat Hush and Boss Rush as  Tainted Jacob,Bound by blood,Defeat Hush and Boss Rush as  Tainted Jacob,image,card,rebirth
+Dice Shard,5.300.49,Always available,D6 + D20,Always available,image,other,afterbirth
+Emergency Contact,5.300.50,Always available,Help from above,Always available,image,card,afterbirth
+Cracked Key,5.300.78,Open Mom's Chest in Home,???,Open Mom's Chest in Home,image,card,repentance
+0,https://bindingofisaacrebirth.fandom.com/wiki/File:FoolTarotCardVoiceover.wav,,,,image,card,rebirth
+1,https://bindingofisaacrebirth.fandom.com/wiki/File:MagicianTarotCardVoiceover.wav,,,,image,card,rebirth
+2,https://bindingofisaacrebirth.fandom.com/wiki/File:HighPriestessTarotCardVoiceover.wav,,,,image,card,rebirth
+3,https://bindingofisaacrebirth.fandom.com/wiki/File:EmpressTarotCardVoiceover.wav,,,,image,card,rebirth
+4,https://bindingofisaacrebirth.fandom.com/wiki/File:EmperorTarotCardVoiceover.wav,,,,image,card,rebirth
+5,https://bindingofisaacrebirth.fandom.com/wiki/File:HierophantTarotCardVoiceover.wav,,,,image,card,rebirth
+6,https://bindingofisaacrebirth.fandom.com/wiki/File:LoversTarotCardVoiceover.wav,,,,image,card,rebirth
+7,https://bindingofisaacrebirth.fandom.com/wiki/File:ChariotTarotCardVoiceover.wav,,,,image,card,rebirth
+8,https://bindingofisaacrebirth.fandom.com/wiki/File:JusticeTarotCardVoiceover.wav,,,,image,card,rebirth
+9,https://bindingofisaacrebirth.fandom.com/wiki/File:HermitTarotCardVoiceover.wav,,,,image,card,rebirth
+10,https://bindingofisaacrebirth.fandom.com/wiki/File:WheelOfFortuneTarotCardVoiceover.wav,,,,image,card,rebirth
+11,https://bindingofisaacrebirth.fandom.com/wiki/File:StrengthTarotCardVoiceover.wav,,,,image,card,rebirth
+12,https://bindingofisaacrebirth.fandom.com/wiki/File:HangedManTarotCardVoiceover.wav,,,,image,card,rebirth
+13,https://bindingofisaacrebirth.fandom.com/wiki/File:DeathTarotCardVoiceover.wav,,,,image,card,rebirth
+14,https://bindingofisaacrebirth.fandom.com/wiki/File:TemperanceTarotCardVoiceover.wav,,,,image,card,rebirth
+15,https://bindingofisaacrebirth.fandom.com/wiki/File:DevilTarotCardVoiceover.wav,,,,image,card,rebirth
+16,https://bindingofisaacrebirth.fandom.com/wiki/File:TowerTarotCardVoiceover.wav,,,,image,card,rebirth
+17,https://bindingofisaacrebirth.fandom.com/wiki/File:StarsTarotCardVoiceover.wav,,,,image,card,rebirth
+18,https://bindingofisaacrebirth.fandom.com/wiki/File:MoonTarotCardVoiceover.wav,,,,image,card,rebirth
+19,https://bindingofisaacrebirth.fandom.com/wiki/File:SunTarotCardVoiceover.wav,,,,image,card,rebirth
+20,https://bindingofisaacrebirth.fandom.com/wiki/File:JudgementTarotCardVoiceover.wav,,,,image,card,rebirth
+21,https://bindingofisaacrebirth.fandom.com/wiki/File:WorldTarotCardVoiceover.wav,,,,image,card,rebirth
