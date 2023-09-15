@@ -6,6 +6,7 @@ func main() {
 
 	// isaac.CreateTransformationCsv()
 	// isaac.CreateTrinketsCsv()
-	isaac.CreateItemsCsv()
+	// isaac.CreateItemsCsv()
+	isaac.CreateCharactersCsv()
 
 }
