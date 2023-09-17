@@ -1,7 +1,6 @@
 package isaac
 
 import (
-	"encoding/csv"
 	"isaac-scrapper/internal/system"
 
 	"github.com/gocolly/colly"
@@ -15,17 +14,8 @@ type Character struct {
 func CreateCharactersCsv() {
 	var t Character
 
-	fName := "characters.csv"
-	route := defaultRoute + "characters/"
-	fullRoute := route + fName
-
+	writer, file := system.CreateCsv(t, "characters", "characters.csv")
 	characters := scrapingCharacters()
-	headers := GetHeaders(t)
-	system.CreateDirs(route)
-	file := system.CreateFile(fullRoute)
-
-	writer := csv.NewWriter(file)
-	writer.Write(headers)
 
 	for _, v := range characters {
 

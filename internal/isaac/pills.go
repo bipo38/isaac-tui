@@ -1,7 +1,6 @@
 package isaac
 
 import (
-	"encoding/csv"
 	"isaac-scrapper/internal/system"
 	"strings"
 
@@ -17,17 +16,8 @@ func CreatePillsCsv() {
 
 	var t Pill
 
-	fName := "pills.csv"
-	route := defaultRoute + "pills/"
-	fullRoute := route + fName
-
+	writer, file := system.CreateCsv(t, "pills", "pills.csv")
 	pills := scrapingPills()
-	headers := GetHeaders(t)
-	system.CreateDirs(route)
-	file := system.CreateFile(fullRoute)
-
-	writer := csv.NewWriter(file)
-	writer.Write(headers)
 
 	for _, v := range pills {
 

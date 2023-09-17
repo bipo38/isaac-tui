@@ -1,7 +1,6 @@
 package isaac
 
 import (
-	"encoding/csv"
 	"isaac-scrapper/internal/system"
 
 	"github.com/gocolly/colly"
@@ -16,17 +15,9 @@ func CreateItemsCsv() {
 
 	var t Item
 
-	fName := "items.csv"
-	route := defaultRoute + "items/"
-	fullRoute := route + fName
+	writer, file := system.CreateCsv(t, "items", "items.csv")
 
 	items := getItems()
-	headers := GetHeaders(t)
-	system.CreateDirs(route)
-	file := system.CreateFile(fullRoute)
-
-	writer := csv.NewWriter(file)
-	writer.Write(headers)
 
 	for _, v := range items {
 
