@@ -60,7 +60,7 @@ func getTransformations() []Transformation {
 		transformations = append(transformations, transformation)
 	})
 
-	collector.Visit(globaLink + string(TRANSFORMATIONS))
+	collector.Visit(globaLink + TRANSFORMATIONS)
 
 	return transformations
 

@@ -62,7 +62,7 @@ func getTrinkets() []Trinket {
 		trinkets = append(trinkets, trinket)
 	})
 
-	collector.Visit(globaLink + string(TRINKETS))
+	collector.Visit(globaLink + TRINKETS)
 
 	return trinkets
 

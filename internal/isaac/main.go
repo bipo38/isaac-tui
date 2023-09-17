@@ -1,15 +1,13 @@
 package isaac
 
-type Category string
-
 const (
-	ITEMS           Category = "/wiki/Items"
-	TRINKETS                 = "/wiki/Trinkets"
-	TRANSFORMATIONS          = "/wiki/Transformations"
-	BOSSES                   = "/wiki/All_Bosses_(Bosses)"
-	CHARACTERS               = "/wiki/Characters"
-	CARDS                    = "/wiki/Cards_and_Runes"
-	PILLS                    = "/wiki/Pills"
+	ITEMS           = "/wiki/Items"
+	TRINKETS        = "/wiki/Trinkets"
+	TRANSFORMATIONS = "/wiki/Transformations"
+	BOSSES          = "/wiki/All_Bosses_(Bosses)"
+	CHARACTERS      = "/wiki/Characters"
+	CARDS           = "/wiki/Cards_and_Runes"
+	PILLS           = "/wiki/Pills"
 )
 
 var globaLink = "https://bindingofisaacrebirth.fandom.com"

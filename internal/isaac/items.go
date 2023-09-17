@@ -68,7 +68,7 @@ func getItems() []Item {
 		items = append(items, item)
 	})
 
-	collector.Visit(globaLink + string(ITEMS))
+	collector.Visit(globaLink + ITEMS)
 
 	return items
 
