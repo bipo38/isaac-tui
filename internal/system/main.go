@@ -31,8 +31,9 @@ func createFile(path string) *os.File {
 	return file
 }
 
-func getHeaders[C any](t C) []string {
-	structype := reflect.TypeOf(t)
+func getHeaders(element interface{}) []string {
+
+	structype := reflect.TypeOf(element)
 
 	var headers []string
 
@@ -44,9 +45,10 @@ func getHeaders[C any](t C) []string {
 	return headers
 }
 
-func CreateCsv[C any](category C, fPath, fName string) (*csv.Writer, *os.File) {
-	defaultRoute := "isaac/"
+func CreateCsv(category interface{}, fPath, fName string) (*csv.Writer, *os.File) {
 	headers := getHeaders(category)
+
+	defaultRoute := "isaac/"
 	route := fmt.Sprintf("%s%s/", defaultRoute, fPath)
 	fPath = fmt.Sprintf("%s/%s", route, fName)
 
