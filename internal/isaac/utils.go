@@ -1,6 +1,9 @@
 package isaac
 
-import "reflect"
+import (
+	"reflect"
+	"strings"
+)
 
 type Extension string
 
@@ -13,14 +16,17 @@ const (
 
 func ParseExtension(extension string) Extension {
 
-	switch extension {
-	case "Added in Afterbirth":
+	switch {
+	case strings.Contains("", extension):
+		return REBIRTH
+
+	case strings.Contains("Afterbirth", extension):
 		return AFTERBIRTH
 
-	case "Added in Afterbirth †":
+	case strings.Contains("Afterbirth †", extension):
 		return AFTERBIRTHPLUS
 
-	case "Added in Repentance":
+	case strings.Contains("Repentance", extension):
 		return REPENTANCE
 
 	default:

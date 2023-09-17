@@ -9,8 +9,8 @@ import (
 )
 
 type Pill struct {
-	name, effect, class, image string
-	extension                  Extension
+	name, effect, horse_effect, class, image string
+	extension                                Extension
 }
 
 func CreatePillsCsv() {
@@ -34,6 +34,7 @@ func CreatePillsCsv() {
 		pill := []string{
 			v.name,
 			v.effect,
+			v.horse_effect,
 			v.class,
 			v.image,
 			string(v.extension),
@@ -53,9 +54,10 @@ func scrapingPills() []Pill {
 	collector := colly.NewCollector()
 
 	var pills []Pill
+	var extension string
 
 	collector.OnHTML(TableNode, func(h *colly.HTMLElement) {
-		pill := newPill(h)
+		pill := newPill(h, &extension)
 
 		if pill.name == "" || strings.Contains(pill.name, "https") {
 			return
@@ -69,13 +71,20 @@ func scrapingPills() []Pill {
 	return pills
 }
 
-func newPill(el *colly.HTMLElement) Pill {
+func newPill(el *colly.HTMLElement, extension *string) Pill {
+
+	scrapingExtension := el.ChildAttr("th>b>a", "title")
+
+	if scrapingExtension != "" {
+		*extension = scrapingExtension
+	}
 
 	return Pill{
-		name:      el.ChildText("td:nth-child(2)"),
-		class:     el.ChildText("td:nth-child(3)"),
-		effect:    el.ChildText("td:nth-child(4)"),
-		image:     el.ChildText("th>b"),
-		extension: ParseExtension(el.ChildAttr("tr>th>b>a#mw-redirect", "title")),
+		name:         el.ChildText("td:nth-child(2)"),
+		class:        el.ChildText("td:nth-child(3)"),
+		effect:       el.ChildText("td:nth-child(4)"),
+		horse_effect: el.ChildText("td:last-child"),
+		image:        "image",
+		extension:    ParseExtension(*extension),
 	}
 }
