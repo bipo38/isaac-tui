@@ -61,9 +61,15 @@ func newTransformation(el *colly.HTMLElement) Transformation {
 		name:      el.ChildAttr("td:nth-child(2)", "data-sort-value"),
 		id_game:   el.ChildAttr("td:nth-child(1)", "data-sort-value"),
 		effect:    el.ChildText("td:nth-child(4)>p"),
-		image:     "imagenes",
+		image:     el.ChildAttr("td:nth-child(3)>a>img", "data-image-key"),
 		extension: ParseExtension(el.ChildAttr("td:nth-child(2)>img", "title")),
 	}
+
+	imgUrl := el.ChildAttr("td:nth-child(3)>a>img", "data-src")
+	system.DownloadFile(imgUrl, "transformations/images", transformation.image)
+	// if err != nil {
+	// 	fmt.Println("Failed to download image")
+	// }
 
 	return transformation
 
