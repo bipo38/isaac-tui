@@ -52,8 +52,8 @@ func scrapingCharacters() []Character {
 
 func newCharacter(path string, el *colly.HTMLElement) Character {
 	character := Character{
-		image: "hola",
 		name:  el.ChildAttr("a", "title"),
+		image: el.ChildAttr("td:nth-child(3)>a>img", "data-image-key"),
 	}
 
 	collector := colly.NewCollector()
@@ -61,11 +61,24 @@ func newCharacter(path string, el *colly.HTMLElement) Character {
 	collector.OnHTML(mainNode, func(h *colly.HTMLElement) {
 		setCharacterUnlock(h, &character)
 		setCharacterExtension(h, &character)
+		setImage(h, &character)
 	})
 
 	collector.Visit(globaLink + path)
 
 	return character
+}
+
+func setImage(h *colly.HTMLElement, character *Character) {
+
+	character.image = h.ChildAttr("img[alt=\"Character image\"]", "data-image-key")
+	imgUrl := h.ChildAttr("img[alt=\"Character image\"]", "data-src")
+
+	if imgUrl == "" {
+		return
+	}
+
+	system.DownloadImage(imgUrl, "characters/images", character.image)
 }
 
 func setCharacterUnlock(h *colly.HTMLElement, character *Character) {

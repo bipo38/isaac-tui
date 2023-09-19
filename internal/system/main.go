@@ -73,8 +73,7 @@ func filesStarter(fRoute, fName string) (string, string) {
 	return route, fPath
 
 }
-
-func DownloadFile(url, fPath, fName string) error {
+func DownloadImage(url, fPath, fName string) error {
 
 	route, filePath := filesStarter(fPath, fName)
 
@@ -90,6 +89,7 @@ func DownloadFile(url, fPath, fName string) error {
 	if response.StatusCode != 200 {
 		return errors.New("Received non 200 response code")
 	}
+
 	file := createFile(filePath)
 
 	defer file.Close()

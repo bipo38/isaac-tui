@@ -66,7 +66,7 @@ func newTransformation(el *colly.HTMLElement) Transformation {
 	}
 
 	imgUrl := el.ChildAttr("td:nth-child(3)>a>img", "data-src")
-	system.DownloadFile(imgUrl, "transformations/images", transformation.image)
+	system.DownloadImage(imgUrl, "transformations/images", transformation.image)
 	// if err != nil {
 	// 	fmt.Println("Failed to download image")
 	// }
