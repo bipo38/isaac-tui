@@ -63,17 +63,22 @@ func CreateCsv(category interface{}, fPath, fName string) (*csv.Writer, *os.File
 }
 
 func filesStarter(fRoute, fName string) (string, string) {
-
-	fmt.Println(fName)
-
 	defaultRoute := "isaac"
-	route := fmt.Sprintf("%s%s/", defaultRoute, fRoute)
-	fPath := fmt.Sprintf("%s/%s", route, fName)
+
+	route := fmt.Sprintf("%s/%s/", defaultRoute, fRoute)
+	fPath := fmt.Sprintf("%s%s", route, fName)
+
+	fmt.Println(fPath)
+
 	return route, fPath
 
 }
 
 func DownloadFile(url, fPath, fName string) error {
+
+	route, filePath := filesStarter(fPath, fName)
+
+	createDirs(route)
 
 	response, err := http.Get(url)
 	if err != nil {
@@ -85,10 +90,7 @@ func DownloadFile(url, fPath, fName string) error {
 	if response.StatusCode != 200 {
 		return errors.New("Received non 200 response code")
 	}
-	file, err := os.Create(filePath)
-	if err != nil {
-		return err
-	}
+	file := createFile(filePath)
 
 	defer file.Close()
 
