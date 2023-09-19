@@ -2,8 +2,11 @@ package system
 
 import (
 	"encoding/csv"
+	"errors"
 	"fmt"
+	"io"
 	"log"
+	"net/http"
 	"os"
 	"reflect"
 )
@@ -48,10 +51,7 @@ func getHeaders(element interface{}) []string {
 func CreateCsv(category interface{}, fPath, fName string) (*csv.Writer, *os.File) {
 	headers := getHeaders(category)
 
-	defaultRoute := "isaac/"
-	route := fmt.Sprintf("%s%s/", defaultRoute, fPath)
-	fPath = fmt.Sprintf("%s/%s", route, fName)
-
+	route, fPath := filesStarter(fPath, fName)
 	createDirs(route)
 	file := createFile(fPath)
 
@@ -60,4 +60,44 @@ func CreateCsv(category interface{}, fPath, fName string) (*csv.Writer, *os.File
 
 	return writer, file
 
+}
+
+func filesStarter(fRoute, fName string) (string, string) {
+	defaultRoute := "isaac"
+
+	route := fmt.Sprintf("%s/%s/", defaultRoute, fRoute)
+	fPath := fmt.Sprintf("%s%s", route, fName)
+
+	fmt.Println(fPath)
+
+	return route, fPath
+
+}
+func DownloadImage(url, fPath, fName string) error {
+
+	route, filePath := filesStarter(fPath, fName)
+
+	createDirs(route)
+
+	response, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+
+	defer response.Body.Close()
+
+	if response.StatusCode != 200 {
+		return errors.New("Received non 200 response code")
+	}
+
+	file := createFile(filePath)
+
+	defer file.Close()
+
+	_, err = io.Copy(file, response.Body)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
