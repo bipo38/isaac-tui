@@ -1,7 +1,7 @@
 package isaac
 
 import (
-	"isaac-scrapper/internal/system"
+	"isaac-scrapper/internal/utils"
 	"strings"
 
 	"github.com/gocolly/colly"
@@ -16,7 +16,7 @@ func CreatePillsCsv() {
 
 	var t Pill
 
-	writer, file := system.CreateCsv(t, "pills", "pills.csv")
+	writer, file := utils.CreateCsv(t, "pills", "pills.csv")
 	pills := scrapingPills()
 
 	for _, v := range pills {

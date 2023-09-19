@@ -1,7 +1,7 @@
 package isaac
 
 import (
-	"isaac-scrapper/internal/system"
+	"isaac-scrapper/internal/utils"
 
 	"github.com/gocolly/colly"
 )
@@ -15,7 +15,7 @@ func CreateItemsCsv() {
 
 	var t Item
 
-	writer, file := system.CreateCsv(t, "items", "items.csv")
+	writer, file := utils.CreateCsv(t, "items", "items.csv")
 
 	items := getItems()
 

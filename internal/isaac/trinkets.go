@@ -1,7 +1,7 @@
 package isaac
 
 import (
-	"isaac-scrapper/internal/system"
+	"isaac-scrapper/internal/utils"
 
 	"github.com/gocolly/colly"
 )
@@ -15,7 +15,7 @@ func CreateTrinketsCsv() {
 
 	var t Trinket
 
-	writer, file := system.CreateCsv(t, "trinkets", "trinkets.csv")
+	writer, file := utils.CreateCsv(t, "trinkets", "trinkets.csv")
 	trinkets := getTrinkets()
 
 	for _, v := range trinkets {

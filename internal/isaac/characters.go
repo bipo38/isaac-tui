@@ -1,7 +1,7 @@
 package isaac
 
 import (
-	"isaac-scrapper/internal/system"
+	"isaac-scrapper/internal/utils"
 
 	"github.com/gocolly/colly"
 )
@@ -14,7 +14,7 @@ type Character struct {
 func CreateCharactersCsv() {
 	var t Character
 
-	writer, file := system.CreateCsv(t, "characters", "characters.csv")
+	writer, file := utils.CreateCsv(t, "characters", "characters.csv")
 	characters := scrapingCharacters()
 
 	for _, v := range characters {
@@ -78,7 +78,7 @@ func setImage(h *colly.HTMLElement, character *Character) {
 		return
 	}
 
-	system.DownloadImage(imgUrl, "characters/images", character.image)
+	utils.DownloadImage(imgUrl, "characters/images", character.image)
 }
 
 func setCharacterUnlock(h *colly.HTMLElement, character *Character) {
