@@ -2,9 +2,27 @@ package utils
 
 import (
 	"encoding/csv"
+	"log"
 	"os"
 	"reflect"
+	"strings"
 )
+
+func CreateCsv(category interface{}, fPath, fName string) (*csv.Writer, *os.File) {
+	headers := getHeaders(category)
+
+	route, fPath := routeParser(fPath, (fName + ".csv"))
+	createDirs(route)
+	file := createFile(fPath)
+
+	writer := csv.NewWriter(file)
+	if err := writer.Write(headers); err != nil {
+		log.Fatalf("Falied creating csv file: %s , Path: %s", err, fPath)
+	}
+
+	return writer, file
+
+}
 
 func getHeaders(element interface{}) []string {
 
@@ -20,16 +38,12 @@ func getHeaders(element interface{}) []string {
 	return headers
 }
 
-func CreateCsv(category interface{}, fPath, fName string) (*csv.Writer, *os.File) {
-	headers := getHeaders(category)
+func parseCsvFileName(fName *string) string {
+	extension := ".csv"
 
-	route, fPath := routeParser(fPath, fName)
-	createDirs(route)
-	file := createFile(fPath)
+	if strings.Contains(*fName, extension) {
+		return *fName
+	}
 
-	writer := csv.NewWriter(file)
-	writer.Write(headers)
-
-	return writer, file
-
+	return *fName + extension
 }
