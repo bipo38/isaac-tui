@@ -1,7 +1,9 @@
 package isaac
 
 import (
+	"fmt"
 	"isaac-scrapper/internal/utils"
+	"log"
 
 	"github.com/gocolly/colly"
 )
@@ -26,7 +28,11 @@ func CreateCharactersCsv() {
 			string(v.extension),
 		}
 
-		writer.Write(character)
+		if err := writer.Write(character); err != nil {
+			fmt.Println(fmt.Errorf("Falied writing character in csv field: %s", v.name))
+			continue
+		}
+
 	}
 
 	defer file.Close()
@@ -45,7 +51,10 @@ func scrapingCharacters() []Character {
 		characters = append(characters, character)
 	})
 
-	collector.Visit(globaLink + CHARACTERS)
+	if err := collector.Visit(globaLink + CHARACTERS); err != nil {
+
+		log.Fatalf("Failed to start scraping: %s ", err , )
+	}
 
 	return characters
 }

@@ -8,7 +8,7 @@ import (
 func createDirs(path string) {
 	exist, err := exist(path)
 	if err != nil {
-		log.Fatalf("Failed verify the existence of the folder: %s: %s\n ", path, err)
+		log.Fatalf("Failed verifying the existence of the folder: %s: %s\n ", path, err)
 	}
 
 	if exist {
