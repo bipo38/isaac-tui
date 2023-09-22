@@ -1,6 +1,8 @@
 package isaac
 
 import (
+	"fmt"
+	"isaac-scrapper/config"
 	"isaac-scrapper/internal/utils"
 
 	"github.com/gocolly/colly"
@@ -48,7 +50,7 @@ func getItems() []Item {
 
 	var items []Item
 
-	collector.OnHTML(TableNode, func(h *colly.HTMLElement) {
+	collector.OnHTML(config.Default["tableNode"], func(h *colly.HTMLElement) {
 
 		item := newItem(h.ChildAttr("a", "href"), h)
 
@@ -59,7 +61,7 @@ func getItems() []Item {
 		items = append(items, item)
 	})
 
-	collector.Visit(globaLink + ITEMS)
+	collector.Visit(config.Item["url"])
 
 	return items
 
@@ -78,14 +80,14 @@ func newItem(path string, el *colly.HTMLElement) Item {
 
 	collector := colly.NewCollector()
 
-	collector.OnHTML(mainNode, func(h *colly.HTMLElement) {
+	collector.OnHTML(config.Default["mainNode"], func(h *colly.HTMLElement) {
 		setItemUnlock(h, &item)
 		setItemExtension(h, &item)
 		setItemPool(h, &item)
 
 	})
 
-	collector.Visit(globaLink + path)
+	collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], path))
 
 	return item
 

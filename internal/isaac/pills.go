@@ -1,6 +1,7 @@
 package isaac
 
 import (
+	"isaac-scrapper/config"
 	"isaac-scrapper/internal/utils"
 	"strings"
 
@@ -16,7 +17,7 @@ func CreatePillsCsv() {
 
 	var t Pill
 
-	writer, file := utils.CreateCsv(t, "pills", "pills.csv")
+	writer, file := utils.CreateCsv(t, config.Pill["csvRoute"], config.Pill["csvName"])
 	pills := scrapingPills()
 
 	for _, v := range pills {
@@ -46,7 +47,7 @@ func scrapingPills() []Pill {
 	var pills []Pill
 	var extension string
 
-	collector.OnHTML(TableNode, func(h *colly.HTMLElement) {
+	collector.OnHTML(config.Default["tableNode"], func(h *colly.HTMLElement) {
 		pill := newPill(h, &extension)
 
 		if pill.name == "" || strings.Contains(pill.name, "https") {
@@ -56,7 +57,7 @@ func scrapingPills() []Pill {
 		pills = append(pills, pill)
 	})
 
-	collector.Visit(globaLink + PILLS)
+	collector.Visit(config.Pill["url"])
 
 	return pills
 }

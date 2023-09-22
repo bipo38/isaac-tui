@@ -1,6 +1,8 @@
 package isaac
 
 import (
+	"fmt"
+	"isaac-scrapper/config"
 	"isaac-scrapper/internal/utils"
 
 	"github.com/gocolly/colly"
@@ -14,7 +16,7 @@ type Character struct {
 func CreateCharactersCsv() {
 	var t Character
 
-	writer, file := utils.CreateCsv(t, "characters", "characters.csv")
+	writer, file := utils.CreateCsv(t, config.Character["csvRoute"], config.Character["csvName"])
 	characters := scrapingCharacters()
 
 	for _, v := range characters {
@@ -39,13 +41,13 @@ func scrapingCharacters() []Character {
 
 	var characters []Character
 
-	collector.OnHTML(TableNode, func(h *colly.HTMLElement) {
+	collector.OnHTML(config.Default["tableNode"], func(h *colly.HTMLElement) {
 		character := newCharacter(h.ChildAttr("a", "href"), h)
 
 		characters = append(characters, character)
 	})
 
-	collector.Visit(globaLink + CHARACTERS)
+	collector.Visit(config.Character["url"])
 
 	return characters
 }
@@ -58,13 +60,13 @@ func newCharacter(path string, el *colly.HTMLElement) Character {
 
 	collector := colly.NewCollector()
 
-	collector.OnHTML(mainNode, func(h *colly.HTMLElement) {
+	collector.OnHTML(config.Default["mainNode"], func(h *colly.HTMLElement) {
 		setCharacterUnlock(h, &character)
 		setCharacterExtension(h, &character)
 		setImage(h, &character)
 	})
 
-	collector.Visit(globaLink + path)
+	collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], path))
 
 	return character
 }
@@ -78,7 +80,7 @@ func setImage(h *colly.HTMLElement, character *Character) {
 		return
 	}
 
-	utils.DownloadImage(imgUrl, "characters/images", character.image)
+	utils.DownloadImage(imgUrl, config.Character["imgRoute"], character.image)
 }
 
 func setCharacterUnlock(h *colly.HTMLElement, character *Character) {

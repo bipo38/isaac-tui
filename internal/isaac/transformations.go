@@ -1,6 +1,7 @@
 package isaac
 
 import (
+	"isaac-scrapper/config"
 	"isaac-scrapper/internal/utils"
 
 	"github.com/gocolly/colly"
@@ -15,7 +16,7 @@ func CreateTransformationCsv() {
 
 	var t Transformation
 
-	writer, file := utils.CreateCsv(t, "transformations", "transformations.csv")
+	writer, file := utils.CreateCsv(t, config.Transformation["csvRoute"], config.Transformation["csvName"])
 	transformations := getTransformations()
 
 	for _, v := range transformations {
@@ -43,14 +44,14 @@ func getTransformations() []Transformation {
 
 	var transformations []Transformation
 
-	collector.OnHTML(TableNode, func(h *colly.HTMLElement) {
+	collector.OnHTML(config.Default["tableNode"], func(h *colly.HTMLElement) {
 
 		transformation := newTransformation(h)
 
 		transformations = append(transformations, transformation)
 	})
 
-	collector.Visit(globaLink + TRANSFORMATIONS)
+	collector.Visit(config.Transformation["url"])
 
 	return transformations
 
@@ -66,7 +67,7 @@ func newTransformation(el *colly.HTMLElement) Transformation {
 	}
 
 	imgUrl := el.ChildAttr("td:nth-child(3)>a>img", "data-src")
-	utils.DownloadImage(imgUrl, "transformations/images", transformation.image)
+	utils.DownloadImage(imgUrl, config.Transformation["imgRoute"], transformation.image)
 	// if err != nil {
 	// 	fmt.Println("Failed to download image")
 	// }

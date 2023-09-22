@@ -1,6 +1,8 @@
 package isaac
 
 import (
+	"fmt"
+	"isaac-scrapper/config"
 	"isaac-scrapper/internal/utils"
 
 	"github.com/gocolly/colly"
@@ -45,14 +47,14 @@ func getTrinkets() []Trinket {
 
 	var trinkets []Trinket
 
-	collector.OnHTML(TableNode, func(h *colly.HTMLElement) {
+	collector.OnHTML(config.Default["tableNode"], func(h *colly.HTMLElement) {
 
 		trinket := newTrinket(h.ChildAttr("a", "href"), h)
 
 		trinkets = append(trinkets, trinket)
 	})
 
-	collector.Visit(globaLink + TRINKETS)
+	collector.Visit(config.Trinket["url"])
 
 	return trinkets
 
@@ -69,13 +71,13 @@ func newTrinket(path string, el *colly.HTMLElement) Trinket {
 
 	collector := colly.NewCollector()
 
-	collector.OnHTML(mainNode, func(h *colly.HTMLElement) {
+	collector.OnHTML(config.Default["mainNode"], func(h *colly.HTMLElement) {
 		setTrinketUnlock(h, &trinket)
 		setTrinketExtension(h, &trinket)
 
 	})
 
-	collector.Visit(globaLink + path)
+	collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], path))
 
 	return trinket
 
@@ -94,6 +96,7 @@ func setTrinketUnlock(h *colly.HTMLElement, trinket *Trinket) {
 
 func setTrinketExtension(h *colly.HTMLElement, trinket *Trinket) {
 	extension := h.ChildAttr("div#context-page.context-box>img", "title")
+	fmt.Println(extension)
 
 	trinket.extension = ParseExtension(extension)
 }
