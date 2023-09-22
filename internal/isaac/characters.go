@@ -29,8 +29,7 @@ func CreateCharactersCsv() {
 		}
 
 		if err := writer.Write(character); err != nil {
-			fmt.Println(fmt.Errorf("Falied writing character in csv field: %s", v.name))
-			continue
+			fmt.Println(fmt.Errorf("Failed writing character in csv field: %s , %s", v.name, err))
 		}
 
 	}
@@ -46,20 +45,23 @@ func scrapingCharacters() []Character {
 	var characters []Character
 
 	collector.OnHTML(TableNode, func(h *colly.HTMLElement) {
-		character := newCharacter(h.ChildAttr("a", "href"), h)
+		character := newCharacter(h)
 
 		characters = append(characters, character)
 	})
 
 	if err := collector.Visit(globaLink + CHARACTERS); err != nil {
 
-		log.Fatalf("Failed to start scraping: %s ", err , )
+		log.Fatalf("Failed to start scraping this link: %s ", err)
 	}
 
 	return characters
 }
 
-func newCharacter(path string, el *colly.HTMLElement) Character {
+func newCharacter(el *colly.HTMLElement) Character {
+
+	path := el.ChildAttr("a", "href")
+
 	character := Character{
 		name:  el.ChildAttr("a", "title"),
 		image: el.ChildAttr("td:nth-child(3)>a>img", "data-image-key"),
@@ -74,6 +76,10 @@ func newCharacter(path string, el *colly.HTMLElement) Character {
 	})
 
 	collector.Visit(globaLink + path)
+	if err := collector.Visit(globaLink + CHARACTERS); err != nil {
+
+		log.Fatalf("Failed to start scraping this link: %s ", err)
+	}
 
 	return character
 }
@@ -87,7 +93,10 @@ func setImage(h *colly.HTMLElement, character *Character) {
 		return
 	}
 
-	utils.DownloadImage(imgUrl, "characters/images", character.image)
+	if err := utils.DownloadImage(imgUrl, "characters/images", character.image); err != nil {
+		fmt.Println(fmt.Errorf("Failed to dondload image: %s , %s", character.image, err))
+	}
+
 }
 
 func setCharacterUnlock(h *colly.HTMLElement, character *Character) {
