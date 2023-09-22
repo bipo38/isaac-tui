@@ -8,8 +8,7 @@ import (
 )
 
 type Transformation struct {
-	name, id_game, effect, image string
-	extension                    Extension
+	name, id_game, effect, image, extension string
 }
 
 func CreateTransformationCsv() {
@@ -26,7 +25,7 @@ func CreateTransformationCsv() {
 			v.id_game,
 			v.effect,
 			v.image,
-			string(v.extension),
+			v.extension,
 		}
 
 		writer.Write(transformation)

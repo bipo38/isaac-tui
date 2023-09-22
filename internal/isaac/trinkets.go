@@ -9,8 +9,7 @@ import (
 )
 
 type Trinket struct {
-	name, id_game, quote, effect, unlock, image string
-	extension                                   Extension
+	name, id_game, quote, effect, unlock, image, extension string
 }
 
 func CreateTrinketsCsv() {
@@ -29,7 +28,7 @@ func CreateTrinketsCsv() {
 			v.effect,
 			v.unlock,
 			v.image,
-			string(v.extension),
+			v.extension,
 		}
 
 		writer.Write(trinket)
@@ -96,7 +95,5 @@ func setTrinketUnlock(h *colly.HTMLElement, trinket *Trinket) {
 
 func setTrinketExtension(h *colly.HTMLElement, trinket *Trinket) {
 	extension := h.ChildAttr("div#context-page.context-box>img", "title")
-	fmt.Println(extension)
-
 	trinket.extension = ParseExtension(extension)
 }

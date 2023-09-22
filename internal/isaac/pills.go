@@ -9,8 +9,7 @@ import (
 )
 
 type Pill struct {
-	name, effect, horse_effect, class, image string
-	extension                                Extension
+	name, effect, horse_effect, class, image, extension string
 }
 
 func CreatePillsCsv() {

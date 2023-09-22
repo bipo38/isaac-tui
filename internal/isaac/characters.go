@@ -9,8 +9,7 @@ import (
 )
 
 type Character struct {
-	name, unlock, image string
-	extension           Extension
+	name, unlock, image, extension string
 }
 
 func CreateCharactersCsv() {

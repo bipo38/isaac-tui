@@ -9,8 +9,7 @@ import (
 )
 
 type Item struct {
-	name, id_game, quote, effect, unlock, image, quality, pool string
-	extension                                                  Extension
+	name, id_game, quote, effect, unlock, image, quality, pool, extension string
 }
 
 func CreateItemsCsv() {
@@ -32,7 +31,7 @@ func CreateItemsCsv() {
 			v.image,
 			v.quality,
 			v.pool,
-			string(v.extension),
+			v.extension,
 		}
 
 		writer.Write(item)
