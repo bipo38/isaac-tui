@@ -19,7 +19,6 @@ func CreateDirs(path string) {
 		log.Fatalf("Error creating dirs %s: %s\n", path, err)
 	}
 
-	return
 }
 
 func CreateFile(path string) *os.File {
