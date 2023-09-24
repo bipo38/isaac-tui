@@ -49,9 +49,9 @@ func getItems() []Item {
 
 	var items []Item
 
-	collector.OnHTML(config.Default["tableNode"], func(h *colly.HTMLElement) {
+	collector.OnHTML(config.Default["tableNode"], func(el *colly.HTMLElement) {
 
-		item := newItem(h.ChildAttr("a", "href"), h)
+		item := newItem(el)
 
 		if item.name == "" {
 			return
@@ -66,7 +66,10 @@ func getItems() []Item {
 
 }
 
-func newItem(path string, el *colly.HTMLElement) Item {
+func newItem(el *colly.HTMLElement) Item {
+
+	urlPath := el.ChildAttr("a", "href")
+
 	item := Item{
 		name:      el.ChildAttr("td:nth-child(1)", "data-sort-value"),
 		id_game:   el.ChildText("td:nth-child(2)"),
@@ -86,7 +89,7 @@ func newItem(path string, el *colly.HTMLElement) Item {
 
 	})
 
-	collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], path))
+	collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], urlPath))
 
 	return item
 

@@ -46,9 +46,9 @@ func getTrinkets() []Trinket {
 
 	var trinkets []Trinket
 
-	collector.OnHTML(config.Default["tableNode"], func(h *colly.HTMLElement) {
+	collector.OnHTML(config.Default["tableNode"], func(el *colly.HTMLElement) {
 
-		trinket := newTrinket(h.ChildAttr("a", "href"), h)
+		trinket := newTrinket(el)
 
 		trinkets = append(trinkets, trinket)
 	})
@@ -59,7 +59,9 @@ func getTrinkets() []Trinket {
 
 }
 
-func newTrinket(path string, el *colly.HTMLElement) Trinket {
+func newTrinket(el *colly.HTMLElement) Trinket {
+	urlPath := el.ChildAttr("a", "href")
+
 	trinket := Trinket{
 		name:    el.ChildAttr("td:nth-child(1)", "data-sort-value"),
 		id_game: el.ChildText("td:nth-child(2)"),
@@ -76,7 +78,7 @@ func newTrinket(path string, el *colly.HTMLElement) Trinket {
 
 	})
 
-	collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], path))
+	collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], urlPath))
 
 	return trinket
 
