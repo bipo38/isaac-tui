@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-func ParseExtension(extension string) string {
+func parseExtension(extension string) string {
 
 	if "" == extension {
 		return "Rebirth"

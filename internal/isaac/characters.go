@@ -96,5 +96,5 @@ func setCharacterUnlock(h *colly.HTMLElement, character *Character) {
 func setCharacterExtension(h *colly.HTMLElement, character *Character) {
 	extension := h.ChildAttr("div#context-page.context-box>img", "title")
 
-	character.extension = ParseExtension(extension)
+	character.extension = parseExtension(extension)
 }

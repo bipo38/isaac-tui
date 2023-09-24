@@ -75,6 +75,6 @@ func newPill(el *colly.HTMLElement, extension *string) Pill {
 		effect:       el.ChildText("td:nth-child(4)"),
 		horse_effect: el.ChildText("td:last-child"),
 		image:        "image",
-		extension:    ParseExtension(*extension),
+		extension:    parseExtension(*extension),
 	}
 }

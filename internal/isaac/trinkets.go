@@ -97,5 +97,5 @@ func setTrinketUnlock(h *colly.HTMLElement, trinket *Trinket) {
 
 func setTrinketExtension(h *colly.HTMLElement, trinket *Trinket) {
 	extension := h.ChildAttr("div#context-page.context-box>img", "title")
-	trinket.extension = ParseExtension(extension)
+	trinket.extension = parseExtension(extension)
 }

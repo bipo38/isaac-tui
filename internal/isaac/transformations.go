@@ -62,7 +62,7 @@ func newTransformation(el *colly.HTMLElement) Transformation {
 		id_game:   el.ChildAttr("td:nth-child(1)", "data-sort-value"),
 		effect:    el.ChildText("td:nth-child(4)>p"),
 		image:     el.ChildAttr("td:nth-child(3)>a>img", "data-image-key"),
-		extension: ParseExtension(el.ChildAttr("td:nth-child(2)>img", "title")),
+		extension: parseExtension(el.ChildAttr("td:nth-child(2)>img", "title")),
 	}
 
 	imgUrl := el.ChildAttr("td:nth-child(3)>a>img", "data-src")

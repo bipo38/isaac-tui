@@ -77,7 +77,7 @@ func newItem(el *colly.HTMLElement) Item {
 		effect:    el.ChildText("td:nth-child(5)"),
 		image:     "imagenes3",
 		quality:   el.ChildText("td:nth-child(6)"),
-		extension: ParseExtension(el.ChildAttr("td:nth-child(1)>img", "title")),
+		extension: parseExtension(el.ChildAttr("td:nth-child(1)>img", "title")),
 	}
 
 	collector := colly.NewCollector()
@@ -109,7 +109,7 @@ func setItemUnlock(h *colly.HTMLElement, item *Item) {
 func setItemExtension(h *colly.HTMLElement, item *Item) {
 	extension := h.ChildAttr("div#context-page.context-box>img", "title")
 
-	item.extension = ParseExtension(extension)
+	item.extension = parseExtension(extension)
 }
 
 func setItemPool(h *colly.HTMLElement, item *Item) {
