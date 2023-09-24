@@ -11,9 +11,9 @@ import (
 func CreateCsv(category interface{}, fPath, fName string) (*csv.Writer, *os.File) {
 	headers := getHeaders(category)
 
-	route, fPath := routeParser(fPath, (fName + ".csv"))
-	createDirs(route)
-	file := createFile(fPath)
+	route, fPath := RouteParser(fPath, (fName + ".csv"))
+	CreateDirs(route)
+	file := CreateFile(fPath)
 
 	writer := csv.NewWriter(file)
 	if err := writer.Write(headers); err != nil {

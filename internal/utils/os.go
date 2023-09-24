@@ -5,8 +5,8 @@ import (
 	"os"
 )
 
-func createDirs(path string) {
-	exist, err := exist(path)
+func CreateDirs(path string) {
+	exist, err := ExistPath(path)
 	if err != nil {
 		log.Fatalf("Failed verify the existence of the folder: %s: %s\n ", path, err)
 	}
@@ -22,9 +22,9 @@ func createDirs(path string) {
 	return
 }
 
-func createFile(path string) *os.File {
+func CreateFile(path string) *os.File {
 
-	exist, err := exist(path)
+	exist, err := ExistPath(path)
 	if err != nil {
 		log.Fatalf("Failed verify the existence of the file: %s: %s\n ", path, err)
 	}
@@ -41,7 +41,7 @@ func createFile(path string) *os.File {
 	return file
 }
 
-func exist(path string) (bool, error) {
+func ExistPath(path string) (bool, error) {
 	_, err := os.Stat(path)
 
 	if err == nil {

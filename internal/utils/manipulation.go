@@ -5,7 +5,7 @@ import (
 	"isaac-scrapper/config"
 )
 
-func routeParser(fRoute, fName string) (string, string) {
+func RouteParser(fRoute, fName string) (string, string) {
 	defaultRoute := config.Default["folderDefaultRoute"]
 
 	route := fmt.Sprintf("%s/%s/", defaultRoute, fRoute)

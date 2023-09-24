@@ -8,9 +8,9 @@ import (
 
 func DownloadImage(url, fPath, fName string) error {
 
-	route, filePath := routeParser(fPath, fName)
+	route, filePath := RouteParser(fPath, fName)
 
-	createDirs(route)
+	CreateDirs(route)
 
 	response, err := http.Get(url)
 	if err != nil {
@@ -23,7 +23,7 @@ func DownloadImage(url, fPath, fName string) error {
 		return errors.New("Received non 200 response code")
 	}
 
-	file := createFile(filePath)
+	file := CreateFile(filePath)
 
 	defer file.Close()
 
