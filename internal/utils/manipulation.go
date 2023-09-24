@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"isaac-scrapper/config"
+	"reflect"
 	"strings"
 )
 
@@ -23,4 +24,18 @@ func ParserFileName(fName, extension string) string {
 	}
 
 	return fmt.Sprintf("%s%s", fName, extension)
+}
+
+func GetHeaders(element interface{}) []string {
+
+	structype := reflect.TypeOf(element)
+
+	var headers []string
+
+	for i := 0; i < structype.NumField(); i++ {
+
+		headers = append(headers, structype.Field(i).Name)
+	}
+
+	return headers
 }

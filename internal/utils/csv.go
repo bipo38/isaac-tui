@@ -4,11 +4,10 @@ import (
 	"encoding/csv"
 	"log"
 	"os"
-	"reflect"
 )
 
 func CreateCsv(category interface{}, fPath, fName string) (*csv.Writer, *os.File) {
-	headers := getHeaders(category)
+	headers := GetHeaders(category)
 
 	fName = ParserFileName(fName, "csv")
 
@@ -23,18 +22,4 @@ func CreateCsv(category interface{}, fPath, fName string) (*csv.Writer, *os.File
 
 	return writer, file
 
-}
-
-func getHeaders(element interface{}) []string {
-
-	structype := reflect.TypeOf(element)
-
-	var headers []string
-
-	for i := 0; i < structype.NumField(); i++ {
-
-		headers = append(headers, structype.Field(i).Name)
-	}
-
-	return headers
 }
