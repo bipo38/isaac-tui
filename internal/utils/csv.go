@@ -2,17 +2,15 @@ package utils
 
 import (
 	"encoding/csv"
-	"fmt"
 	"log"
 	"os"
 	"reflect"
-	"strings"
 )
 
 func CreateCsv(category interface{}, fPath, fName string) (*csv.Writer, *os.File) {
 	headers := getHeaders(category)
 
-	fName = parserCsvFileName(fName)
+	fName = ParserFileName(fName, "csv")
 
 	route, fPath := RouteParser(fPath, fName)
 	CreateDirs(route)
@@ -39,14 +37,4 @@ func getHeaders(element interface{}) []string {
 	}
 
 	return headers
-}
-
-func parserCsvFileName(fName string) string {
-	extension := ".csv"
-
-	if strings.HasSuffix(fName, extension) {
-		return fName
-	}
-
-	return fmt.Sprintf("%s%s", fName, extension)
 }

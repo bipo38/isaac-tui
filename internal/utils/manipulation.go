@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"isaac-scrapper/config"
+	"strings"
 )
 
 func RouteParser(fRoute, fName string) (string, string) {
@@ -13,4 +14,13 @@ func RouteParser(fRoute, fName string) (string, string) {
 
 	return route, fPath
 
+}
+
+func ParserFileName(fName, extension string) string {
+
+	if strings.HasSuffix(fName, fmt.Sprintf(".%s", extension)) {
+		return fName
+	}
+
+	return fmt.Sprintf("%s%s", fName, extension)
 }
