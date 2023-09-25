@@ -28,13 +28,13 @@ func ParserFileName(fName, extension string) string {
 
 func GetHeaders(element interface{}) []string {
 
-	structype := reflect.TypeOf(element)
+	structType := reflect.TypeOf(element)
 
 	var headers []string
 
-	for i := 0; i < structype.NumField(); i++ {
+	for i := 0; i < structType.NumField(); i++ {
 
-		headers = append(headers, structype.Field(i).Name)
+		headers = append(headers, structType.Field(i).Name)
 	}
 
 	return headers
