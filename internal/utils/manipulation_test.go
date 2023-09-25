@@ -24,3 +24,35 @@ func TestGetHeaders(t *testing.T) {
 	}
 
 }
+
+func TestParserFileName(t *testing.T) {
+
+	cases := []struct {
+		name      string
+		extension string
+		expected  string
+	}{
+		{
+			name:      "test",
+			extension: "csv",
+			expected:  "test.csv",
+		},
+		{
+			name:      "test",
+			extension: ".csv",
+			expected:  "test.csv",
+		},
+	}
+
+	for i, tt := range cases {
+
+		t.Run("Test"+string(rune(i)), func(t *testing.T) {
+
+			got := ParserFileName(tt.name, tt.extension)
+
+			if got != tt.expected {
+				t.Errorf("got %s, want %s", got, tt.expected)
+			}
+		})
+	}
+}

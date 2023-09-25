@@ -19,11 +19,12 @@ func RouteParser(fRoute, fName string) (string, string) {
 
 func ParserFileName(fName, extension string) string {
 
-	if strings.HasSuffix(fName, fmt.Sprintf(".%s", extension)) {
-		return fName
+	if strings.Contains(extension, ".") {
+		return fmt.Sprintf("%s%s", fName, extension)
 	}
 
-	return fmt.Sprintf("%s%s", fName, extension)
+	return fmt.Sprintf("%s.%s", fName, extension)
+
 }
 
 func GetHeaders(element interface{}) []string {
