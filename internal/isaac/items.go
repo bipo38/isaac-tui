@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"isaac-scrapper/config"
 	"isaac-scrapper/internal/utils"
+	"log"
 
 	"github.com/gocolly/colly"
 )
@@ -12,13 +13,19 @@ type Item struct {
 	name, id_game, quote, effect, unlock, image, quality, pool, extension string
 }
 
-func CreateItemsCsv() {
+func CreateItemsCsv() error {
 
 	var t Item
 
-	writer, file := utils.CreateCsv(t, "items", "items.csv")
+	writer, file, err := utils.CreateCsv(t, "items", "items.csv")
+	if err != nil {
+		return err
+	}
 
-	items := getItems()
+	items, err := getItems()
+	if err != nil {
+		return err
+	}
 
 	for _, v := range items {
 
@@ -34,16 +41,21 @@ func CreateItemsCsv() {
 			v.extension,
 		}
 
-		writer.Write(item)
+		if err := writer.Write(item); err != nil {
+			//put a print  saying skip one insert ?
+			continue
+		}
 	}
-
-	defer file.Close()
 
 	defer writer.Flush()
 
+	defer file.Close()
+
+	return nil
+
 }
 
-func getItems() []Item {
+func getItems() ([]Item, error) {
 
 	collector := colly.NewCollector()
 
@@ -51,22 +63,29 @@ func getItems() []Item {
 
 	collector.OnHTML(config.Default["tableNode"], func(el *colly.HTMLElement) {
 
-		item := newItem(el)
-
-		if item.name == "" {
+		item, err := newItem(el)
+		if err != nil || item == nil {
+			log.Println("skipping item")
 			return
 		}
 
-		items = append(items, item)
+		if item.name == "" {
+			log.Println("skipping item")
+			return
+		}
+
+		items = append(items, *item)
 	})
 
-	collector.Visit(config.Item["url"])
+	if err := collector.Visit(config.Item["url"]); err != nil {
+		return nil, err
+	}
 
-	return items
+	return items, nil
 
 }
 
-func newItem(el *colly.HTMLElement) Item {
+func newItem(el *colly.HTMLElement) (*Item, error) {
 
 	urlPath := el.ChildAttr("a", "href")
 
@@ -89,9 +108,11 @@ func newItem(el *colly.HTMLElement) Item {
 
 	})
 
-	collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], urlPath))
+	if err := collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], urlPath)); err != nil {
+		return nil, err
+	}
 
-	return item
+	return &item, nil
 
 }
 

@@ -3,6 +3,7 @@ package isaac
 import (
 	"isaac-scrapper/config"
 	"isaac-scrapper/internal/utils"
+	"log"
 	"strings"
 
 	"github.com/gocolly/colly"
@@ -12,12 +13,19 @@ type Pill struct {
 	name, effect, horse_effect, class, image, extension string
 }
 
-func CreatePillsCsv() {
+func CreatePillsCsv() error {
 
 	var t Pill
 
-	writer, file := utils.CreateCsv(t, config.Pill["csvRoute"], config.Pill["csvName"])
-	pills := scrapingPills()
+	writer, file, err := utils.CreateCsv(t, config.Pill["csvRoute"], config.Pill["csvName"])
+	if err != nil {
+		return err
+	}
+
+	pills, err := scrapingPills()
+	if err != nil {
+		return err
+	}
 
 	for _, v := range pills {
 
@@ -30,16 +38,21 @@ func CreatePillsCsv() {
 			string(v.extension),
 		}
 
-		writer.Write(pill)
+		if err := writer.Write(pill); err != nil {
+			continue
+		}
+
 	}
 
 	defer file.Close()
 
 	defer writer.Flush()
 
+	return nil
+
 }
 
-func scrapingPills() []Pill {
+func scrapingPills() ([]Pill, error) {
 
 	collector := colly.NewCollector()
 
@@ -50,15 +63,18 @@ func scrapingPills() []Pill {
 		pill := newPill(h, &extension)
 
 		if pill.name == "" || strings.Contains(pill.name, "https") {
+			log.Println("skipping pill")
 			return
 		}
 
 		pills = append(pills, pill)
 	})
 
-	collector.Visit(config.Pill["url"])
+	if err := collector.Visit(config.Pill["url"]); err != nil {
+		return nil, err
+	}
 
-	return pills
+	return pills, nil
 }
 
 func newPill(el *colly.HTMLElement, extension *string) Pill {

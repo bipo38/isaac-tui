@@ -1,13 +1,20 @@
 package main
 
-import "isaac-scrapper/internal/isaac"
+import (
+	"errors"
+	"fmt"
+	"isaac-scrapper/internal/isaac"
+)
 
 func main() {
 
 	// isaac.CreateTransformationCsv()
-	isaac.CreateTrinketsCsv()
+	// isaac.CreateTrinketsCsv()
 	// isaac.CreateItemsCsv()
-	// isaac.CreateCharactersCsv()
+	if err := isaac.CreateCharactersCsv(); err != nil {
+		unwrapedError := errors.Unwrap(err)
+		fmt.Errorf("error creating file: %w", unwrapedError)
+	}
 	// isaac.CreatePillsCsv()
 
 }

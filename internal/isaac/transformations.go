@@ -3,6 +3,7 @@ package isaac
 import (
 	"isaac-scrapper/config"
 	"isaac-scrapper/internal/utils"
+	"log"
 
 	"github.com/gocolly/colly"
 )
@@ -11,12 +12,19 @@ type Transformation struct {
 	name, id_game, effect, image, extension string
 }
 
-func CreateTransformationCsv() {
+func CreateTransformationCsv() error {
 
 	var t Transformation
 
-	writer, file := utils.CreateCsv(t, config.Transformation["csvRoute"], config.Transformation["csvName"])
-	transformations := getTransformations()
+	writer, file, err := utils.CreateCsv(t, config.Transformation["csvRoute"], config.Transformation["csvName"])
+	if err != nil {
+		return err
+	}
+
+	transformations, err := getTransformations()
+	if err != nil {
+		return err
+	}
 
 	for _, v := range transformations {
 
@@ -35,9 +43,10 @@ func CreateTransformationCsv() {
 
 	defer writer.Flush()
 
+	return nil
 }
 
-func getTransformations() []Transformation {
+func getTransformations() ([]Transformation, error) {
 
 	collector := colly.NewCollector()
 
@@ -45,18 +54,24 @@ func getTransformations() []Transformation {
 
 	collector.OnHTML(config.Default["tableNode"], func(h *colly.HTMLElement) {
 
-		transformation := newTransformation(h)
+		transformation, err := newTransformation(h)
+		if err != nil {
+			log.Printf("error creating transformation: %v", err)
+			return
+		}
 
-		transformations = append(transformations, transformation)
+		transformations = append(transformations, *transformation)
 	})
 
-	collector.Visit(config.Transformation["url"])
+	if err := collector.Visit(config.Transformation["url"]); err != nil {
+		return nil, err
+	}
 
-	return transformations
+	return transformations, nil
 
 }
 
-func newTransformation(el *colly.HTMLElement) Transformation {
+func newTransformation(el *colly.HTMLElement) (*Transformation, error) {
 	transformation := Transformation{
 		name:      el.ChildAttr("td:nth-child(2)", "data-sort-value"),
 		id_game:   el.ChildAttr("td:nth-child(1)", "data-sort-value"),
@@ -66,11 +81,9 @@ func newTransformation(el *colly.HTMLElement) Transformation {
 	}
 
 	imgUrl := el.ChildAttr("td:nth-child(3)>a>img", "data-src")
-	utils.DownloadImage(imgUrl, config.Transformation["imgRoute"], transformation.image)
-	// if err != nil {
-	// 	fmt.Println("Failed to download image")
-	// }
-
-	return transformation
+	if err := utils.DownloadImage(imgUrl, transformation.image, transformation.extension); err != nil {
+		return nil, err
+	}
+	return &transformation, nil
 
 }

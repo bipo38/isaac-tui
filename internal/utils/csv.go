@@ -2,24 +2,30 @@ package utils
 
 import (
 	"encoding/csv"
-	"log"
 	"os"
 )
 
-func CreateCsv(category interface{}, fPath, fName string) (*csv.Writer, *os.File) {
+func CreateCsv(category interface{}, fPath, fName string) (*csv.Writer, *os.File, error) {
 	headers := GetHeaders(category)
 
 	fName = ParserFileName(fName, "csv")
 
 	route, fPath := RouteParser(fPath, fName)
-	CreateDirs(route)
-	file := CreateFile(fPath)
+
+	if err := CreateDirs(route); err != nil {
+		return nil, nil, err
+	}
+
+	file, err := CreateFile(fPath)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	writer := csv.NewWriter(file)
 	if err := writer.Write(headers); err != nil {
-		log.Fatalf("Falied creating csv file: %s , Path: %s", err, fPath)
+		return nil, nil, err
 	}
 
-	return writer, file
+	return writer, file, nil
 
 }

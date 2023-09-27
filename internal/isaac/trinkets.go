@@ -12,12 +12,19 @@ type Trinket struct {
 	name, id_game, quote, effect, unlock, image, extension string
 }
 
-func CreateTrinketsCsv() {
+func CreateTrinketsCsv() error {
 
 	var t Trinket
 
-	writer, file := utils.CreateCsv(t, "trinkets", "trinkets.csv")
-	trinkets := getTrinkets()
+	writer, file, err := utils.CreateCsv(t, config.Trinket["csvRoute"], config.Trinket["csvName"])
+	if err != nil {
+		return err
+	}
+
+	trinkets, err := getTrinkets()
+	if err != nil {
+		return err
+	}
 
 	for _, v := range trinkets {
 
@@ -31,16 +38,21 @@ func CreateTrinketsCsv() {
 			v.extension,
 		}
 
-		writer.Write(trinket)
+		if err := writer.Write(trinket); err != nil {
+			continue
+		}
+
 	}
 
 	defer file.Close()
 
 	defer writer.Flush()
 
+	return nil
+
 }
 
-func getTrinkets() []Trinket {
+func getTrinkets() ([]Trinket, error) {
 
 	collector := colly.NewCollector()
 
@@ -48,18 +60,23 @@ func getTrinkets() []Trinket {
 
 	collector.OnHTML(config.Default["tableNode"], func(el *colly.HTMLElement) {
 
-		trinket := newTrinket(el)
+		trinket, err := newTrinket(el)
+		if err != nil {
+			return
+		}
 
-		trinkets = append(trinkets, trinket)
+		trinkets = append(trinkets, *trinket)
 	})
 
-	collector.Visit(config.Trinket["url"])
+	if err := collector.Visit(config.Trinket["url"]); err != nil {
+		return nil, err
+	}
 
-	return trinkets
+	return trinkets, nil
 
 }
 
-func newTrinket(el *colly.HTMLElement) Trinket {
+func newTrinket(el *colly.HTMLElement) (*Trinket, error) {
 	urlPath := el.ChildAttr("a", "href")
 
 	trinket := Trinket{
@@ -78,9 +95,11 @@ func newTrinket(el *colly.HTMLElement) Trinket {
 
 	})
 
-	collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], urlPath))
+	if err := collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], urlPath)); err != nil {
+		return nil, err
+	}
 
-	return trinket
+	return &trinket, nil
 
 }
 

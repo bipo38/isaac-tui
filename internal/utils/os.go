@@ -1,14 +1,13 @@
 package utils
 
 import (
-	"log"
 	"os"
 )
 
-func CreateDirs(path string) {
+func CreateDirs(path string) error {
 	exist, err := ExistPath(path)
 	if err != nil {
-		log.Fatalf("Failed verify the existence of the folder: %s: %s\n ", path, err)
+		return err
 	}
 
 	if exist {
@@ -16,16 +15,19 @@ func CreateDirs(path string) {
 	}
 
 	if err := os.MkdirAll(path, os.ModePerm); err != nil {
-		log.Fatalf("Error creating dirs %s: %s\n", path, err)
+
+		return err
 	}
+
+	return nil
 
 }
 
-func CreateFile(path string) *os.File {
+func CreateFile(path string) (*os.File, error) {
 
 	exist, err := ExistPath(path)
 	if err != nil {
-		log.Fatalf("Failed verify the existence of the file: %s: %s\n ", path, err)
+		return nil, err
 	}
 
 	if exist {
@@ -34,10 +36,10 @@ func CreateFile(path string) *os.File {
 
 	file, err := os.Create(path)
 	if err != nil {
-		log.Fatalf("Error creating file: %s: %s\n ", path, err)
+		return nil, err
 	}
 
-	return file
+	return file, nil
 }
 
 func ExistPath(path string) (bool, error) {

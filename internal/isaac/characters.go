@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"isaac-scrapper/config"
 	"isaac-scrapper/internal/utils"
+	"log"
 
 	"github.com/gocolly/colly"
 )
@@ -12,11 +13,18 @@ type Character struct {
 	name, unlock, image, extension string
 }
 
-func CreateCharactersCsv() {
+func CreateCharactersCsv() error {
 	var t Character
 
-	writer, file := utils.CreateCsv(t, config.Character["csvRoute"], config.Character["csvName"])
-	characters := scrapingCharacters()
+	writer, file, err := utils.CreateCsv(t, config.Character["csvRoute"], config.Character["csvName"])
+	if err != nil {
+		return err
+	}
+
+	characters, err := scrapingCharacters()
+	if err != nil {
+		return err
+	}
 
 	for _, v := range characters {
 
@@ -24,34 +32,50 @@ func CreateCharactersCsv() {
 			v.name,
 			v.unlock,
 			v.image,
+			//remove extension parse to string
 			string(v.extension),
 		}
 
-		writer.Write(character)
+		if err := writer.Write(character); err != nil {
+			log.Printf("error writing character: %v", err)
+			continue
+		}
+
 	}
 
-	defer file.Close()
 	defer writer.Flush()
 
+	defer file.Close()
+
+	return nil
 }
 
-func scrapingCharacters() []Character {
+func scrapingCharacters() ([]Character, error) {
 	collector := colly.NewCollector()
 
 	var characters []Character
 
 	collector.OnHTML(config.Default["tableNode"], func(h *colly.HTMLElement) {
-		character := newCharacter(h.ChildAttr("a", "href"), h)
 
-		characters = append(characters, character)
+		//move Child attr inside newCharacter function
+		character, err := newCharacter(h.ChildAttr("a", "href"), h)
+		if err != nil {
+			//put a print message saying skip one new insert ?
+			log.Printf("error creating character: %v", err)
+			return
+		}
+
+		characters = append(characters, *character)
 	})
 
-	collector.Visit(config.Character["url"])
+	if err := collector.Visit(config.Character["url"]); err != nil {
+		return nil, err
+	}
 
-	return characters
+	return characters, nil
 }
 
-func newCharacter(path string, el *colly.HTMLElement) Character {
+func newCharacter(path string, el *colly.HTMLElement) (*Character, error) {
 	character := Character{
 		name:  el.ChildAttr("a", "title"),
 		image: el.ChildAttr("td:nth-child(3)>a>img", "data-image-key"),
@@ -62,24 +86,36 @@ func newCharacter(path string, el *colly.HTMLElement) Character {
 	collector.OnHTML(config.Default["mainNode"], func(h *colly.HTMLElement) {
 		setCharacterUnlock(h, &character)
 		setCharacterExtension(h, &character)
-		setImage(h, &character)
+
+		if err := setImage(h, &character); err != nil {
+			log.Printf("error setting image: %v", err)
+			character.image = "Error Downloading Image"
+
+		}
 	})
 
-	collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], path))
+	if err := collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], path)); err != nil {
+		return nil, err
+	}
 
-	return character
+	return &character, nil
 }
 
-func setImage(h *colly.HTMLElement, character *Character) {
+func setImage(h *colly.HTMLElement, character *Character) error {
 
 	character.image = h.ChildAttr("img[alt=\"Character image\"]", "data-image-key")
 	imgUrl := h.ChildAttr("img[alt=\"Character image\"]", "data-src")
 
 	if imgUrl == "" {
-		return
+		return nil
 	}
 
-	utils.DownloadImage(imgUrl, config.Character["imgRoute"], character.image)
+	if err := utils.DownloadImage(imgUrl, config.Character["imgRoute"], character.image); err != nil {
+		return err
+	}
+
+	return nil
+
 }
 
 func setCharacterUnlock(h *colly.HTMLElement, character *Character) {
