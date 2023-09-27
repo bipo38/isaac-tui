@@ -8,9 +8,9 @@ import (
 )
 
 func RouteParser(fRoute, fName string) (string, string) {
-	startRoute := config.Default["folderStart"]
+	routeStart := config.Default["routeStart"]
 
-	route := fmt.Sprintf("%s/%s/", startRoute, fRoute)
+	route := fmt.Sprintf("%s/%s/", routeStart, fRoute)
 	fPath := fmt.Sprintf("%s%s", route, fName)
 
 	return route, fPath

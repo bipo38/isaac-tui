@@ -58,7 +58,7 @@ func TestParserFileName(t *testing.T) {
 
 func TestRouteParser(t *testing.T) {
 
-	startRoute := config.Default["folderStart"]
+	startRoute := config.Default["routeStart"]
 	rName := "transformations/images"
 	fName := "isaac.png"
 
