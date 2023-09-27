@@ -6,11 +6,11 @@ import (
 
 func parseExtension(extension string) string {
 
-	if "" == extension {
+	if extension == "" {
 		return "Rebirth"
 	}
 
-	if "Added in Afterbirth †" == extension {
+	if extension == "Added in Afterbirth" {
 		return "Afterbirth Plus"
 	}
 
