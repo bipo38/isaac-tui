@@ -8,9 +8,9 @@ import (
 )
 
 func RouteParser(fRoute, fName string) (string, string) {
-	defaultRoute := config.Default["folderDefaultRoute"]
+	routeStart := config.Default["routeStart"]
 
-	route := fmt.Sprintf("%s/%s/", defaultRoute, fRoute)
+	route := fmt.Sprintf("%s/%s/", routeStart, fRoute)
 	fPath := fmt.Sprintf("%s%s", route, fName)
 
 	return route, fPath
@@ -19,11 +19,12 @@ func RouteParser(fRoute, fName string) (string, string) {
 
 func ParserFileName(fName, extension string) string {
 
-	if strings.HasSuffix(fName, fmt.Sprintf(".%s", extension)) {
-		return fName
+	if strings.Contains(extension, ".") {
+		return fmt.Sprintf("%s%s", fName, extension)
 	}
 
-	return fmt.Sprintf("%s%s", fName, extension)
+	return fmt.Sprintf("%s.%s", fName, extension)
+
 }
 
 func GetHeaders(element interface{}) []string {
