@@ -44,9 +44,9 @@ func TestParserFileName(t *testing.T) {
 		},
 	}
 
-	for i, tt := range cases {
+	for _, tt := range cases {
 
-		t.Run("Test"+string(rune(i)), func(t *testing.T) {
+		t.Run("Test Parser File Name", func(t *testing.T) {
 
 			got := ParserFileName(tt.name, tt.extension)
 
