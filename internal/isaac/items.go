@@ -17,7 +17,7 @@ func CreateItemsCsv() error {
 
 	var t Item
 
-	writer, file, err := utils.CreateCsv(t, "items", "items.csv")
+	writer, file, err := utils.CreateCsv(t, config.Item["csvRoute"], config.Item["csvName"])
 	if err != nil {
 		return err
 	}
