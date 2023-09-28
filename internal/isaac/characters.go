@@ -55,10 +55,9 @@ func scrapingCharacters() ([]Character, error) {
 
 	var characters []Character
 
-	collector.OnHTML(config.Default["tableNode"], func(h *colly.HTMLElement) {
+	collector.OnHTML(config.Default["tableNode"], func(el *colly.HTMLElement) {
 
-		//move Child attr inside newCharacter function
-		character, err := newCharacter(h.ChildAttr("a", "href"), h)
+		character, err := newCharacter(el)
 		if err != nil {
 			//put a print message saying skip one new insert ?
 			log.Printf("error creating character: %v", err)
@@ -75,7 +74,10 @@ func scrapingCharacters() ([]Character, error) {
 	return characters, nil
 }
 
-func newCharacter(path string, el *colly.HTMLElement) (*Character, error) {
+func newCharacter(el *colly.HTMLElement) (*Character, error) {
+
+	urlPath := el.ChildAttr("a", "href")
+
 	character := Character{
 		name:  el.ChildAttr("a", "title"),
 		image: el.ChildAttr("td:nth-child(3)>a>img", "data-image-key"),
@@ -94,7 +96,7 @@ func newCharacter(path string, el *colly.HTMLElement) (*Character, error) {
 		}
 	})
 
-	if err := collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], path)); err != nil {
+	if err := collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], urlPath)); err != nil {
 		return nil, err
 	}
 
