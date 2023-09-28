@@ -1,6 +1,7 @@
 package isaac
 
 import (
+	"errors"
 	"fmt"
 	"isaac-scrapper/config"
 	"isaac-scrapper/internal/utils"
@@ -32,7 +33,7 @@ func CreateCharactersCsv() error {
 			v.name,
 			v.unlock,
 			v.image,
-			string(v.extension),
+			v.extension,
 		}
 
 		if err := writer.Write(character); err != nil {
@@ -42,9 +43,9 @@ func CreateCharactersCsv() error {
 
 	}
 
-	defer writer.Flush()
-
 	defer file.Close()
+
+	defer writer.Flush()
 
 	return nil
 }
@@ -57,7 +58,7 @@ func scrapingCharacters() ([]Character, error) {
 	collector.OnHTML(config.Default["tableNode"], func(el *colly.HTMLElement) {
 
 		character, err := newCharacter(el)
-		if err != nil {
+		if err != nil || character.name == "" {
 			log.Printf("error creating character: %v", err)
 			return
 		}
@@ -88,7 +89,7 @@ func newCharacter(el *colly.HTMLElement) (*Character, error) {
 		setCharacterExtension(h, &character)
 
 		if err := setImage(h, &character); err != nil {
-			log.Printf("error setting image: %v", err)
+			log.Printf("error download image: %v", err)
 			character.image = "Error Downloading Image"
 
 		}
@@ -107,14 +108,10 @@ func setImage(h *colly.HTMLElement, character *Character) error {
 	imgUrl := h.ChildAttr("img[alt=\"Character image\"]", "data-src")
 
 	if imgUrl == "" {
-		return nil
+		return errors.New("image url is empty")
 	}
 
-	if err := utils.DownloadImage(imgUrl, config.Character["imgRoute"], character.image); err != nil {
-		return err
-	}
-
-	return nil
+	return utils.DownloadImage(imgUrl, config.Character["imgRoute"], character.image)
 
 }
 
