@@ -10,7 +10,7 @@ func parseExtension(extension string) string {
 		return "Rebirth"
 	}
 
-	if extension == "Added in Afterbirth †" {
+	if extension == "Added in Afterbirth †" || extension == "Afterbirth †" {
 		return "Afterbirth Plus"
 	}
 
