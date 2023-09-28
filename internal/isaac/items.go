@@ -1,6 +1,7 @@
 package isaac
 
 import (
+	"errors"
 	"fmt"
 	"isaac-scrapper/config"
 	"isaac-scrapper/internal/utils"
@@ -42,6 +43,7 @@ func CreateItemsCsv() error {
 		}
 
 		if err := writer.Write(item); err != nil {
+			log.Println("error writing record to csv:", err)
 			continue
 		}
 	}
@@ -63,13 +65,8 @@ func scrapingItems() ([]Item, error) {
 	collector.OnHTML(config.Default["tableNode"], func(el *colly.HTMLElement) {
 
 		item, err := newItem(el)
-		if err != nil || item == nil {
-			log.Println("skipping item")
-			return
-		}
-
-		if item.name == "" {
-			log.Println("skipping item")
+		if err != nil {
+			log.Println("error creating item:", err)
 			return
 		}
 
@@ -96,6 +93,10 @@ func newItem(el *colly.HTMLElement) (*Item, error) {
 		image:     "imagenes3",
 		quality:   el.ChildText("td:nth-child(6)"),
 		extension: parseExtension(el.ChildAttr("td:nth-child(1)>img", "title")),
+	}
+
+	if item.name == "" {
+		return nil, errors.New("name is empty")
 	}
 
 	collector := colly.NewCollector()
