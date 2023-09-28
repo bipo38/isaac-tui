@@ -22,7 +22,7 @@ func CreateItemsCsv() error {
 		return err
 	}
 
-	items, err := getItems()
+	items, err := scrapingItems()
 	if err != nil {
 		return err
 	}
@@ -54,7 +54,7 @@ func CreateItemsCsv() error {
 
 }
 
-func getItems() ([]Item, error) {
+func scrapingItems() ([]Item, error) {
 
 	collector := colly.NewCollector()
 

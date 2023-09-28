@@ -21,7 +21,7 @@ func CreateTransformationCsv() error {
 		return err
 	}
 
-	transformations, err := getTransformations()
+	transformations, err := scrapingTranformations()
 	if err != nil {
 		return err
 	}
@@ -46,7 +46,7 @@ func CreateTransformationCsv() error {
 	return nil
 }
 
-func getTransformations() ([]Transformation, error) {
+func scrapingTranformations() ([]Transformation, error) {
 
 	collector := colly.NewCollector()
 

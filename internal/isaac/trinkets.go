@@ -21,7 +21,7 @@ func CreateTrinketsCsv() error {
 		return err
 	}
 
-	trinkets, err := getTrinkets()
+	trinkets, err := scrapingTrinkets()
 	if err != nil {
 		return err
 	}
@@ -52,7 +52,7 @@ func CreateTrinketsCsv() error {
 
 }
 
-func getTrinkets() ([]Trinket, error) {
+func scrapingTrinkets() ([]Trinket, error) {
 
 	collector := colly.NewCollector()
 
