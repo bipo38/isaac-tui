@@ -42,7 +42,6 @@ func CreateItemsCsv() error {
 		}
 
 		if err := writer.Write(item); err != nil {
-			//put a print  saying skip one insert ?
 			continue
 		}
 	}

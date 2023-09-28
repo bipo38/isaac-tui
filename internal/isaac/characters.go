@@ -32,7 +32,6 @@ func CreateCharactersCsv() error {
 			v.name,
 			v.unlock,
 			v.image,
-			//remove extension parse to string
 			string(v.extension),
 		}
 
@@ -59,7 +58,6 @@ func scrapingCharacters() ([]Character, error) {
 
 		character, err := newCharacter(el)
 		if err != nil {
-			//put a print message saying skip one new insert ?
 			log.Printf("error creating character: %v", err)
 			return
 		}
