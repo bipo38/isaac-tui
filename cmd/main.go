@@ -11,9 +11,15 @@ func main() {
 	// isaac.CreateTransformationCsv()
 	// isaac.CreateTrinketsCsv()
 	// isaac.CreateItemsCsv()
-	if err := isaac.CreateCharactersCsv(); err != nil {
+	// if err := isaac.CreateCharactersCsv(); err != nil {
+	// 	unwrapedError := errors.Unwrap(err)
+	// 	fmt.Printf("error creating file: %v", unwrapedError)
+
+	// }
+
+	if err := isaac.CreateTransformationCsv(); err != nil {
 		unwrapedError := errors.Unwrap(err)
-		fmt.Errorf("error creating file: %w", unwrapedError)
+		fmt.Printf("error creating file: %v", unwrapedError)
 	}
 	// isaac.CreatePillsCsv()
 
