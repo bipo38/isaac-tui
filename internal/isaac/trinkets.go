@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"isaac-scrapper/config"
 	"isaac-scrapper/internal/utils"
+	"log"
 
 	"github.com/gocolly/colly"
 )
@@ -62,6 +63,7 @@ func scrapingTrinkets() ([]Trinket, error) {
 
 		trinket, err := newTrinket(el)
 		if err != nil {
+			log.Printf("error creating trinket: %v", err)
 			return
 		}
 

@@ -58,7 +58,7 @@ func scrapingCharacters() ([]Character, error) {
 	collector.OnHTML(config.Default["tableNode"], func(el *colly.HTMLElement) {
 
 		character, err := newCharacter(el)
-		if err != nil || character.name == "" {
+		if err != nil {
 			log.Printf("error creating character: %v", err)
 			return
 		}
@@ -80,6 +80,10 @@ func newCharacter(el *colly.HTMLElement) (*Character, error) {
 	character := Character{
 		name:  el.ChildAttr("a", "title"),
 		image: el.ChildAttr("td:nth-child(3)>a>img", "data-image-key"),
+	}
+
+	if character.name == "" {
+		return nil, errors.New("name is empty")
 	}
 
 	collector := colly.NewCollector()

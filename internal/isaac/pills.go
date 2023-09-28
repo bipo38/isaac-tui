@@ -1,6 +1,7 @@
 package isaac
 
 import (
+	"errors"
 	"isaac-scrapper/config"
 	"isaac-scrapper/internal/utils"
 	"log"
@@ -60,14 +61,13 @@ func scrapingPills() ([]Pill, error) {
 	var extension string
 
 	collector.OnHTML(config.Default["tableNode"], func(h *colly.HTMLElement) {
-		pill := newPill(h, &extension)
-
-		if pill.name == "" || strings.Contains(pill.name, "https") {
-			log.Println("skipping pill")
+		pill, err := newPill(h, &extension)
+		if err != nil {
+			log.Printf("error creating pill: %v", err)
 			return
 		}
 
-		pills = append(pills, pill)
+		pills = append(pills, *pill)
 	})
 
 	if err := collector.Visit(config.Pill["url"]); err != nil {
@@ -77,7 +77,7 @@ func scrapingPills() ([]Pill, error) {
 	return pills, nil
 }
 
-func newPill(el *colly.HTMLElement, extension *string) Pill {
+func newPill(el *colly.HTMLElement, extension *string) (*Pill, error) {
 
 	scrapingExtension := el.ChildAttr("th>b>a", "title")
 
@@ -85,7 +85,7 @@ func newPill(el *colly.HTMLElement, extension *string) Pill {
 		*extension = scrapingExtension
 	}
 
-	return Pill{
+	pill := Pill{
 		name:         el.ChildText("td:nth-child(2)"),
 		class:        el.ChildText("td:nth-child(3)"),
 		effect:       el.ChildText("td:nth-child(4)"),
@@ -93,4 +93,9 @@ func newPill(el *colly.HTMLElement, extension *string) Pill {
 		image:        "image",
 		extension:    parseExtension(*extension),
 	}
+	if pill.name == "" || strings.Contains(pill.name, "https") {
+		return nil, errors.New("name is empty")
+	}
+
+	return &pill, nil
 }
