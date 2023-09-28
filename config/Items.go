@@ -3,6 +3,6 @@ package config
 var Item = map[string]string{
 	"csvRoute": "items",
 	"csvName":  "items",
-	"imgRoute": "items/image",
+	"imgRoute": "items/images",
 	"url":      "https://bindingofisaacrebirth.fandom.com/wiki/Items",
 }

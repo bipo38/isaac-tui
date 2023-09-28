@@ -81,7 +81,7 @@ func newTransformation(el *colly.HTMLElement) (*Transformation, error) {
 	}
 
 	imgUrl := el.ChildAttr("td:nth-child(3)>a>img", "data-src")
-	if err := utils.DownloadImage(imgUrl, transformation.image, transformation.extension); err != nil {
+	if err := utils.DownloadImage(imgUrl, config.Transformation["imgRoute"], transformation.image); err != nil {
 		return nil, err
 	}
 	return &transformation, nil
