@@ -52,11 +52,11 @@ func scrapingTranformations() ([]Transformation, error) {
 
 	var transformations []Transformation
 
-	collector.OnHTML(config.Default["tableNode"], func(h *colly.HTMLElement) {
+	collector.OnHTML(config.Default["tableNode"], func(el *colly.HTMLElement) {
 
-		transformation, err := newTransformation(h)
+		transformation, err := newTransformation(el)
 		if err != nil {
-			log.Printf("error creating transformation: %v", err)
+			log.Printf("error creating transformation %v", err)
 		}
 
 		transformations = append(transformations, *transformation)
@@ -71,18 +71,34 @@ func scrapingTranformations() ([]Transformation, error) {
 }
 
 func newTransformation(el *colly.HTMLElement) (*Transformation, error) {
+
 	transformation := Transformation{
 		name:      el.ChildAttr("td:nth-child(2)", "data-sort-value"),
 		id_game:   el.ChildAttr("td:nth-child(1)", "data-sort-value"),
 		effect:    el.ChildText("td:nth-child(4)>p"),
-		image:     el.ChildAttr("td:nth-child(3)>a>img", "data-image-key"),
 		extension: parseExtension(el.ChildAttr("td:nth-child(2)>img", "title")),
 	}
 
-	imgUrl := el.ChildAttr("td:nth-child(3)>a>img", "data-src")
-	if err := utils.DownloadImage(imgUrl, config.Transformation["imgRoute"], transformation.image); err != nil {
+	if err := setTransformationImage(el, &transformation); err != nil {
 		return nil, err
 	}
+
 	return &transformation, nil
+
+}
+
+func setTransformationImage(el *colly.HTMLElement, transformation *Transformation) error {
+
+	imgUrl := el.ChildAttr("td:nth-child(3)>a>img", "data-src")
+	imgName := el.ChildAttr("td:nth-child(3)>a>img", "data-image-key")
+
+	imgPath, err := utils.DownloadImage(imgUrl, config.Transformation["imgFolder"], imgName)
+	if err != nil {
+		return err
+	}
+
+	transformation.image = imgPath
+
+	return nil
 
 }

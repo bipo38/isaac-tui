@@ -104,17 +104,10 @@ func newCharacter(el *colly.HTMLElement) (*Character, error) {
 	return &character, nil
 }
 
-func setImageCharacters(h *colly.HTMLElement, character *Character) error {
+func setCharacterExtension(h *colly.HTMLElement, character *Character) {
+	extension := h.ChildAttr("div#context-page.context-box>img", "title")
 
-	character.image = h.ChildAttr("img[alt=\"Character image\"]", "data-image-key")
-	imgUrl := h.ChildAttr("img[alt=\"Character image\"]", "data-src")
-
-	if imgUrl == "" {
-		return errors.New("image url is empty")
-	}
-
-	return utils.DownloadImage(imgUrl, config.Character["imgRoute"], character.image)
-
+	character.extension = parseExtension(extension)
 }
 
 func setCharacterUnlock(h *colly.HTMLElement, character *Character) {
@@ -128,8 +121,18 @@ func setCharacterUnlock(h *colly.HTMLElement, character *Character) {
 
 }
 
-func setCharacterExtension(h *colly.HTMLElement, character *Character) {
-	extension := h.ChildAttr("div#context-page.context-box>img", "title")
+func setImageCharacters(h *colly.HTMLElement, character *Character) error {
 
-	character.extension = parseExtension(extension)
+	imgName := h.ChildAttr("img[alt=\"Character image\"]", "data-image-key")
+	imgUrl := h.ChildAttr("img[alt=\"Character image\"]", "data-src")
+
+	imgPath, err := utils.DownloadImage(imgUrl, config.Character["imgFolder"], imgName)
+	if err != nil {
+		return err
+	}
+
+	character.image = imgPath
+
+	return nil
+
 }

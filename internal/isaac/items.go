@@ -144,8 +144,16 @@ func setItemPool(h *colly.HTMLElement, item *Item) {
 
 func setImageItems(h *colly.HTMLElement, item *Item) error {
 
-	item.image = h.ChildAttr("img[alt=\"Item icon\"]", "data-image-key")
+	imgName := h.ChildAttr("img[alt=\"Item icon\"]", "data-image-key")
 	imgUrl := h.ChildAttr("img[alt=\"Item icon\"]", "data-src")
 
-	return utils.DownloadImage(imgUrl, config.Item["imgRoute"], item.image)
+	imgPath, err := utils.DownloadImage(imgUrl, config.Item["imgFolder"], imgName)
+	if err != nil {
+		return err
+	}
+
+	item.image = imgPath
+
+	return nil
+
 }

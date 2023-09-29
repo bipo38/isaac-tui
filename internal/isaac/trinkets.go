@@ -1,6 +1,7 @@
 package isaac
 
 import (
+	"errors"
 	"fmt"
 	"isaac-scrapper/config"
 	"isaac-scrapper/internal/utils"
@@ -86,7 +87,10 @@ func newTrinket(el *colly.HTMLElement) (*Trinket, error) {
 		id_game: el.ChildText("td:nth-child(2)"),
 		quote:   el.ChildText("td:nth-child(4)"),
 		effect:  el.ChildText("td:nth-child(5)"),
-		image:   "image",
+	}
+
+	if trinket.name == "" {
+		return nil, errors.New("name is empty")
 	}
 
 	collector := colly.NewCollector()
@@ -126,8 +130,16 @@ func setTrinketExtension(h *colly.HTMLElement, trinket *Trinket) {
 }
 
 func setTrinketImage(h *colly.HTMLElement, trinket *Trinket) error {
-	trinket.image = h.ChildAttr("img[alt=\"Trinket icon\"]", "data-image-key")
+
+	imgName := h.ChildAttr("img[alt=\"Trinket icon\"]", "data-image-key")
 	imgUrl := h.ChildAttr("img[alt=\"Trinket icon\"]", "data-src")
 
-	return utils.DownloadImage(imgUrl, config.Trinket["imgRoute"], trinket.image)
+	imgPath, err := utils.DownloadImage(imgUrl, config.Trinket["imgFolder"], imgName)
+	if err != nil {
+		return err
+	}
+
+	trinket.image = imgPath
+	return nil
+
 }
