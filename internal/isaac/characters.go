@@ -92,7 +92,7 @@ func newCharacter(el *colly.HTMLElement) (*Character, error) {
 		setCharacterUnlock(h, &character)
 		setCharacterExtension(h, &character)
 
-		if err := setImage(h, &character); err != nil {
+		if err := setImageCharacters(h, &character); err != nil {
 			log.Printf("error download image: %v", err)
 			character.image = "Error Downloading Image"
 
@@ -106,7 +106,7 @@ func newCharacter(el *colly.HTMLElement) (*Character, error) {
 	return &character, nil
 }
 
-func setImage(h *colly.HTMLElement, character *Character) error {
+func setImageCharacters(h *colly.HTMLElement, character *Character) error {
 
 	character.image = h.ChildAttr("img[alt=\"Character image\"]", "data-image-key")
 	imgUrl := h.ChildAttr("img[alt=\"Character image\"]", "data-src")

@@ -105,7 +105,7 @@ func newItem(el *colly.HTMLElement) (*Item, error) {
 		setItemUnlock(h, &item)
 		setItemExtension(h, &item)
 		setItemPool(h, &item)
-
+		setImageItems(h, &item)
 	})
 
 	if err := collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], urlPath)); err != nil {
@@ -135,4 +135,12 @@ func setItemExtension(h *colly.HTMLElement, item *Item) {
 
 func setItemPool(h *colly.HTMLElement, item *Item) {
 	item.pool = h.ChildText("div[data-source=\"alias\"]>div>div.item-pool-list")
+}
+
+func setImageItems(h *colly.HTMLElement, item *Item) {
+
+	item.image = h.ChildAttr("img[alt=\"Item icon\"]", "data-image-key")
+	imgUrl := h.ChildAttr("img[alt=\"Item icon\"]", "data-src")
+
+	utils.DownloadImage(imgUrl, config.Item["imgRoute"], item.image)
 }
