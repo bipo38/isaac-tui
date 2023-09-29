@@ -93,9 +93,7 @@ func newCharacter(el *colly.HTMLElement) (*Character, error) {
 		setCharacterExtension(h, &character)
 
 		if err := setImageCharacters(h, &character); err != nil {
-			log.Printf("error download image: %v", err)
-			character.image = "Error Downloading Image"
-
+			log.Printf("error getting character image: %v", err)
 		}
 	})
 

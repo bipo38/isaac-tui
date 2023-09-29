@@ -102,10 +102,14 @@ func newItem(el *colly.HTMLElement) (*Item, error) {
 	collector := colly.NewCollector()
 
 	collector.OnHTML(config.Default["mainNode"], func(h *colly.HTMLElement) {
+
 		setItemUnlock(h, &item)
 		setItemExtension(h, &item)
 		setItemPool(h, &item)
-		setImageItems(h, &item)
+
+		if err := setImageItems(h, &item); err != nil {
+			log.Println("error getting items image:", err)
+		}
 	})
 
 	if err := collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], urlPath)); err != nil {
@@ -121,9 +125,10 @@ func setItemUnlock(h *colly.HTMLElement, item *Item) {
 
 	if unlock != "" {
 		item.unlock = unlock
-	} else {
-		item.unlock = "Unlocked"
+		return
 	}
+
+	item.unlock = "Unlocked"
 
 }
 
@@ -137,10 +142,10 @@ func setItemPool(h *colly.HTMLElement, item *Item) {
 	item.pool = h.ChildText("div[data-source=\"alias\"]>div>div.item-pool-list")
 }
 
-func setImageItems(h *colly.HTMLElement, item *Item) {
+func setImageItems(h *colly.HTMLElement, item *Item) error {
 
 	item.image = h.ChildAttr("img[alt=\"Item icon\"]", "data-image-key")
 	imgUrl := h.ChildAttr("img[alt=\"Item icon\"]", "data-src")
 
-	utils.DownloadImage(imgUrl, config.Item["imgRoute"], item.image)
+	return utils.DownloadImage(imgUrl, config.Item["imgRoute"], item.image)
 }

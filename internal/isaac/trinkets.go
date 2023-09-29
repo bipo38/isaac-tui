@@ -94,7 +94,11 @@ func newTrinket(el *colly.HTMLElement) (*Trinket, error) {
 	collector.OnHTML(config.Default["mainNode"], func(h *colly.HTMLElement) {
 		setTrinketUnlock(h, &trinket)
 		setTrinketExtension(h, &trinket)
-		setTrinketImage(h, &trinket)
+
+		if err := setTrinketImage(h, &trinket); err != nil {
+			log.Printf("error getting trinket image: %v", err)
+		}
+
 	})
 
 	if err := collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], urlPath)); err != nil {
@@ -121,9 +125,9 @@ func setTrinketExtension(h *colly.HTMLElement, trinket *Trinket) {
 	trinket.extension = parseExtension(extension)
 }
 
-func setTrinketImage(h *colly.HTMLElement, trinket *Trinket) {
+func setTrinketImage(h *colly.HTMLElement, trinket *Trinket) error {
 	trinket.image = h.ChildAttr("img[alt=\"Trinket icon\"]", "data-image-key")
 	imgUrl := h.ChildAttr("img[alt=\"Trinket icon\"]", "data-src")
 
-	utils.DownloadImage(imgUrl, config.Trinket["imgRoute"], trinket.image)
+	return utils.DownloadImage(imgUrl, config.Trinket["imgRoute"], trinket.image)
 }
