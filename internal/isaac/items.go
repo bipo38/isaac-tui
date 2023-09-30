@@ -90,7 +90,6 @@ func newItem(el *colly.HTMLElement) (*Item, error) {
 		id_game:   el.ChildText("td:nth-child(2)"),
 		quote:     el.ChildText("td:nth-child(4)"),
 		effect:    el.ChildText("td:nth-child(5)"),
-		image:     "imagenes3",
 		quality:   el.ChildText("td:nth-child(6)"),
 		extension: parseExtension(el.ChildAttr("td:nth-child(1)>img", "title")),
 	}
