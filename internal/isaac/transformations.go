@@ -57,6 +57,7 @@ func scrapingTranformations() ([]Transformation, error) {
 		transformation, err := newTransformation(el)
 		if err != nil {
 			log.Printf("error creating transformation %v", err)
+			return
 		}
 
 		transformations = append(transformations, *transformation)
