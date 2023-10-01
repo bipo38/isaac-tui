@@ -2,6 +2,7 @@ package utils
 
 import (
 	"os"
+	"strings"
 )
 
 func CreateDirs(path string) error {
@@ -11,7 +12,7 @@ func CreateDirs(path string) error {
 	}
 
 	if exist {
-		os.Remove(path)
+		return nil
 	}
 
 	if err := os.MkdirAll(path, os.ModePerm); err != nil {
@@ -23,18 +24,24 @@ func CreateDirs(path string) error {
 
 }
 
-func CreateFile(path string) (*os.File, error) {
+func CreateFile(fPath string) (*os.File, error) {
 
-	exist, err := ExistPath(path)
+	splitPath := strings.Split(fPath, "/")
+
+	fileRoute := strings.Join(splitPath[0:len(splitPath)-1], "/")
+
+	exist, err := ExistPath(fPath)
 	if err != nil {
 		return nil, err
 	}
 
 	if exist {
-		os.Remove(path)
+		os.Remove(fPath)
+	} else {
+		CreateDirs(fileRoute)
 	}
 
-	file, err := os.Create(path)
+	file, err := os.Create(fPath)
 	if err != nil {
 		return nil, err
 	}
