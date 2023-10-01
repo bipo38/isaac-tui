@@ -19,3 +19,13 @@ func parseExtension(extension string) string {
 	return split[len(split)-1]
 
 }
+
+func isUnlock(unlock string) string {
+
+	if unlock == "" {
+		return "Unlocked"
+	}
+
+	return unlock
+
+}

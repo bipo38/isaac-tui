@@ -132,11 +132,7 @@ func setTrinketImage(h *colly.HTMLElement, trinket *Trinket) error {
 func setTrinketUnlock(h *colly.HTMLElement, trinket *Trinket) {
 	unlock := h.ChildText("div[data-source=\"unlocked by\"]>div")
 
-	if unlock != "" {
-		trinket.unlock = unlock
-	} else {
-		trinket.unlock = "Unlocked"
-	}
+	trinket.unlock = isUnlock(unlock)
 
 }
 

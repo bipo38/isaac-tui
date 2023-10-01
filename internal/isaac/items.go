@@ -143,12 +143,7 @@ func setImageItems(el *colly.HTMLElement, item *Item) error {
 func setItemUnlock(h *colly.HTMLElement, item *Item) {
 	unlock := h.ChildText("div[data-source=\"unlocked by\"]>div")
 
-	if unlock != "" {
-		item.unlock = unlock
-		return
-	}
-
-	item.unlock = "Unlocked"
+	item.unlock = isUnlock(unlock)
 
 }
 

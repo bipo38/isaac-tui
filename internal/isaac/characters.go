@@ -113,11 +113,7 @@ func setCharacterExtension(h *colly.HTMLElement, character *Character) {
 func setCharacterUnlock(h *colly.HTMLElement, character *Character) {
 	unlock := h.ChildText("div[data-source=\"unlocked by\"]>div")
 
-	if unlock != "" {
-		character.unlock = unlock
-	} else {
-		character.unlock = "Unlocked"
-	}
+	character.unlock = isUnlock(unlock)
 
 }
 
