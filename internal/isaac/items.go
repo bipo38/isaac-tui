@@ -30,7 +30,7 @@ func CreateItemsCsv() error {
 
 	for _, v := range items {
 
-		item := []string{
+		err := writer.Write([]string{
 			v.name,
 			v.id_game,
 			v.quote,
@@ -40,17 +40,21 @@ func CreateItemsCsv() error {
 			v.quality,
 			v.pool,
 			v.extension,
-		}
+		})
 
-		if err := writer.Write(item); err != nil {
+		if err != nil {
 			log.Println("error writing record to csv:", err)
 			continue
 		}
+
 	}
 
-	defer writer.Flush()
+	writer.Flush()
+	if err := writer.Error(); err != nil {
+		log.Println("csv writer error", err)
+	}
 
-	defer file.Close()
+	file.Close()
 
 	return nil
 
@@ -83,20 +87,24 @@ func scrapingItems() ([]Item, error) {
 
 func newItem(el *colly.HTMLElement) (*Item, error) {
 
-	urlPath := el.ChildAttr("a", "href")
-
 	item := Item{
-		name:      el.ChildAttr("td:nth-child(1)", "data-sort-value"),
-		id_game:   el.ChildText("td:nth-child(2)"),
-		quote:     el.ChildText("td:nth-child(4)"),
-		effect:    el.ChildText("td:nth-child(5)"),
-		quality:   el.ChildText("td:nth-child(6)"),
-		extension: parseExtension(el.ChildAttr("td:nth-child(1)>img", "title")),
+		name: el.ChildAttr("td:nth-child(1)", "data-sort-value"),
 	}
 
-	if item.name == "" {
+	if item.name == "" || item.name == "Tonsil" {
 		return nil, errors.New("name is empty")
 	}
+
+	item.id_game = el.ChildText("td:nth-child(2)")
+	item.quote = el.ChildText("td:nth-child(4)")
+	item.effect = el.ChildText("td:nth-child(5)")
+	item.quality = el.ChildText("td:nth-child(6)")
+
+	if err := setImageItems(el, &item); err != nil {
+		return nil, err
+	}
+
+	urlPath := el.ChildAttr("a", "href")
 
 	collector := colly.NewCollector()
 
@@ -106,9 +114,6 @@ func newItem(el *colly.HTMLElement) (*Item, error) {
 		setItemExtension(h, &item)
 		setItemPool(h, &item)
 
-		if err := setImageItems(h, &item); err != nil {
-			log.Println("error getting items image:", err)
-		}
 	})
 
 	if err := collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], urlPath)); err != nil {
@@ -116,6 +121,22 @@ func newItem(el *colly.HTMLElement) (*Item, error) {
 	}
 
 	return &item, nil
+
+}
+
+func setImageItems(el *colly.HTMLElement, item *Item) error {
+
+	imgUrl := el.ChildAttr("td:nth-child(3) a>img:nth-child(1)", "data-src")
+	imgName := el.ChildAttr("td:nth-child(3) a>img:nth-child(1)", "data-image-key")
+
+	imgPath, err := utils.DownloadImage(imgUrl, config.Item["imgFolder"], imgName)
+	if err != nil {
+		return err
+	}
+
+	item.image = imgPath
+
+	return nil
 
 }
 
@@ -139,20 +160,4 @@ func setItemExtension(h *colly.HTMLElement, item *Item) {
 
 func setItemPool(h *colly.HTMLElement, item *Item) {
 	item.pool = h.ChildText("div[data-source=\"alias\"]>div>div.item-pool-list")
-}
-
-func setImageItems(h *colly.HTMLElement, item *Item) error {
-
-	imgName := h.ChildAttr("img[alt=\"Item icon\"]", "data-image-key")
-	imgUrl := h.ChildAttr("img[alt=\"Item icon\"]", "data-src")
-
-	imgPath, err := utils.DownloadImage(imgUrl, config.Item["imgFolder"], imgName)
-	if err != nil {
-		return err
-	}
-
-	item.image = imgPath
-
-	return nil
-
 }
