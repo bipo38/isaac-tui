@@ -83,14 +83,19 @@ func newTrinket(el *colly.HTMLElement) (*Trinket, error) {
 	urlPath := el.ChildAttr("a", "href")
 
 	trinket := Trinket{
-		name:    el.ChildAttr("td:nth-child(1)", "data-sort-value"),
-		id_game: el.ChildText("td:nth-child(2)"),
-		quote:   el.ChildText("td:nth-child(4)"),
-		effect:  el.ChildText("td:nth-child(5)"),
+		name: el.ChildAttr("td:nth-child(1)", "data-sort-value"),
 	}
 
 	if trinket.name == "" {
 		return nil, errors.New("name is empty")
+	}
+
+	trinket.id_game = el.ChildText("td:nth-child(2)")
+	trinket.quote = el.ChildText("td:nth-child(4)")
+	trinket.effect = el.ChildText("td:nth-child(5)")
+
+	if err := setTrinketImage(el, &trinket); err != nil {
+		log.Printf("error getting trinket image: %v", err)
 	}
 
 	collector := colly.NewCollector()
@@ -99,10 +104,6 @@ func newTrinket(el *colly.HTMLElement) (*Trinket, error) {
 		setTrinketUnlock(h, &trinket)
 		setTrinketExtension(h, &trinket)
 
-		if err := setTrinketImage(h, &trinket); err != nil {
-			log.Printf("error getting trinket image: %v", err)
-		}
-
 	})
 
 	if err := collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], urlPath)); err != nil {
@@ -110,6 +111,21 @@ func newTrinket(el *colly.HTMLElement) (*Trinket, error) {
 	}
 
 	return &trinket, nil
+
+}
+
+func setTrinketImage(h *colly.HTMLElement, trinket *Trinket) error {
+
+	imgUrl := h.ChildAttr("td:nth-child(3) a>img:nth-child(1)", "data-src")
+	imgName := h.ChildAttr("td:nth-child(3) a>img:nth-child(1)", "data-image-key")
+
+	imgPath, err := utils.DownloadImage(imgUrl, config.Trinket["imgFolder"], imgName)
+	if err != nil {
+		return err
+	}
+
+	trinket.image = imgPath
+	return nil
 
 }
 
@@ -127,19 +143,4 @@ func setTrinketUnlock(h *colly.HTMLElement, trinket *Trinket) {
 func setTrinketExtension(h *colly.HTMLElement, trinket *Trinket) {
 	extension := h.ChildAttr("div#context-page.context-box>img", "title")
 	trinket.extension = parseExtension(extension)
-}
-
-func setTrinketImage(h *colly.HTMLElement, trinket *Trinket) error {
-
-	imgName := h.ChildAttr("img[alt=\"Trinket icon\"]", "data-image-key")
-	imgUrl := h.ChildAttr("img[alt=\"Trinket icon\"]", "data-src")
-
-	imgPath, err := utils.DownloadImage(imgUrl, config.Trinket["imgFolder"], imgName)
-	if err != nil {
-		return err
-	}
-
-	trinket.image = imgPath
-	return nil
-
 }
