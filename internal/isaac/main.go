@@ -10,10 +10,12 @@ func parseExtension(extension string) string {
 		return "Rebirth"
 	}
 
-	if extension == "Added in Afterbirth †" || extension == "Afterbirth †" {
+	split := strings.Split(extension, " ")
+
+	if split[len(split)-1] == "†" {
 		return "Afterbirth Plus"
 	}
 
-	return strings.ReplaceAll(extension, "Added in", "")
+	return split[len(split)-1]
 
 }
