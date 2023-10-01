@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"isaac-scrapper/config"
 	"os"
 	"testing"
@@ -27,7 +26,6 @@ func TestDownloadImage(t *testing.T) {
 
 			got, err := DownloadImage(tt.url, tt.fPath, tt.fName)
 
-			fmt.Println(got)
 			if err != nil {
 				t.Errorf("got %v, want %v", err, nil)
 			}
