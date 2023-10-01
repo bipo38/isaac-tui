@@ -2,7 +2,6 @@ package utils
 
 import (
 	"errors"
-	"fmt"
 	"io"
 	"net/http"
 )
@@ -38,7 +37,5 @@ func DownloadImage(url, fPath, fName string) (string, error) {
 		return "", err
 	}
 
-	imgPath := fmt.Sprintf("./%s/%s", fPath, fName)
-
-	return imgPath, nil
+	return filePath, nil
 }
