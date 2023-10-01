@@ -12,7 +12,7 @@ type Transformation struct {
 	name, id_game, effect, image, extension string
 }
 
-func CreateTransformationCsv() error {
+func CreateTransformationsCsv() error {
 
 	var t Transformation
 

@@ -114,7 +114,7 @@ func (m model) View() string {
 func createSelectedCsv(checks map[int]string) {
 
 	categories := map[string]func() error{
-		"Transformations": CreateTransformationCsv,
+		"Transformations": CreateTransformationsCsv,
 		"Pills":           CreatePillsCsv,
 		"Items":           CreateItemsCsv,
 		"Trinkets":        CreateTrinketsCsv,
