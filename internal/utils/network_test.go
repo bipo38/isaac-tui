@@ -16,7 +16,7 @@ func TestDownloadImage(t *testing.T) {
 			url:      "https://static.wikia.nocookie.net/bindingofisaacre_gamepedia/images/9/91/Collectible_Abel_icon.png/revision/latest?cb=20210821083135",
 			fPath:    config.Item["imgFolder"],
 			fName:    "Collectible_Abel_icon.png",
-			expected: "./items/images/Collectible_Abel_icon.png",
+			expected: "isaac/items/images/Collectible_Abel_icon.png",
 		},
 	}
 

@@ -10,11 +10,7 @@ func CreateCsv(category interface{}, fPath, fName string) (*csv.Writer, *os.File
 
 	fName = ParserFileName(fName, "csv")
 
-	route, fPath := RouteParser(fPath, fName)
-
-	if err := CreateDirs(route); err != nil {
-		return nil, nil, err
-	}
+	_, fPath = RouteParser(fPath, fName)
 
 	file, err := CreateFile(fPath)
 	if err != nil {
