@@ -53,7 +53,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.cursor++
 			}
 
-		case "enter":
+		case " ":
 			_, ok := m.checks[m.cursor]
 			if ok {
 				delete(m.checks, m.cursor)
@@ -61,7 +61,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.checks[m.cursor] = m.choices[m.cursor]
 			}
 
-		case " ":
+		case "enter":
 
 			if len(m.checks) <= 0 {
 				return m, nil
@@ -97,7 +97,7 @@ func (m model) View() string {
 
 		checked := " "
 		if _, ok := m.checks[i]; ok {
-			checked = "x"
+			checked = "†"
 		}
 
 		s += fmt.Sprintf("%s %s %s\n", cursor, checked, choice)
