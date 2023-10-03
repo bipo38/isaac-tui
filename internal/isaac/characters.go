@@ -75,16 +75,15 @@ func scrapingCharacters() ([]Character, error) {
 
 func newCharacter(el *colly.HTMLElement) (*Character, error) {
 
-	urlPath := el.ChildAttr("a", "href")
-
 	character := Character{
-		name:  el.ChildAttr("a", "title"),
-		image: el.ChildAttr("td:nth-child(3)>a>img", "data-image-key"),
+		name: el.ChildAttr("a", "title"),
 	}
 
 	if character.name == "" {
 		return nil, errors.New("name is empty")
 	}
+
+	urlPath := el.ChildAttr("a", "href")
 
 	collector := colly.NewCollector()
 
@@ -104,12 +103,6 @@ func newCharacter(el *colly.HTMLElement) (*Character, error) {
 	return &character, nil
 }
 
-func setCharacterExtension(h *colly.HTMLElement, character *Character) {
-	extension := h.ChildAttr("div#context-page.context-box>img", "title")
-
-	character.extension = parseExtension(extension)
-}
-
 func setCharacterUnlock(h *colly.HTMLElement, character *Character) {
 	unlock := h.ChildText("div[data-source=\"unlocked by\"]>div")
 
@@ -117,10 +110,22 @@ func setCharacterUnlock(h *colly.HTMLElement, character *Character) {
 
 }
 
+func setCharacterExtension(h *colly.HTMLElement, character *Character) {
+	extension := h.ChildAttr("div#context-page.context-box>img", "title")
+
+	character.extension = parseExtension(extension)
+}
+
 func setImageCharacters(h *colly.HTMLElement, character *Character) error {
 
 	imgName := h.ChildAttr("img[alt=\"Character image\"]", "data-image-key")
 	imgUrl := h.ChildAttr("img[alt=\"Character image\"]", "data-src")
+
+	if imgName == "" {
+
+		imgName = h.ChildAttr("div.infobox2>div:nth-child(2) img:nth-child(1)", "data-image-key")
+		imgUrl = h.ChildAttr("div.infobox2>div:nth-child(2) img:nth-child(1)", "data-src")
+	}
 
 	imgPath, err := utils.DownloadImage(imgUrl, config.Character["imgFolder"], imgName)
 	if err != nil {
