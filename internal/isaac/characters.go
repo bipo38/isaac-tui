@@ -106,6 +106,10 @@ func newCharacter(el *colly.HTMLElement) (*Character, error) {
 func setCharacterUnlock(h *colly.HTMLElement, character *Character) {
 	unlock := h.ChildText("div[data-source=\"unlocked by\"]>div")
 
+	if unlock == "" {
+		unlock = h.ChildText("div.infobox2>div:last-child")
+	}
+
 	character.unlock = isUnlock(unlock)
 
 }
