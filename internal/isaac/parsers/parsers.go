@@ -1,10 +1,10 @@
-package isaac
+package parsers
 
 import (
 	"strings"
 )
 
-func parseExtension(extension string) string {
+func ParseExtension(extension string) string {
 
 	if extension == "" {
 		return "Rebirth"
@@ -20,7 +20,7 @@ func parseExtension(extension string) string {
 
 }
 
-func isUnlock(unlock string) string {
+func ParseUnlock(unlock string) string {
 
 	if unlock == "" {
 		return "Unlocked"

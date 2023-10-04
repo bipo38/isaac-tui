@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"isaac-scrapper/config"
+	"isaac-scrapper/internal/isaac/parsers"
 	"isaac-scrapper/internal/utils"
 	"log"
 
@@ -143,14 +144,14 @@ func setImageItems(el *colly.HTMLElement, item *Item) error {
 func setItemUnlock(h *colly.HTMLElement, item *Item) {
 	unlock := h.ChildText("div[data-source=\"unlocked by\"]>div")
 
-	item.unlock = isUnlock(unlock)
+	item.unlock = parsers.ParseUnlock(unlock)
 
 }
 
 func setItemExtension(h *colly.HTMLElement, item *Item) {
 	extension := h.ChildAttr("div#context-page.context-box>img", "title")
 
-	item.extension = parseExtension(extension)
+	item.extension = parsers.ParseExtension(extension)
 }
 
 func setItemPool(h *colly.HTMLElement, item *Item) {

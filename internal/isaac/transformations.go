@@ -2,6 +2,7 @@ package isaac
 
 import (
 	"isaac-scrapper/config"
+	"isaac-scrapper/internal/isaac/parsers"
 	"isaac-scrapper/internal/utils"
 	"log"
 
@@ -77,7 +78,7 @@ func newTransformation(el *colly.HTMLElement) (*Transformation, error) {
 		name:      el.ChildAttr("td:nth-child(2)", "data-sort-value"),
 		id_game:   el.ChildAttr("td:nth-child(1)", "data-sort-value"),
 		effect:    el.ChildText("td:nth-child(4)>p"),
-		extension: parseExtension(el.ChildAttr("td:nth-child(2)>img", "title")),
+		extension: parsers.ParseExtension(el.ChildAttr("td:nth-child(2)>img", "title")),
 	}
 
 	if err := setTransformationImage(el, &transformation); err != nil {

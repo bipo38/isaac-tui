@@ -1,6 +1,9 @@
 package isaac
 
-import "testing"
+import (
+	"isaac-scrapper/internal/isaac/parsers"
+	"testing"
+)
 
 func TestParseExtension(t *testing.T) {
 
@@ -42,7 +45,7 @@ func TestParseExtension(t *testing.T) {
 
 		t.Run("Test Parse Extension", func(t *testing.T) {
 
-			got := parseExtension(tt.extension)
+			got := parsers.ParseExtension(tt.extension)
 
 			if got != tt.expected {
 				t.Errorf("got %s, want %s", got, tt.expected)

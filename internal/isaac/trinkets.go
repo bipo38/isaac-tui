@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"isaac-scrapper/config"
+	"isaac-scrapper/internal/isaac/parsers"
 	"isaac-scrapper/internal/utils"
 	"log"
 
@@ -132,11 +133,11 @@ func setTrinketImage(h *colly.HTMLElement, trinket *Trinket) error {
 func setTrinketUnlock(h *colly.HTMLElement, trinket *Trinket) {
 	unlock := h.ChildText("div[data-source=\"unlocked by\"]>div")
 
-	trinket.unlock = isUnlock(unlock)
+	trinket.unlock = parsers.ParseUnlock(unlock)
 
 }
 
 func setTrinketExtension(h *colly.HTMLElement, trinket *Trinket) {
 	extension := h.ChildAttr("div#context-page.context-box>img", "title")
-	trinket.extension = parseExtension(extension)
+	trinket.extension = parsers.ParseExtension(extension)
 }

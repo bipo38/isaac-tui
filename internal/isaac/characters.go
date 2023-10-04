@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"isaac-scrapper/config"
+	"isaac-scrapper/internal/isaac/parsers"
 	"isaac-scrapper/internal/utils"
 	"log"
 
@@ -110,14 +111,14 @@ func setCharacterUnlock(h *colly.HTMLElement, character *Character) {
 		unlock = h.ChildText("div.infobox2>div:last-child")
 	}
 
-	character.unlock = isUnlock(unlock)
+	character.unlock = parsers.ParseUnlock(unlock)
 
 }
 
 func setCharacterExtension(h *colly.HTMLElement, character *Character) {
 	extension := h.ChildAttr("div#context-page.context-box>img", "title")
 
-	character.extension = parseExtension(extension)
+	character.extension = parsers.ParseExtension(extension)
 }
 
 func setImageCharacters(h *colly.HTMLElement, character *Character) error {

@@ -3,6 +3,7 @@ package isaac
 import (
 	"errors"
 	"isaac-scrapper/config"
+	"isaac-scrapper/internal/isaac/parsers"
 	"isaac-scrapper/internal/utils"
 	"log"
 	"strings"
@@ -91,7 +92,7 @@ func newPill(el *colly.HTMLElement, extension *string) (*Pill, error) {
 		effect:       el.ChildText("td:nth-child(4)"),
 		horse_effect: el.ChildText("td:last-child"),
 		image:        "image",
-		extension:    parseExtension(*extension),
+		extension:    parsers.ParseExtension(*extension),
 	}
 	if pill.name == "" || strings.Contains(pill.name, "https") {
 		return nil, errors.New("name is empty")
