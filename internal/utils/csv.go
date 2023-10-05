@@ -2,15 +2,16 @@ package utils
 
 import (
 	"encoding/csv"
+	"isaac-scrapper/internal/manipulation"
 	"os"
 )
 
 func CreateCsv(category interface{}, fPath, fName string) (*csv.Writer, *os.File, error) {
-	headers := GetHeaders(category)
+	headers := manipulation.GetHeaders(category)
 
-	fName = ParserFileName(fName, "csv")
+	fName = manipulation.ParserFileName(fName, "csv")
 
-	_, fPath = RouteParser(fPath, fName)
+	_, fPath = manipulation.RouteParser(fPath, fName)
 
 	file, err := CreateFile(fPath)
 	if err != nil {

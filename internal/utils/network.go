@@ -3,12 +3,13 @@ package utils
 import (
 	"errors"
 	"io"
+	"isaac-scrapper/internal/manipulation"
 	"net/http"
 )
 
 func DownloadImage(url, fPath, fName string) (string, error) {
 
-	route, filePath := RouteParser(fPath, fName)
+	route, filePath := manipulation.RouteParser(fPath, fName)
 
 	if err := CreateDirs(route); err != nil {
 		return "", err
