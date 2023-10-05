@@ -1,8 +1,10 @@
 package main
 
-import "isaac-scrapper/internal/isaac"
+import (
+	"isaac-scrapper/internal/isaac/tui"
+)
 
 func main() {
 
-	isaac.StartScraper()
+	tui.StartScraper()
 }

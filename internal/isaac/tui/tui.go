@@ -1,7 +1,8 @@
-package isaac
+package tui
 
 import (
 	"fmt"
+	"isaac-scrapper/internal/isaac"
 	"os"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -114,11 +115,11 @@ func (m model) View() string {
 func createSelectedCsv(checks map[int]string) {
 
 	categories := map[string]func() error{
-		"Transformations": CreateTransformationsCsv,
-		"Pills":           CreatePillsCsv,
-		"Items":           CreateItemsCsv,
-		"Trinkets":        CreateTrinketsCsv,
-		"Characters":      CreateCharactersCsv,
+		"Transformations": isaac.CreateTransformationsCsv,
+		"Pills":           isaac.CreatePillsCsv,
+		"Items":           isaac.CreateItemsCsv,
+		"Trinkets":        isaac.CreateTrinketsCsv,
+		"Characters":      isaac.CreateCharactersCsv,
 	}
 
 	for _, check := range checks {
