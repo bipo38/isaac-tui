@@ -1,4 +1,4 @@
-package utils
+package creates
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ var globalPath = "test/subtest"
 
 func TestCreateDirs(t *testing.T) {
 
-	got := CreateDirs(globalPath)
+	got := Dirs(globalPath)
 
 	if got != nil {
 		t.Errorf("got %v, want %v", got, nil)
@@ -22,7 +22,7 @@ func TestCreateDirs(t *testing.T) {
 
 func TestCreateFile(t *testing.T) {
 
-	got, err := CreateFile(fmt.Sprintf("%s/test.rs", globalPath))
+	got, err := File(fmt.Sprintf("%s/test.rs", globalPath))
 
 	if err != nil {
 		t.Errorf("got %v, want %v", got, nil)
@@ -51,7 +51,7 @@ func TestExistPath(t *testing.T) {
 		},
 	}
 
-	CreateDirs(cases[0].path)
+	Dirs(cases[0].path)
 
 	for _, tt := range cases {
 

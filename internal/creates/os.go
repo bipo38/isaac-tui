@@ -1,11 +1,11 @@
-package utils
+package creates
 
 import (
 	"os"
 	"strings"
 )
 
-func CreateDirs(path string) error {
+func Dirs(path string) error {
 	exist, err := ExistPath(path)
 	if err != nil {
 		return err
@@ -24,7 +24,7 @@ func CreateDirs(path string) error {
 
 }
 
-func CreateFile(fPath string) (*os.File, error) {
+func File(fPath string) (*os.File, error) {
 
 	splitPath := strings.Split(fPath, "/")
 
@@ -38,7 +38,7 @@ func CreateFile(fPath string) (*os.File, error) {
 	if exist {
 		os.Remove(fPath)
 	} else {
-		CreateDirs(fileRoute)
+		Dirs(fileRoute)
 	}
 
 	file, err := os.Create(fPath)

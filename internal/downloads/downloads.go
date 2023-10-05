@@ -3,8 +3,8 @@ package downloads
 import (
 	"errors"
 	"io"
+	"isaac-scrapper/internal/creates"
 	"isaac-scrapper/internal/manipulation"
-	"isaac-scrapper/internal/utils"
 	"net/http"
 )
 
@@ -12,7 +12,7 @@ func Image(url, fPath, fName string) (string, error) {
 
 	route, filePath := manipulation.RouteParser(fPath, fName)
 
-	if err := utils.CreateDirs(route); err != nil {
+	if err := creates.Dirs(route); err != nil {
 		return "", err
 	}
 
@@ -27,7 +27,7 @@ func Image(url, fPath, fName string) (string, error) {
 		return "", errors.New("received non 200 response code")
 	}
 
-	file, err := utils.CreateFile(filePath)
+	file, err := creates.File(filePath)
 	if err != nil {
 		return "", err
 	}

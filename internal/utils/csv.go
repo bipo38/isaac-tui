@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/csv"
+	"isaac-scrapper/internal/creates"
 	"isaac-scrapper/internal/manipulation"
 	"os"
 )
@@ -13,7 +14,7 @@ func CreateCsv(category interface{}, fPath, fName string) (*csv.Writer, *os.File
 
 	_, fPath = manipulation.RouteParser(fPath, fName)
 
-	file, err := CreateFile(fPath)
+	file, err := creates.File(fPath)
 	if err != nil {
 		return nil, nil, err
 	}
