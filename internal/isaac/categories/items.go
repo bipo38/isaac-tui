@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"isaac-scrapper/config"
+	"isaac-scrapper/internal/downloads"
 	"isaac-scrapper/internal/isaac/parsers"
 	"isaac-scrapper/internal/utils"
 	"log"
@@ -130,7 +131,7 @@ func setImageItems(el *colly.HTMLElement, item *Item) error {
 	imgUrl := el.ChildAttr("td:nth-child(3) a>img:nth-child(1)", "data-src")
 	imgName := el.ChildAttr("td:nth-child(3) a>img:nth-child(1)", "data-image-key")
 
-	imgPath, err := utils.DownloadImage(imgUrl, config.Item["imgFolder"], imgName)
+	imgPath, err := downloads.Image(imgUrl, config.Item["imgFolder"], imgName)
 	if err != nil {
 		return err
 	}

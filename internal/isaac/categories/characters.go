@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"isaac-scrapper/config"
+	"isaac-scrapper/internal/downloads"
 	"isaac-scrapper/internal/isaac/parsers"
 	"isaac-scrapper/internal/utils"
 	"log"
@@ -132,7 +133,7 @@ func setImageCharacters(h *colly.HTMLElement, character *Character) error {
 		imgUrl = h.ChildAttr("div.infobox2>div:nth-child(2) img:nth-child(1)", "data-src")
 	}
 
-	imgPath, err := utils.DownloadImage(imgUrl, config.Character["imgFolder"], imgName)
+	imgPath, err := downloads.Image(imgUrl, config.Character["imgFolder"], imgName)
 	if err != nil {
 		return err
 	}

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"isaac-scrapper/config"
+	"isaac-scrapper/internal/downloads"
 	"isaac-scrapper/internal/isaac/parsers"
 	"isaac-scrapper/internal/utils"
 	"log"
@@ -120,7 +121,7 @@ func setTrinketImage(h *colly.HTMLElement, trinket *Trinket) error {
 	imgUrl := h.ChildAttr("td:nth-child(3) a>img:nth-child(1)", "data-src")
 	imgName := h.ChildAttr("td:nth-child(3) a>img:nth-child(1)", "data-image-key")
 
-	imgPath, err := utils.DownloadImage(imgUrl, config.Trinket["imgFolder"], imgName)
+	imgPath, err := downloads.Image(imgUrl, config.Trinket["imgFolder"], imgName)
 	if err != nil {
 		return err
 	}

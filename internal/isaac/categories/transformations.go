@@ -2,6 +2,7 @@ package categories
 
 import (
 	"isaac-scrapper/config"
+	"isaac-scrapper/internal/downloads"
 	"isaac-scrapper/internal/isaac/parsers"
 	"isaac-scrapper/internal/utils"
 	"log"
@@ -94,7 +95,7 @@ func setTransformationImage(el *colly.HTMLElement, transformation *Transformatio
 	imgUrl := el.ChildAttr("td:nth-child(3)>a>img", "data-src")
 	imgName := el.ChildAttr("td:nth-child(3)>a>img", "data-image-key")
 
-	imgPath, err := utils.DownloadImage(imgUrl, config.Transformation["imgFolder"], imgName)
+	imgPath, err := downloads.Image(imgUrl, config.Transformation["imgFolder"], imgName)
 	if err != nil {
 		return err
 	}

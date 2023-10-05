@@ -1,4 +1,4 @@
-package utils
+package downloads
 
 import (
 	"isaac-scrapper/config"
@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestDownloadImage(t *testing.T) {
+func TestImage(t *testing.T) {
 
 	cases := []struct {
 		url, fPath, fName string
@@ -24,7 +24,7 @@ func TestDownloadImage(t *testing.T) {
 
 		t.Run("Test Download Image", func(t *testing.T) {
 
-			got, err := DownloadImage(tt.url, tt.fPath, tt.fName)
+			got, err := Image(tt.url, tt.fPath, tt.fName)
 
 			if err != nil {
 				t.Errorf("got %v, want %v", err, nil)
