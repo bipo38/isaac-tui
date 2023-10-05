@@ -3,8 +3,8 @@ package categories
 import (
 	"errors"
 	"isaac-scrapper/config"
+	"isaac-scrapper/internal/creates"
 	"isaac-scrapper/internal/isaac/parsers"
-	"isaac-scrapper/internal/utils"
 	"log"
 	"strings"
 
@@ -19,7 +19,7 @@ func CreatePillsCsv() error {
 
 	var t Pill
 
-	writer, file, err := utils.CreateCsv(t, config.Pill["csvRoute"], config.Pill["csvName"])
+	writer, file, err := creates.Csv(t, config.Pill["csvRoute"], config.Pill["csvName"])
 	if err != nil {
 		return err
 	}

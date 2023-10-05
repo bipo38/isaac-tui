@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"isaac-scrapper/config"
+	"isaac-scrapper/internal/creates"
 	"isaac-scrapper/internal/downloads"
 	"isaac-scrapper/internal/isaac/parsers"
-	"isaac-scrapper/internal/utils"
 	"log"
 
 	"github.com/gocolly/colly"
@@ -20,7 +20,7 @@ func CreateItemsCsv() error {
 
 	var t Item
 
-	writer, file, err := utils.CreateCsv(t, config.Item["csvRoute"], config.Item["csvName"])
+	writer, file, err := creates.Csv(t, config.Item["csvRoute"], config.Item["csvName"])
 	if err != nil {
 		return err
 	}

@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"isaac-scrapper/config"
+	"isaac-scrapper/internal/creates"
 	"isaac-scrapper/internal/downloads"
 	"isaac-scrapper/internal/isaac/parsers"
-	"isaac-scrapper/internal/utils"
 	"log"
 
 	"github.com/gocolly/colly"
@@ -19,7 +19,7 @@ type Character struct {
 func CreateCharactersCsv() error {
 	var t Character
 
-	writer, file, err := utils.CreateCsv(t, config.Character["csvRoute"], config.Character["csvName"])
+	writer, file, err := creates.Csv(t, config.Character["csvRoute"], config.Character["csvName"])
 	if err != nil {
 		return err
 	}

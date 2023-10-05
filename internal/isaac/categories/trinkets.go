@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"isaac-scrapper/config"
+	"isaac-scrapper/internal/creates"
 	"isaac-scrapper/internal/downloads"
 	"isaac-scrapper/internal/isaac/parsers"
-	"isaac-scrapper/internal/utils"
 	"log"
 
 	"github.com/gocolly/colly"
@@ -20,7 +20,7 @@ func CreateTrinketsCsv() error {
 
 	var t Trinket
 
-	writer, file, err := utils.CreateCsv(t, config.Trinket["csvRoute"], config.Trinket["csvName"])
+	writer, file, err := creates.Csv(t, config.Trinket["csvRoute"], config.Trinket["csvName"])
 	if err != nil {
 		return err
 	}

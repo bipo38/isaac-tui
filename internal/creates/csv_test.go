@@ -1,4 +1,4 @@
-package utils
+package creates
 
 import (
 	"encoding/csv"
@@ -30,7 +30,7 @@ func TestCreateCsv(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 
-			got, got1, err := CreateCsv(tt, tt.fPath, tt.fName)
+			got, got1, err := Csv(tt, tt.fPath, tt.fName)
 
 			if err != nil {
 				t.Errorf("CreateCsv() error = %v, wantErr %v", err, tt.wantErr)

@@ -1,20 +1,19 @@
-package utils
+package creates
 
 import (
 	"encoding/csv"
-	"isaac-scrapper/internal/creates"
 	"isaac-scrapper/internal/manipulation"
 	"os"
 )
 
-func CreateCsv(category interface{}, fPath, fName string) (*csv.Writer, *os.File, error) {
+func Csv(category interface{}, fPath, fName string) (*csv.Writer, *os.File, error) {
 	headers := manipulation.GetHeaders(category)
 
 	fName = manipulation.ParserFileName(fName, "csv")
 
 	_, fPath = manipulation.RouteParser(fPath, fName)
 
-	file, err := creates.File(fPath)
+	file, err := File(fPath)
 	if err != nil {
 		return nil, nil, err
 	}

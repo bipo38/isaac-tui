@@ -2,9 +2,9 @@ package categories
 
 import (
 	"isaac-scrapper/config"
+	"isaac-scrapper/internal/creates"
 	"isaac-scrapper/internal/downloads"
 	"isaac-scrapper/internal/isaac/parsers"
-	"isaac-scrapper/internal/utils"
 	"log"
 
 	"github.com/gocolly/colly"
@@ -18,7 +18,7 @@ func CreateTransformationsCsv() error {
 
 	var t Transformation
 
-	writer, file, err := utils.CreateCsv(t, config.Transformation["csvRoute"], config.Transformation["csvName"])
+	writer, file, err := creates.Csv(t, config.Transformation["csvRoute"], config.Transformation["csvName"])
 	if err != nil {
 		return err
 	}
