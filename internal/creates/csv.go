@@ -6,23 +6,23 @@ import (
 	"os"
 )
 
-func Csv(category interface{}, fPath, fName string) (*csv.Writer, *os.File, error) {
-	headers := manipulation.GetHeaders(category)
+func Csv(c interface{}, fp, fn string) (*csv.Writer, *os.File, error) {
+	headers := manipulation.GetHeaders(c)
 
-	fName = manipulation.ParserFileName(fName, "csv")
+	fn = manipulation.ParserFileName(fn, "csv")
 
-	_, fPath = manipulation.RouteParser(fPath, fName)
+	_, fp = manipulation.RouteParser(fp, fn)
 
-	file, err := File(fPath)
+	f, err := File(fp)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	writer := csv.NewWriter(file)
-	if err := writer.Write(headers); err != nil {
+	w := csv.NewWriter(f)
+	if err := w.Write(headers); err != nil {
 		return nil, nil, err
 	}
 
-	return writer, file, nil
+	return w, f, nil
 
 }

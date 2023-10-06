@@ -19,10 +19,14 @@ type Character struct {
 func CreateCharactersCsv() error {
 	var t Character
 
-	writer, file, err := creates.Csv(t, config.Character["csvRoute"], config.Character["csvName"])
+	w, f, err := creates.Csv(t, config.Character["csvRoute"], config.Character["csvName"])
 	if err != nil {
 		return err
 	}
+
+	defer f.Close()
+
+	defer w.Flush()
 
 	characters, err := scrapingCharacters()
 	if err != nil {
@@ -31,44 +35,40 @@ func CreateCharactersCsv() error {
 
 	for _, v := range characters {
 
-		character := []string{
+		err := w.Write([]string{
 			v.name,
 			v.unlock,
 			v.image,
 			v.extension,
-		}
+		})
 
-		if err := writer.Write(character); err != nil {
-			log.Printf("error writing character: %v", err)
+		if err != nil {
+			log.Println("error writing record to csv:", err)
 			continue
 		}
 
 	}
 
-	defer file.Close()
-
-	defer writer.Flush()
-
 	return nil
 }
 
 func scrapingCharacters() ([]Character, error) {
-	collector := colly.NewCollector()
+	c := colly.NewCollector()
 
 	var characters []Character
 
-	collector.OnHTML(config.Default["tableNode"], func(el *colly.HTMLElement) {
+	c.OnHTML(config.Default["tableNode"], func(el *colly.HTMLElement) {
 
-		character, err := newCharacter(el)
+		ch, err := newCharacter(el)
 		if err != nil {
 			log.Printf("error creating character: %v", err)
 			return
 		}
 
-		characters = append(characters, *character)
+		characters = append(characters, *ch)
 	})
 
-	if err := collector.Visit(config.Character["url"]); err != nil {
+	if err := c.Visit(config.Character["url"]); err != nil {
 		return nil, err
 	}
 
@@ -85,11 +85,11 @@ func newCharacter(el *colly.HTMLElement) (*Character, error) {
 		return nil, errors.New("name is empty")
 	}
 
-	urlPath := el.ChildAttr("a", "href")
+	path := el.ChildAttr("a", "href")
 
-	collector := colly.NewCollector()
+	c := colly.NewCollector()
 
-	collector.OnHTML(config.Default["mainNode"], func(h *colly.HTMLElement) {
+	c.OnHTML(config.Default["mainNode"], func(h *colly.HTMLElement) {
 		setCharacterUnlock(h, &character)
 		setCharacterExtension(h, &character)
 
@@ -98,7 +98,7 @@ func newCharacter(el *colly.HTMLElement) (*Character, error) {
 		}
 	})
 
-	if err := collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], urlPath)); err != nil {
+	if err := c.Visit(fmt.Sprintf("%s%s", config.Default["url"], path)); err != nil {
 		return nil, err
 	}
 
@@ -106,39 +106,39 @@ func newCharacter(el *colly.HTMLElement) (*Character, error) {
 }
 
 func setCharacterUnlock(h *colly.HTMLElement, character *Character) {
-	unlock := h.ChildText("div[data-source=\"unlocked by\"]>div")
+	u := h.ChildText("div[data-source=\"unlocked by\"]>div")
 
-	if unlock == "" {
-		unlock = h.ChildText("div.infobox2>div:last-child")
+	if u == "" {
+		u = h.ChildText("div.infobox2>div:last-child")
 	}
 
-	character.unlock = parsers.ParseUnlock(unlock)
+	character.unlock = parsers.Unlock(u)
 
 }
 
 func setCharacterExtension(h *colly.HTMLElement, character *Character) {
-	extension := h.ChildAttr("div#context-page.context-box>img", "title")
+	ext := h.ChildAttr("div#context-page.context-box>img", "title")
 
-	character.extension = parsers.ParseExtension(extension)
+	character.extension = parsers.Extension(ext)
 }
 
 func setImageCharacters(h *colly.HTMLElement, character *Character) error {
 
-	imgName := h.ChildAttr("img[alt=\"Character image\"]", "data-image-key")
-	imgUrl := h.ChildAttr("img[alt=\"Character image\"]", "data-src")
+	name := h.ChildAttr("img[alt=\"Character image\"]", "data-image-key")
+	url := h.ChildAttr("img[alt=\"Character image\"]", "data-src")
 
-	if imgName == "" {
+	if name == "" {
 
-		imgName = h.ChildAttr("div.infobox2>div:nth-child(2) img:nth-child(1)", "data-image-key")
-		imgUrl = h.ChildAttr("div.infobox2>div:nth-child(2) img:nth-child(1)", "data-src")
+		name = h.ChildAttr("div.infobox2>div:nth-child(2) img:nth-child(1)", "data-image-key")
+		url = h.ChildAttr("div.infobox2>div:nth-child(2) img:nth-child(1)", "data-src")
 	}
 
-	imgPath, err := downloads.Image(imgUrl, config.Character["imgFolder"], imgName)
+	p, err := downloads.Image(url, config.Character["imgFolder"], name)
 	if err != nil {
 		return err
 	}
 
-	character.image = imgPath
+	character.image = p
 
 	return nil
 

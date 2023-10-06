@@ -20,7 +20,7 @@ func CreateItemsCsv() error {
 
 	var t Item
 
-	writer, file, err := creates.Csv(t, config.Item["csvRoute"], config.Item["csvName"])
+	w, f, err := creates.Csv(t, config.Item["csvRoute"], config.Item["csvName"])
 	if err != nil {
 		return err
 	}
@@ -32,7 +32,7 @@ func CreateItemsCsv() error {
 
 	for _, v := range items {
 
-		err := writer.Write([]string{
+		err := w.Write([]string{
 			v.name,
 			v.id_game,
 			v.quote,
@@ -51,12 +51,12 @@ func CreateItemsCsv() error {
 
 	}
 
-	writer.Flush()
-	if err := writer.Error(); err != nil {
-		log.Println("csv writer error", err)
+	w.Flush()
+	if err := w.Error(); err != nil {
+		log.Println("csv w error", err)
 	}
 
-	file.Close()
+	f.Close()
 
 	return nil
 
@@ -64,22 +64,22 @@ func CreateItemsCsv() error {
 
 func scrapingItems() ([]Item, error) {
 
-	collector := colly.NewCollector()
+	c := colly.NewCollector()
 
 	var items []Item
 
-	collector.OnHTML(config.Default["tableNode"], func(el *colly.HTMLElement) {
+	c.OnHTML(config.Default["tableNode"], func(el *colly.HTMLElement) {
 
-		item, err := newItem(el)
+		i, err := newItem(el)
 		if err != nil {
 			log.Println("error creating item:", err)
 			return
 		}
 
-		items = append(items, *item)
+		items = append(items, *i)
 	})
 
-	if err := collector.Visit(config.Item["url"]); err != nil {
+	if err := c.Visit(config.Item["url"]); err != nil {
 		return nil, err
 	}
 
@@ -106,11 +106,11 @@ func newItem(el *colly.HTMLElement) (*Item, error) {
 		return nil, err
 	}
 
-	urlPath := el.ChildAttr("a", "href")
+	path := el.ChildAttr("a", "href")
 
-	collector := colly.NewCollector()
+	c := colly.NewCollector()
 
-	collector.OnHTML(config.Default["mainNode"], func(h *colly.HTMLElement) {
+	c.OnHTML(config.Default["mainNode"], func(h *colly.HTMLElement) {
 
 		setItemUnlock(h, &item)
 		setItemExtension(h, &item)
@@ -118,7 +118,7 @@ func newItem(el *colly.HTMLElement) (*Item, error) {
 
 	})
 
-	if err := collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], urlPath)); err != nil {
+	if err := c.Visit(fmt.Sprintf("%s%s", config.Default["url"], path)); err != nil {
 		return nil, err
 	}
 
@@ -128,31 +128,31 @@ func newItem(el *colly.HTMLElement) (*Item, error) {
 
 func setImageItems(el *colly.HTMLElement, item *Item) error {
 
-	imgUrl := el.ChildAttr("td:nth-child(3) a>img:nth-child(1)", "data-src")
-	imgName := el.ChildAttr("td:nth-child(3) a>img:nth-child(1)", "data-image-key")
+	url := el.ChildAttr("td:nth-child(3) a>img:nth-child(1)", "data-src")
+	name := el.ChildAttr("td:nth-child(3) a>img:nth-child(1)", "data-image-key")
 
-	imgPath, err := downloads.Image(imgUrl, config.Item["imgFolder"], imgName)
+	p, err := downloads.Image(url, config.Item["imgFolder"], name)
 	if err != nil {
 		return err
 	}
 
-	item.image = imgPath
+	item.image = p
 
 	return nil
 
 }
 
 func setItemUnlock(h *colly.HTMLElement, item *Item) {
-	unlock := h.ChildText("div[data-source=\"unlocked by\"]>div")
+	u := h.ChildText("div[data-source=\"unlocked by\"]>div")
 
-	item.unlock = parsers.ParseUnlock(unlock)
+	item.unlock = parsers.Unlock(u)
 
 }
 
 func setItemExtension(h *colly.HTMLElement, item *Item) {
-	extension := h.ChildAttr("div#context-page.context-box>img", "title")
+	e := h.ChildAttr("div#context-page.context-box>img", "title")
 
-	item.extension = parsers.ParseExtension(extension)
+	item.extension = parsers.Extension(e)
 }
 
 func setItemPool(h *colly.HTMLElement, item *Item) {

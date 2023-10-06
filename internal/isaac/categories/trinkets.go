@@ -20,7 +20,7 @@ func CreateTrinketsCsv() error {
 
 	var t Trinket
 
-	writer, file, err := creates.Csv(t, config.Trinket["csvRoute"], config.Trinket["csvName"])
+	w, f, err := creates.Csv(t, config.Trinket["csvRoute"], config.Trinket["csvName"])
 	if err != nil {
 		return err
 	}
@@ -32,7 +32,7 @@ func CreateTrinketsCsv() error {
 
 	for _, v := range trinkets {
 
-		trinket := []string{
+		err := w.Write([]string{
 			v.name,
 			v.id_game,
 			v.quote,
@@ -40,17 +40,18 @@ func CreateTrinketsCsv() error {
 			v.unlock,
 			v.image,
 			v.extension,
-		}
+		})
 
-		if err := writer.Write(trinket); err != nil {
+		if err != nil {
+			log.Println("error writing record to csv:", err)
 			continue
 		}
 
 	}
 
-	defer file.Close()
+	defer f.Close()
 
-	defer writer.Flush()
+	defer w.Flush()
 
 	return nil
 
@@ -58,22 +59,22 @@ func CreateTrinketsCsv() error {
 
 func scrapingTrinkets() ([]Trinket, error) {
 
-	collector := colly.NewCollector()
+	c := colly.NewCollector()
 
 	var trinkets []Trinket
 
-	collector.OnHTML(config.Default["tableNode"], func(el *colly.HTMLElement) {
+	c.OnHTML(config.Default["tableNode"], func(el *colly.HTMLElement) {
 
-		trinket, err := newTrinket(el)
+		t, err := newTrinket(el)
 		if err != nil {
 			log.Printf("error creating trinket: %v", err)
 			return
 		}
 
-		trinkets = append(trinkets, *trinket)
+		trinkets = append(trinkets, *t)
 	})
 
-	if err := collector.Visit(config.Trinket["url"]); err != nil {
+	if err := c.Visit(config.Trinket["url"]); err != nil {
 		return nil, err
 	}
 
@@ -82,7 +83,6 @@ func scrapingTrinkets() ([]Trinket, error) {
 }
 
 func newTrinket(el *colly.HTMLElement) (*Trinket, error) {
-	urlPath := el.ChildAttr("a", "href")
 
 	trinket := Trinket{
 		name: el.ChildAttr("td:nth-child(1)", "data-sort-value"),
@@ -100,15 +100,17 @@ func newTrinket(el *colly.HTMLElement) (*Trinket, error) {
 		log.Printf("error getting trinket image: %v", err)
 	}
 
-	collector := colly.NewCollector()
+	path := el.ChildAttr("a", "href")
 
-	collector.OnHTML(config.Default["mainNode"], func(h *colly.HTMLElement) {
+	c := colly.NewCollector()
+
+	c.OnHTML(config.Default["mainNode"], func(h *colly.HTMLElement) {
 		setTrinketUnlock(h, &trinket)
 		setTrinketExtension(h, &trinket)
 
 	})
 
-	if err := collector.Visit(fmt.Sprintf("%s%s", config.Default["url"], urlPath)); err != nil {
+	if err := c.Visit(fmt.Sprintf("%s%s", config.Default["url"], path)); err != nil {
 		return nil, err
 	}
 
@@ -118,27 +120,27 @@ func newTrinket(el *colly.HTMLElement) (*Trinket, error) {
 
 func setTrinketImage(h *colly.HTMLElement, trinket *Trinket) error {
 
-	imgUrl := h.ChildAttr("td:nth-child(3) a>img:nth-child(1)", "data-src")
-	imgName := h.ChildAttr("td:nth-child(3) a>img:nth-child(1)", "data-image-key")
+	url := h.ChildAttr("td:nth-child(3) a>img:nth-child(1)", "data-src")
+	name := h.ChildAttr("td:nth-child(3) a>img:nth-child(1)", "data-image-key")
 
-	imgPath, err := downloads.Image(imgUrl, config.Trinket["imgFolder"], imgName)
+	p, err := downloads.Image(url, config.Trinket["imgFolder"], name)
 	if err != nil {
 		return err
 	}
 
-	trinket.image = imgPath
-	return nil
+	trinket.image = p
 
+	return nil
 }
 
 func setTrinketUnlock(h *colly.HTMLElement, trinket *Trinket) {
-	unlock := h.ChildText("div[data-source=\"unlocked by\"]>div")
+	u := h.ChildText("div[data-source=\"unlocked by\"]>div")
 
-	trinket.unlock = parsers.ParseUnlock(unlock)
+	trinket.unlock = parsers.Unlock(u)
 
 }
 
 func setTrinketExtension(h *colly.HTMLElement, trinket *Trinket) {
-	extension := h.ChildAttr("div#context-page.context-box>img", "title")
-	trinket.extension = parsers.ParseExtension(extension)
+	e := h.ChildAttr("div#context-page.context-box>img", "title")
+	trinket.extension = parsers.Extension(e)
 }

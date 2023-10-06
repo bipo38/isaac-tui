@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-func ParseExtension(extension string) string {
+func Extension(extension string) string {
 
 	if extension == "" {
 		return "Rebirth"
@@ -20,7 +20,7 @@ func ParseExtension(extension string) string {
 
 }
 
-func ParseUnlock(unlock string) string {
+func Unlock(unlock string) string {
 
 	if unlock == "" {
 		return "Unlocked"

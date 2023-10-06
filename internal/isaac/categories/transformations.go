@@ -18,7 +18,7 @@ func CreateTransformationsCsv() error {
 
 	var t Transformation
 
-	writer, file, err := creates.Csv(t, config.Transformation["csvRoute"], config.Transformation["csvName"])
+	w, f, err := creates.Csv(t, config.Transformation["csvRoute"], config.Transformation["csvName"])
 	if err != nil {
 		return err
 	}
@@ -30,42 +30,45 @@ func CreateTransformationsCsv() error {
 
 	for _, v := range transformations {
 
-		transformation := []string{
+		err := w.Write([]string{
 			v.name,
 			v.id_game,
 			v.effect,
 			v.image,
 			v.extension,
-		}
+		})
 
-		writer.Write(transformation)
+		if err != nil {
+			log.Println("error writing record to csv:", err)
+			continue
+		}
 	}
 
-	defer file.Close()
+	defer f.Close()
 
-	defer writer.Flush()
+	defer w.Flush()
 
 	return nil
 }
 
 func scrapingTranformations() ([]Transformation, error) {
 
-	collector := colly.NewCollector()
+	c := colly.NewCollector()
 
 	var transformations []Transformation
 
-	collector.OnHTML(config.Default["tableNode"], func(el *colly.HTMLElement) {
+	c.OnHTML(config.Default["tableNode"], func(el *colly.HTMLElement) {
 
-		transformation, err := newTransformation(el)
+		t, err := newTransformation(el)
 		if err != nil {
 			log.Printf("error creating transformation %v", err)
 			return
 		}
 
-		transformations = append(transformations, *transformation)
+		transformations = append(transformations, *t)
 	})
 
-	if err := collector.Visit(config.Transformation["url"]); err != nil {
+	if err := c.Visit(config.Transformation["url"]); err != nil {
 		return nil, err
 	}
 
@@ -75,32 +78,32 @@ func scrapingTranformations() ([]Transformation, error) {
 
 func newTransformation(el *colly.HTMLElement) (*Transformation, error) {
 
-	transformation := Transformation{
+	t := Transformation{
 		name:      el.ChildAttr("td:nth-child(2)", "data-sort-value"),
 		id_game:   el.ChildAttr("td:nth-child(1)", "data-sort-value"),
 		effect:    el.ChildText("td:nth-child(4)>p"),
-		extension: parsers.ParseExtension(el.ChildAttr("td:nth-child(2)>img", "title")),
+		extension: parsers.Extension(el.ChildAttr("td:nth-child(2)>img", "title")),
 	}
 
-	if err := setTransformationImage(el, &transformation); err != nil {
+	if err := setTransformationImage(el, &t); err != nil {
 		return nil, err
 	}
 
-	return &transformation, nil
+	return &t, nil
 
 }
 
 func setTransformationImage(el *colly.HTMLElement, transformation *Transformation) error {
 
-	imgUrl := el.ChildAttr("td:nth-child(3)>a>img", "data-src")
-	imgName := el.ChildAttr("td:nth-child(3)>a>img", "data-image-key")
+	url := el.ChildAttr("td:nth-child(3)>a>img", "data-src")
+	name := el.ChildAttr("td:nth-child(3)>a>img", "data-image-key")
 
-	imgPath, err := downloads.Image(imgUrl, config.Transformation["imgFolder"], imgName)
+	p, err := downloads.Image(url, config.Transformation["imgFolder"], name)
 	if err != nil {
 		return err
 	}
 
-	transformation.image = imgPath
+	transformation.image = p
 
 	return nil
 

@@ -19,7 +19,7 @@ func CreatePillsCsv() error {
 
 	var t Pill
 
-	writer, file, err := creates.Csv(t, config.Pill["csvRoute"], config.Pill["csvName"])
+	w, f, err := creates.Csv(t, config.Pill["csvRoute"], config.Pill["csvName"])
 	if err != nil {
 		return err
 	}
@@ -31,24 +31,23 @@ func CreatePillsCsv() error {
 
 	for _, v := range pills {
 
-		pill := []string{
+		err := w.Write([]string{
 			v.name,
 			v.effect,
-			v.horse_effect,
-			v.class,
 			v.image,
-			string(v.extension),
-		}
+			v.extension,
+		})
 
-		if err := writer.Write(pill); err != nil {
+		if err != nil {
+			log.Println("error writing record to csv:", err)
 			continue
 		}
 
 	}
 
-	defer file.Close()
+	defer f.Close()
 
-	defer writer.Flush()
+	defer w.Flush()
 
 	return nil
 
@@ -56,13 +55,13 @@ func CreatePillsCsv() error {
 
 func scrapingPills() ([]Pill, error) {
 
-	collector := colly.NewCollector()
+	c := colly.NewCollector()
 
 	var pills []Pill
-	var extension string
+	var ext string
 
-	collector.OnHTML(config.Default["tableNode"], func(h *colly.HTMLElement) {
-		pill, err := newPill(h, &extension)
+	c.OnHTML(config.Default["tableNode"], func(h *colly.HTMLElement) {
+		pill, err := newPill(h, &ext)
 		if err != nil {
 			log.Printf("error creating pill: %v", err)
 			return
@@ -71,32 +70,33 @@ func scrapingPills() ([]Pill, error) {
 		pills = append(pills, *pill)
 	})
 
-	if err := collector.Visit(config.Pill["url"]); err != nil {
+	if err := c.Visit(config.Pill["url"]); err != nil {
 		return nil, err
 	}
 
 	return pills, nil
 }
 
-func newPill(el *colly.HTMLElement, extension *string) (*Pill, error) {
+func newPill(el *colly.HTMLElement, ext *string) (*Pill, error) {
 
 	scrapingExtension := el.ChildAttr("th>b>a", "title")
 
 	if scrapingExtension != "" {
-		*extension = scrapingExtension
+		*ext = scrapingExtension
 	}
 
-	pill := Pill{
-		name:         el.ChildText("td:nth-child(2)"),
-		class:        el.ChildText("td:nth-child(3)"),
-		effect:       el.ChildText("td:nth-child(4)"),
-		horse_effect: el.ChildText("td:last-child"),
-		image:        "image",
-		extension:    parsers.ParseExtension(*extension),
+	p := Pill{
+		name: el.ChildText("td:nth-child(2)"),
 	}
-	if pill.name == "" || strings.Contains(pill.name, "https") {
+	if p.name == "" || strings.Contains(p.name, "https") {
 		return nil, errors.New("name is empty")
 	}
 
-	return &pill, nil
+	p.class = el.ChildText("td:nth-child(3)")
+	p.effect = el.ChildText("td:nth-child(4)")
+	p.horse_effect = el.ChildText("td:last-child")
+	p.image = "image"
+	p.extension = parsers.Extension(*ext)
+
+	return &p, nil
 }

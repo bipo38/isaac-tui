@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestParseExtension(t *testing.T) {
+func TestExtension(t *testing.T) {
 
 	cases := []struct {
 		extension string
@@ -44,7 +44,7 @@ func TestParseExtension(t *testing.T) {
 
 		t.Run("Test Parse Extension", func(t *testing.T) {
 
-			got := ParseExtension(tt.extension)
+			got := Extension(tt.extension)
 
 			if got != tt.expected {
 				t.Errorf("got %s, want %s", got, tt.expected)

@@ -5,8 +5,8 @@ import (
 	"strings"
 )
 
-func Dirs(path string) error {
-	exist, err := ExistPath(path)
+func Dirs(p string) error {
+	exist, err := ExistPath(p)
 	if err != nil {
 		return err
 	}
@@ -15,7 +15,7 @@ func Dirs(path string) error {
 		return nil
 	}
 
-	if err := os.MkdirAll(path, os.ModePerm); err != nil {
+	if err := os.MkdirAll(p, os.ModePerm); err != nil {
 
 		return err
 	}
@@ -24,29 +24,29 @@ func Dirs(path string) error {
 
 }
 
-func File(fPath string) (*os.File, error) {
+func File(fp string) (*os.File, error) {
 
-	splitPath := strings.Split(fPath, "/")
+	split := strings.Split(fp, "/")
 
-	fileRoute := strings.Join(splitPath[0:len(splitPath)-1], "/")
+	r := strings.Join(split[0:len(split)-1], "/")
 
-	exist, err := ExistPath(fPath)
+	e, err := ExistPath(fp)
 	if err != nil {
 		return nil, err
 	}
 
-	if exist {
-		os.Remove(fPath)
+	if e {
+		os.Remove(fp)
 	} else {
-		Dirs(fileRoute)
+		Dirs(r)
 	}
 
-	file, err := os.Create(fPath)
+	f, err := os.Create(fp)
 	if err != nil {
 		return nil, err
 	}
 
-	return file, nil
+	return f, nil
 }
 
 func ExistPath(path string) (bool, error) {
