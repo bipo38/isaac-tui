@@ -8,34 +8,34 @@ import (
 )
 
 func RouteParser(fRoute, fName string) (string, string) {
-	routeStart := config.Default["routeStart"]
+	s := config.Default["routeStart"]
 
-	route := fmt.Sprintf("%s/%s/", routeStart, fRoute)
-	fPath := fmt.Sprintf("%s%s", route, fName)
+	r := fmt.Sprintf("%s/%s/", s, fRoute)
+	p := fmt.Sprintf("%s%s", r, fName)
 
-	return route, fPath
+	return r, p
 
 }
 
-func ParserFileName(fName, extension string) string {
+func ParserFileName(fName, ext string) string {
 
-	if strings.Contains(extension, ".") {
-		return fmt.Sprintf("%s%s", fName, extension)
+	if strings.Contains(ext, ".") {
+		return fmt.Sprintf("%s%s", fName, ext)
 	}
 
-	return fmt.Sprintf("%s.%s", fName, extension)
+	return fmt.Sprintf("%s.%s", fName, ext)
 
 }
 
-func GetHeaders(element interface{}) []string {
+func GetHeaders(el interface{}) []string {
 
-	structType := reflect.TypeOf(element)
+	t := reflect.TypeOf(el)
 
 	var headers []string
 
-	for i := 0; i < structType.NumField(); i++ {
+	for i := 0; i < t.NumField(); i++ {
 
-		headers = append(headers, structType.Field(i).Name)
+		headers = append(headers, t.Field(i).Name)
 	}
 
 	return headers

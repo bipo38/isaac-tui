@@ -58,14 +58,14 @@ func TestParserFileName(t *testing.T) {
 
 func TestRouteParser(t *testing.T) {
 
-	startRoute := config.Default["routeStart"]
-	rName := "transformations/images"
+	s := config.Default["routeStart"]
+	r := "transformations/images"
 	fName := "isaac.png"
 
-	gotRoute, gotFileName := RouteParser(rName, fName)
+	gotRoute, gotFileName := RouteParser(r, fName)
 
-	wantRoute := fmt.Sprintf("%s/%s/", startRoute, rName)
-	wantFileRoute := fmt.Sprintf("%s/%s/%s", startRoute, rName, fName)
+	wantRoute := fmt.Sprintf("%s/%s/", s, r)
+	wantFileRoute := fmt.Sprintf("%s/%s/%s", s, r, fName)
 
 	if gotRoute != wantRoute {
 		t.Errorf("got %v want %v", gotRoute, wantRoute)
