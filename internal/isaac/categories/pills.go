@@ -17,37 +17,20 @@ type Pill struct {
 
 func CreatePillsCsv() error {
 
-	var t Pill
-
-	w, f, err := creates.Csv(t, config.Pill["csvRoute"], config.Pill["csvName"])
-	if err != nil {
-		return err
-	}
-
 	pills, err := scrapingPills()
 	if err != nil {
 		return err
 	}
 
-	for _, v := range pills {
-
-		err := w.Write([]string{
-			v.name,
-			v.effect,
-			v.image,
-			v.extension,
-		})
-
-		if err != nil {
-			log.Println("error writing record to csv:", err)
-			continue
-		}
-
+	csv := creates.Csv[Pill]{
+		Name:     config.Pill["csvName"],
+		Path:     config.Pill["csvRoute"],
+		Category: pills,
 	}
 
-	defer f.Close()
-
-	defer w.Flush()
+	if err := csv.Write(); err != nil {
+		return err
+	}
 
 	return nil
 

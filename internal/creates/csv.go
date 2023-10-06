@@ -3,26 +3,64 @@ package creates
 import (
 	"encoding/csv"
 	"isaac-scrapper/internal/manipulation"
-	"os"
+	"reflect"
 )
 
-func Csv(c interface{}, fp, fn string) (*csv.Writer, *os.File, error) {
-	headers := manipulation.GetHeaders(c)
+type Writter interface {
+	Write() error
+}
 
-	fn = manipulation.ParserFileName(fn, "csv")
+type Csv[T any] struct {
+	Name     string
+	Path     string
+	Category []T
+}
 
-	_, fp = manipulation.RouteParser(fp, fn)
+func (el *Csv[T]) Write() error {
+
+	h := manipulation.GetHeaders(el.Category[0])
+
+	fn := manipulation.ParserFileName(el.Name, "csv")
+
+	_, fp := manipulation.RouteParser(el.Path, fn)
 
 	f, err := File(fp)
 	if err != nil {
-		return nil, nil, err
+		return err
 	}
 
 	w := csv.NewWriter(f)
-	if err := w.Write(headers); err != nil {
-		return nil, nil, err
+	if err := w.Write(h); err != nil {
+		return err
 	}
 
-	return w, f, nil
+	for _, v := range el.Category {
+
+		s := format(v, h)
+
+		if err := w.Write(s); err != nil {
+			return err
+		}
+	}
+
+	w.Flush()
+
+	f.Close()
+
+	return nil
+}
+
+func format[T any](item T, headers []string) []string {
+
+	var el []string
+
+	e := reflect.ValueOf(item)
+
+	for _, h := range headers {
+
+		el = append(el, e.FieldByName(h).String())
+	}
+
+	return el
 
 }

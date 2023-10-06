@@ -16,39 +16,23 @@ type Transformation struct {
 
 func CreateTransformationsCsv() error {
 
-	var t Transformation
-
-	w, f, err := creates.Csv(t, config.Transformation["csvRoute"], config.Transformation["csvName"])
-	if err != nil {
-		return err
-	}
-
 	transformations, err := scrapingTranformations()
 	if err != nil {
 		return err
 	}
 
-	for _, v := range transformations {
-
-		err := w.Write([]string{
-			v.name,
-			v.id_game,
-			v.effect,
-			v.image,
-			v.extension,
-		})
-
-		if err != nil {
-			log.Println("error writing record to csv:", err)
-			continue
-		}
+	csv := creates.Csv[Transformation]{
+		Name:     config.Transformation["csvName"],
+		Path:     config.Transformation["csvRoute"],
+		Category: transformations,
 	}
 
-	defer f.Close()
-
-	defer w.Flush()
+	if err := csv.Write(); err != nil {
+		return err
+	}
 
 	return nil
+
 }
 
 func scrapingTranformations() ([]Transformation, error) {

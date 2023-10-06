@@ -18,40 +18,20 @@ type Trinket struct {
 
 func CreateTrinketsCsv() error {
 
-	var t Trinket
-
-	w, f, err := creates.Csv(t, config.Trinket["csvRoute"], config.Trinket["csvName"])
-	if err != nil {
-		return err
-	}
-
 	trinkets, err := scrapingTrinkets()
 	if err != nil {
 		return err
 	}
 
-	for _, v := range trinkets {
-
-		err := w.Write([]string{
-			v.name,
-			v.id_game,
-			v.quote,
-			v.effect,
-			v.unlock,
-			v.image,
-			v.extension,
-		})
-
-		if err != nil {
-			log.Println("error writing record to csv:", err)
-			continue
-		}
-
+	csv := creates.Csv[Trinket]{
+		Name:     config.Trinket["csvName"],
+		Path:     config.Trinket["csvRoute"],
+		Category: trinkets,
 	}
 
-	defer f.Close()
-
-	defer w.Flush()
+	if err := csv.Write(); err != nil {
+		return err
+	}
 
 	return nil
 

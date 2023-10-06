@@ -17,39 +17,24 @@ type Character struct {
 }
 
 func CreateCharactersCsv() error {
-	var t Character
-
-	w, f, err := creates.Csv(t, config.Character["csvRoute"], config.Character["csvName"])
-	if err != nil {
-		return err
-	}
-
-	defer f.Close()
-
-	defer w.Flush()
 
 	characters, err := scrapingCharacters()
 	if err != nil {
 		return err
 	}
 
-	for _, v := range characters {
+	csv := creates.Csv[Character]{
+		Name:     config.Character["csvName"],
+		Path:     config.Character["csvRoute"],
+		Category: characters,
+	}
 
-		err := w.Write([]string{
-			v.name,
-			v.unlock,
-			v.image,
-			v.extension,
-		})
-
-		if err != nil {
-			log.Println("error writing record to csv:", err)
-			continue
-		}
-
+	if err := csv.Write(); err != nil {
+		return err
 	}
 
 	return nil
+
 }
 
 func scrapingCharacters() ([]Character, error) {

@@ -18,45 +18,20 @@ type Item struct {
 
 func CreateItemsCsv() error {
 
-	var t Item
-
-	w, f, err := creates.Csv(t, config.Item["csvRoute"], config.Item["csvName"])
-	if err != nil {
-		return err
-	}
-
 	items, err := scrapingItems()
 	if err != nil {
 		return err
 	}
 
-	for _, v := range items {
-
-		err := w.Write([]string{
-			v.name,
-			v.id_game,
-			v.quote,
-			v.effect,
-			v.unlock,
-			v.image,
-			v.quality,
-			v.pool,
-			v.extension,
-		})
-
-		if err != nil {
-			log.Println("error writing record to csv:", err)
-			continue
-		}
-
+	csv := creates.Csv[Item]{
+		Name:     config.Item["csvName"],
+		Path:     config.Item["csvRoute"],
+		Category: items,
 	}
 
-	w.Flush()
-	if err := w.Error(); err != nil {
-		log.Println("csv w error", err)
+	if err := csv.Write(); err != nil {
+		return err
 	}
-
-	f.Close()
 
 	return nil
 
