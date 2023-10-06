@@ -9,12 +9,12 @@ import (
 func TestImage(t *testing.T) {
 
 	cases := []struct {
-		url, fPath, fName string
-		expected          string
+		url, fp, fn string
+		expected    string
 	}{
 		{
 			url:      "https://static.wikia.nocookie.net/bindingofisaacre_gamepedia/images/9/91/Collectible_Abel_icon.png/revision/latest?cb=20210821083135",
-			fPath:    config.Item["imgFolder"],
+			fp:       config.Item["imgFolder"],
 			fName:    "Collectible_Abel_icon.png",
 			expected: "isaac/items/images/Collectible_Abel_icon.png",
 		},
@@ -24,7 +24,7 @@ func TestImage(t *testing.T) {
 
 		t.Run("Test Download Image", func(t *testing.T) {
 
-			got, err := Image(tt.url, tt.fPath, tt.fName)
+			got, err := Image(tt.url, tt.fp, tt.fName)
 
 			if err != nil {
 				t.Errorf("got %v, want %v", err, nil)

@@ -107,6 +107,7 @@ func (m model) View() string {
 
 	p := "\n Spacebar to select\n"
 	p += "\nEnter to start  download.\n"
+
 	p += "\nPress q to quit.\n"
 
 	return fmt.Sprintf("%s%s", s, style.Render(p))
@@ -123,8 +124,8 @@ func createSelectedCsv(checks map[int]string) {
 	}
 
 	for _, c := range checks {
-		if fn, ok := categories[c]; ok {
-			if err := fn(); err != nil {
+		if fun, ok := categories[c]; ok {
+			if err := fun(); err != nil {
 				fmt.Printf("Error: %s", err)
 				os.Exit(1)
 			}

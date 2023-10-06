@@ -8,36 +8,32 @@ import (
 	"net/http"
 )
 
-func Image(url, fPath, fName string) (string, error) {
+func Image(url, fp, fn string) (string, error) {
 
-	route, filePath := manipulation.RouteParser(fPath, fName)
+	_, fp = manipulation.RouteParser(fp, fn)
 
-	if err := creates.Dirs(route); err != nil {
-		return "", err
-	}
-
-	response, err := http.Get(url)
+	res, err := http.Get(url)
 	if err != nil {
 		return "", err
 	}
 
-	defer response.Body.Close()
+	defer res.Body.Close()
 
-	if response.StatusCode != 200 {
+	if res.StatusCode != 200 {
 		return "", errors.New("received non 200 response code")
 	}
 
-	file, err := creates.File(filePath)
+	f, err := creates.File(fp)
 	if err != nil {
 		return "", err
 	}
 
-	defer file.Close()
+	defer f.Close()
 
-	_, err = io.Copy(file, response.Body)
+	_, err = io.Copy(f, res.Body)
 	if err != nil {
 		return "", err
 	}
 
-	return filePath, nil
+	return fp, nil
 }
