@@ -11,4 +11,7 @@ A little tui, to get images and csv files, about data related with the videogame
 | Pills            | name, effect, horse_effect, class, image, extension  |
 
 
+## Todo
 
+- [ ] Cards and Runes
+- [ ] Bosses
