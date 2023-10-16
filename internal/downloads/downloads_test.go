@@ -1,9 +1,10 @@
 package downloads
 
 import (
-	"isaac-scrapper/config"
 	"os"
 	"testing"
+
+	"github.com/bipo38/isaac-tui/config"
 )
 
 func TestImage(t *testing.T) {

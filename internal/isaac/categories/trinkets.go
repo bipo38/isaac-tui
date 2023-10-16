@@ -3,12 +3,13 @@ package categories
 import (
 	"errors"
 	"fmt"
-	"isaac-scrapper/config"
-	"isaac-scrapper/internal/creates"
-	"isaac-scrapper/internal/downloads"
-	"isaac-scrapper/internal/isaac/parsers"
+
 	"log"
 
+	"github.com/bipo38/isaac-tui/config"
+	"github.com/bipo38/isaac-tui/internal/creates"
+	"github.com/bipo38/isaac-tui/internal/downloads"
+	"github.com/bipo38/isaac-tui/internal/isaac/parsers"
 	"github.com/gocolly/colly"
 )
 

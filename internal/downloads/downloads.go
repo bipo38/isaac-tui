@@ -3,9 +3,10 @@ package downloads
 import (
 	"errors"
 	"io"
-	"isaac-scrapper/internal/creates"
-	"isaac-scrapper/internal/manipulation"
 	"net/http"
+
+	"github.com/bipo38/isaac-tui/internal/creates"
+	"github.com/bipo38/isaac-tui/internal/manipulation"
 )
 
 func Image(url, fp, fn string) (string, error) {

@@ -2,9 +2,10 @@ package manipulation
 
 import (
 	"fmt"
-	"isaac-scrapper/config"
 	"reflect"
 	"strings"
+
+	"github.com/bipo38/isaac-tui/config"
 )
 
 func RouteParser(fRoute, fName string) (string, string) {

@@ -2,12 +2,13 @@ package categories
 
 import (
 	"errors"
-	"isaac-scrapper/config"
-	"isaac-scrapper/internal/creates"
-	"isaac-scrapper/internal/isaac/parsers"
+
 	"log"
 	"strings"
 
+	"github.com/bipo38/isaac-tui/config"
+	"github.com/bipo38/isaac-tui/internal/creates"
+	"github.com/bipo38/isaac-tui/internal/isaac/parsers"
 	"github.com/gocolly/colly"
 )
 

@@ -2,9 +2,9 @@ package tui
 
 import (
 	"fmt"
-	"isaac-scrapper/internal/isaac/categories"
 	"os"
 
+	"github.com/bipo38/isaac-tui/internal/isaac/categories"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )

@@ -2,8 +2,9 @@ package creates
 
 import (
 	"encoding/csv"
-	"isaac-scrapper/internal/manipulation"
 	"reflect"
+
+	"github.com/bipo38/isaac-tui/internal/manipulation"
 )
 
 type Writter interface {

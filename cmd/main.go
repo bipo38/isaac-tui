@@ -1,6 +1,6 @@
 package main
 
-import "isaac-scrapper/internal/isaac/tui"
+import "github.com/bipo38/isaac-tui/internal/isaac/tui"
 
 func main() {
 

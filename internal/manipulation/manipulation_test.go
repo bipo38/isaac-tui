@@ -2,9 +2,10 @@ package manipulation
 
 import (
 	"fmt"
-	"isaac-scrapper/config"
 	"reflect"
 	"testing"
+
+	"github.com/bipo38/isaac-tui/config"
 )
 
 func TestGetHeaders(t *testing.T) {
