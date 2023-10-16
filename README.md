@@ -5,7 +5,7 @@ A little tui, to get images and csv files, about data related with the videogame
 ## Installation
 
 ```
-go install github.com/bipo38/isaac-tui@lastest
+go install github.com/bipo38/isaac-tui@latest
 ```
 
 | Name            | Properties                                                            |

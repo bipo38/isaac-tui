@@ -1,4 +1,4 @@
-module isaac-scrapper
+module github.com/bipo38/isaac-tui
 
 go 1.21.0
 
