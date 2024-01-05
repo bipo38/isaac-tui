@@ -1,7 +1,6 @@
 # Isaac Tui
-
-A little tui, to get images and csv files, about data related with the videogame The Binding of Isaac
-
+ A tui to retrieve data about the The Binding of Isaac game in csv format.
+ 
 ## Installation
 
 ```
