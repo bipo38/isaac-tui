@@ -15,7 +15,3 @@ go install github.com/bipo38/isaac-tui@latest
 | Trinkets        | name, id_game, quote, effect, unlock, image, extension                |
 | Pills           | name, effect, horse_effect, class, image, extension                   |
 
-## Todo
-
-- [ ] Cards and Runes
-- [ ] Bosses
